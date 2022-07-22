@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "694837708007",
+    "project_id": "dinhi-5f99a",
+    "storage_bucket": "dinhi-5f99a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:694837708007:android:3cb4fa675b7b6038548e42",
+        "android_client_info": {
+          "package_name": "com.example.untitled"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "694837708007-9qmhmaptfu5pqlitdp8hvool3i2qmqmi.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBe6yjrB-cst8QQp2rEW5xolMlRPOTUoMg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "694837708007-9qmhmaptfu5pqlitdp8hvool3i2qmqmi.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
