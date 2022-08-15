@@ -7,6 +7,8 @@ import 'login.dart';
 
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  
   await Firebase.initializeApp();
   runApp(const GetMaterialApp(home:LoginParent()));
 }

@@ -36,10 +36,9 @@ dependencies:
   cupertino_icons: ^1.0.2
   flutter_login: ^4.0.0
   get: ^4.6.5
-  flutter_search_bar: ^2.1.0
-  easy_dashboard: ^0.0.2
   firebase_core: ^1.20.0
   cloud_firestore: ^3.4.0
+  easy_dashboard: ^0.0.2
 
 dev_dependencies:
   flutter_test:
@@ -66,6 +65,21 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
   - assets/images/Logo.PNG
+  - assets/images/Dashboard.png
+  - assets/images/ViewUsers.png
+  - assets/images/ViewProducts.png
+  - assets/images/Orders.png
+  - assets/images/ViewCart.png
+  - assets/images/Chat.png
+  - assets/images/OrdersAvail.png
+  - assets/images/UpdatePayment.png
+  - assets/images/ViewFeedback.png
+  - assets/images/Rambutan.png
+  - assets/images/Pomelo.png
+  - assets/images/Corn.png
+  - assets/images/Niyog.png
+  - assets/images/Buko.png
+  
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 
@@ -80,10 +94,11 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
-  # fonts:
-  #   - family: Schyler
-  #     fonts:
-  #       - asset: fonts/Schyler-Regular.ttf
+  fonts:
+    - family: Montserrat
+      fonts:
+        - asset: assets/fonts/montserrat/Montserrat-Regular.otf
+        - asset: assets/fonts/montserrat/Montserrat-Medium.otf
   #       - asset: fonts/Schyler-Italic.ttf
   #         style: italic
   #   - family: Trajan Pro

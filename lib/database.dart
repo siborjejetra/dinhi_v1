@@ -1,16 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Database {
-  late FirebaseFirestore firestore;
-  initialise() {
-    firestore = FirebaseFirestore.instance;
-  }
 
-  Future<List> read() async {
+  Future<List> readUsers() async {
     QuerySnapshot querySnapshot;
     List docs=[];
     try {
-      querySnapshot = await firestore.collection('users').get();
+      querySnapshot = await FirebaseFirestore.instance.collection('users').get();
       if(querySnapshot.docs.isNotEmpty) {
         for (var doc in querySnapshot.docs.toList()) {
           Map a = {
@@ -21,9 +17,9 @@ class Database {
             "lastname": doc['lastname'],
             "idno": doc['idno'],
             "usertype": doc['usertype'],
-            "cellnumber": doc['cellnumber'],
-            "birthday": doc['birthday'],
-            "address": doc['address']
+            // "cellnumber": doc['cellnumber'],
+            // "birthday": doc['birthday'],
+            // "address": doc['address']
             };
           docs.add(a);
         }

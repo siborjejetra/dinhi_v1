@@ -1,7 +1,9 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
-import 'package:Dinhi_v1/dashboard.dart';
+import 'package:Dinhi_v1/Admin/panel.dart';
 import 'package:easy_dashboard/easy_dashboard.dart';
 
 
@@ -16,7 +18,7 @@ class HomeAdminParent extends StatelessWidget {
 
 class HomeAdminChild extends StatefulWidget {
   const HomeAdminChild({Key? key}) : super(key: key);
-  
+   
   @override
   State<HomeAdminChild> createState() => _HomeAdminChildState();
 }
@@ -69,7 +71,7 @@ class _HomeAdminChildState extends State<HomeAdminChild> {
           selectedIconColor: Color.fromARGB(255, 236, 236, 163),
           textColor: Colors.black.withGreen(20),
           selectedTileColor: Color.fromARGB(255, 111, 174, 23).withOpacity(.8),
-          tiles: tiles,
+          tiles: returnTiles(context),
           topWidget: SideBox(
             scrollable: true,
             height: 150,

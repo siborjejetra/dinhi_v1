@@ -1,29 +1,27 @@
-import 'dart:ui';
-import 'package:Dinhi_v1/Seller/orderlist.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
-import 'package:Dinhi_v1/Seller/panel.dart';
+import 'package:Dinhi_v1/Courier/panel.dart';
 import 'package:easy_dashboard/easy_dashboard.dart';
-import 'package:get/get.dart';
 
-class HomeSellerParent extends StatelessWidget {
-  const HomeSellerParent({Key? key}) : super(key: key);
+
+class HomeCourierParent extends StatelessWidget {
+  const HomeCourierParent({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(home:HomeSellerChild());
+    return const MaterialApp(home:HomeCourierChild());
   }
 }
 
-class HomeSellerChild extends StatefulWidget {
-  const HomeSellerChild({Key? key}) : super(key: key);
-   
+class HomeCourierChild extends StatefulWidget {
+  const HomeCourierChild({Key? key}) : super(key: key);
+  
   @override
-  State<HomeSellerChild> createState() => _HomeSellerChildState();
+  State<HomeCourierChild> createState() => _HomeCourierChildState();
 }
 
-class _HomeSellerChildState extends State<HomeSellerChild> {
+class _HomeCourierChildState extends State<HomeCourierChild> {
   late final EasyAppController controller = EasyAppController(
   intialBody: EasyBody(child: tile1.body, title: tile1.title),
   );
@@ -42,8 +40,8 @@ class _HomeSellerChildState extends State<HomeSellerChild> {
         },
       ),
       IconButton(
-        icon: const Icon(IconData(0xe385, fontFamily: 'MaterialIcons'), color: Colors.white),
-        onPressed: () {Get.to(const OrderListParent());},
+        icon: const Icon(Icons.more_vert, color: Colors.white),
+        onPressed: () {},
       ),
     ];
     return EasyDashboard(
