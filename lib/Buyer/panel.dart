@@ -69,114 +69,111 @@ final SideBarTile tile1 = SideBarTile(
       icon: Icons.home,
       body: SafeArea(
         child: Padding(
-          padding: EdgeInsets.all(16.0),
-          child: Column(
-            children: <Widget>[
-              Container( 
-                child: GridView.count(
-                  mainAxisSpacing: 10,
-                  crossAxisSpacing: 10,
-                  primary: false,
-                  crossAxisCount: 2,
-                  children: <Widget>[
-                    InkWell(
-                      onTap: () {Get.to(const MyWidgetParent());},
-                      child: Card(
-                        color: Color.fromRGBO(111, 174, 23, 1),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8)
-                        ),
-                        elevation: 4,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Image.asset(
-                              'assets/images/Rambutan.png',
-                              width: 140, 
-                              height: 140,),
-                            Text('Rambutan', style: cardTextStyle)
-                          ],
-                        ),
+          padding: EdgeInsets.only(bottom: 16, left: 16, right: 16),
+          child: Container( 
+              child: GridView.count(
+                mainAxisSpacing: 10,
+                crossAxisSpacing: 10,
+                primary: false,
+                crossAxisCount: 2,
+                children: <Widget>[
+                  InkWell(
+                    onTap: () {Get.to(const MyWidgetParent());},
+                    child: Card(
+                      color: Color.fromRGBO(111, 174, 23, 1),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8)
+                      ),
+                      elevation: 4,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Image.asset(
+                            'assets/images/Rambutan.png',
+                            width: 140, 
+                            height: 140,),
+                          Text('Rambutan', style: cardTextStyle)
+                        ],
                       ),
                     ),
-                    InkWell(
-                      child: Card(
-                        color: Color.fromARGB(255, 9, 117, 8),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8)
-                        ),
-                        elevation: 4,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Image.asset(
-                              'assets/images/Pomelo.png',
-                              width: 140, 
-                              height: 140,),
-                            Text('Suha', style: cardTextStyle)
-                          ],
-                        ),
+                  ),
+                  InkWell(
+                    child: Card(
+                      color: Color.fromARGB(255, 9, 117, 8),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8)
+                      ),
+                      elevation: 4,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Image.asset(
+                            'assets/images/Pomelo.png',
+                            width: 140, 
+                            height: 140,),
+                          Text('Suha', style: cardTextStyle)
+                        ],
                       ),
                     ),
-                    InkWell(
-                      child: Card(
-                        color: Color.fromARGB(255, 9, 117, 8),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8)
-                        ),
-                        elevation: 4,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Image.asset(
-                              'assets/images/Niyog.png',
-                              width: 140, 
-                              height: 140,),
-                            Text('Niyog', style: cardTextStyle)
-                          ],
-                        ),
+                  ),
+                  InkWell(
+                    child: Card(
+                      color: Color.fromARGB(255, 9, 117, 8),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8)
+                      ),
+                      elevation: 4,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Image.asset(
+                            'assets/images/Niyog.png',
+                            width: 140, 
+                            height: 140,),
+                          Text('Niyog', style: cardTextStyle)
+                        ],
                       ),
                     ),
-                    InkWell(
-                      child: Card(
-                        color: Color.fromRGBO(111, 174, 23, 1),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8)
-                        ),
-                        elevation: 4,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Image.asset(
-                              'assets/images/Buko.png',
-                              width: 140, 
-                              height: 140,),
-                            Text('Buko', style: cardTextStyle)
-                          ],
-                        ),
+                  ),
+                  InkWell(
+                    child: Card(
+                      color: Color.fromRGBO(111, 174, 23, 1),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8)
+                      ),
+                      elevation: 4,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Image.asset(
+                            'assets/images/Buko.png',
+                            width: 140, 
+                            height: 140,),
+                          Text('Buko', style: cardTextStyle)
+                        ],
                       ),
                     ),
-                    InkWell(
-                      child: Card(
-                        color: Color.fromRGBO(111, 174, 23, 1),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8)
-                        ),
-                        elevation: 4,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Image.asset(
-                              'assets/images/Corn.png',
-                              width: 140, 
-                              height: 140,),
-                            Text('Mais', style: cardTextStyle)
-                          ],
-                        ),
+                  ),
+                  InkWell(
+                    child: Card(
+                      color: Color.fromRGBO(111, 174, 23, 1),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8)
+                      ),
+                      elevation: 4,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Image.asset(
+                            'assets/images/Corn.png',
+                            width: 140, 
+                            height: 140,),
+                          Text('Mais', style: cardTextStyle)
+                        ],
                       ),
                     ),
-                  ],))
-            ],
+                  ),
+                ],)
           ))),
       name: 'Home',
     );

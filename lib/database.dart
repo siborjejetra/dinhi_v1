@@ -2,6 +2,16 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Database {
 
+  Future<void> createUser(Map<String, dynamic> newUser) async {
+
+    try {
+      await FirebaseFirestore.instance
+          .collection("users").add(newUser);
+    } catch (e) {
+      print(e);
+    }
+  }
+
   Future<List> readUsers() async {
     QuerySnapshot querySnapshot;
     List docs=[];
@@ -17,9 +27,9 @@ class Database {
             "lastname": doc['lastname'],
             "idno": doc['idno'],
             "usertype": doc['usertype'],
-            // "cellnumber": doc['cellnumber'],
-            // "birthday": doc['birthday'],
-            // "address": doc['address']
+            "cellnumber": doc['cellnumber'],
+            "birthday": doc['birthday'],
+            "address": doc['address']
             };
           docs.add(a);
         }
@@ -31,4 +41,6 @@ class Database {
     }
     return docs;
   }
+
+
 }

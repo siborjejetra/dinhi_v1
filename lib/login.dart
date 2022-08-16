@@ -1,3 +1,4 @@
+import 'package:Dinhi_v1/registration.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -51,6 +52,7 @@ class _LoginChildState extends State<LoginChild> {
     debugPrint('Name: ${data.name}, Password: ${data.password}');
     return Future.delayed(loginTime).then((_) async{
       List<dynamic> userList = await db.readUsers();
+      print(userList);
       if (!userList.any((item){ return item['email'] == data.name; })) {
         return 'User not exists';
       }
@@ -86,6 +88,7 @@ class _LoginChildState extends State<LoginChild> {
   Future<String?> _signupUser(SignupData data) {
     debugPrint('Signup Name: ${data.name}, Password: ${data.password}');
     return Future.delayed(loginTime).then((_) {
+      Get.to(const RegParent());
       return null;
     });
   }

@@ -296,29 +296,29 @@ List<SideTile> returnTiles(BuildContext context){
         actions: <Widget>[
           ElevatedButton(
             style: buttonStyle,
-            onPressed: () {
-              Get.off(const LoginParent());
-            },
-            child: const Text('Yes',
-              style: TextStyle(
-                fontFamily: "Montserrat",
-                color: Colors.white,
-                fontSize: 14
-              )
+              onPressed: () {
+                Get.off(const LoginParent());
+              },
+              child: const Text('Yes',
+                style: TextStyle(
+                  fontFamily: "Montserrat",
+                  color: Colors.black,
+                  fontSize: 14
+                )
+              ),
             ),
-          ),
-          new ElevatedButton(
-            style: buttonStyle,
-            onPressed: () {
-              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const HomeCourierParent()));
-            },
-            child: const Text('No',
-              style: TextStyle(
-                fontFamily: "Montserrat",
-                color: Colors.white,
-                fontSize: 14
+            new ElevatedButton(
+              style: buttonStyle,
+              onPressed: () {
+                Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const HomeCourierParent()));
+              },
+              child: const Text('No',
+                style: TextStyle(
+                  fontFamily: "Montserrat",
+                  color: Colors.black,
+                  fontSize: 14
+                )
               )
-            )
           ),
         ]),
       ),
