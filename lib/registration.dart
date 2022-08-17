@@ -270,6 +270,7 @@ class _RegChildState extends State<RegChild> {
                     ),
                     const SizedBox(height: 10),
                     FormBuilderTextField(
+                      obscureText: true,
                       autovalidateMode: AutovalidateMode.onUserInteraction,
                       name: 'password',
                       decoration: InputDecoration(
@@ -298,6 +299,7 @@ class _RegChildState extends State<RegChild> {
                     ),
                     const SizedBox(height: 10),
                     FormBuilderTextField(
+                      obscureText: true,
                       autovalidateMode: AutovalidateMode.onUserInteraction,
                       name: 'cpassword',
                       decoration: InputDecoration(
