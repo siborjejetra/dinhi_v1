@@ -43,6 +43,8 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   form_builder_validators: ^8.3.0
+  avatar_glow: ^2.0.2
+  dotted_border: ^2.0.0+2
 
 dev_dependencies:
   flutter_test:

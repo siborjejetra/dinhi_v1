@@ -11,6 +11,6 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   
   await Firebase.initializeApp();
-  runApp(const GetMaterialApp(home:LoginParent()));
-  // runApp(const GetMaterialApp(home:RegParent()));
+  // runApp(const GetMaterialApp(home:LoginParent()));
+  runApp(const GetMaterialApp(home:RegParent()));
 }

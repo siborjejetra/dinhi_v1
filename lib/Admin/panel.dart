@@ -1,10 +1,12 @@
 import 'package:Dinhi_v1/Admin/home.dart';
 import 'package:Dinhi_v1/hello.dart';
 import 'package:Dinhi_v1/login.dart';
+import 'package:Dinhi_v1/profile.dart';
 import 'package:easy_dashboard/easy_dashboard.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
 
 var cardTextStyle = TextStyle(fontFamily: 'Montserrat', fontSize: 14, color:Colors.white);
 
@@ -221,13 +223,17 @@ List<SideTile> returnTiles(BuildContext context){
         ),
       ),
       icon: Icons.person,
-      body: const Center(
-        child: Icon(
-          Icons.person,
-          size: 280,
+      body: Center(
+        child: Profile(
+          imageUrl: "https://images.unsplash.com/photo-1598618356794-eb1720430eb4?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80",
+          name: "Shamim Miah",
+          website: "shamimmiah.com",
+          designation: "Project Manager | Flutter & Blockchain Developer",
+          email: "cse.shamimosmanpailot@gmail.com",
+          phone_number: "01757736053",
         ),
       ),
-      name: 'Profile',
+    name: 'Profile',
     ),
     SideBarTile(
       title: const Text(

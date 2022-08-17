@@ -1,12 +1,17 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+String idno = '';
+void setIdNo(String value) {
+    idno = value;
+}
+
 class Database {
 
   Future<void> createUser(Map<String, dynamic> newUser) async {
 
     try {
       await FirebaseFirestore.instance
-          .collection("users").add(newUser);
+          .collection("users").add(newUser); 
     } catch (e) {
       print(e);
     }

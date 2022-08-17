@@ -52,7 +52,7 @@ class _LoginChildState extends State<LoginChild> {
     debugPrint('Name: ${data.name}, Password: ${data.password}');
     return Future.delayed(loginTime).then((_) async{
       List<dynamic> userList = await db.readUsers();
-      print(userList);
+      // print(userList);
       if (!userList.any((item){ return item['email'] == data.name; })) {
         return 'User not exists';
       }

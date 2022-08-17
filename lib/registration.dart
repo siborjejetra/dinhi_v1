@@ -49,11 +49,72 @@ class _RegChildState extends State<RegChild> {
   bool _cpwordHasError = false;
   bool _addressHasError = false;
   bool _userTypeHasError = false;
+  bool _userIdHasError = false;
 
   var userOptions = ['Buyer', 'Seller', 'Courier'];
   var pword = '';
+  String idno = '';
+  List user1 = [];
+  List user2 = [];
+  List user3 = [];
+  List user4 = [];
 
   void _onChanged(dynamic val) => debugPrint(val.toString());
+
+  Future<void> storeUserID() async {
+    List<dynamic> userList = await db.readUsers();
+    for (dynamic item in userList){
+      if (item['usertype'] == 'Admin'){
+        user1.add(item['idno']);
+      }
+      else if (item['usertype'] == 'Buyer'){
+        user2.add(item['idno']);
+      }
+      else if (item['usertype'] == 'Courier'){
+        user3.add(item['idno']);
+      }
+      else {
+        user4.add(item['idno']);
+      }
+    }
+  }
+
+  String setIndicator(String value){
+    String indicator = '';
+    if(value == 'Admin'){
+      indicator = 'A';
+    }else if(value == 'Buyer'){
+      indicator = 'B';
+    }else if(value == 'Courier'){
+      indicator = 'C';
+    }else{
+      indicator = 'S';
+    }
+    return indicator;
+  }
+
+  String getIdNo(String indicator){
+    List userType = [];
+    String temp = '';
+    String temp1 = '';
+    var temp2 = 0;
+    if (indicator == 'A'){
+      userType = user1;
+    } else if (indicator == 'B'){
+      userType = user2;
+    } else if (indicator == 'C'){
+      userType = user3;
+    } else {
+      userType = user4;
+    }
+
+    temp = userType.last;
+    temp1 = temp.substring(1,4);
+    temp2 = int.parse(temp1);
+    idno = indicator+(temp2+1).toString().padLeft(3,'0');
+
+    return idno;
+  }
 
   Database db = Database();
   Map<String, dynamic> newUser = {};
@@ -75,6 +136,7 @@ class _RegChildState extends State<RegChild> {
 
   @override
   Widget build(BuildContext context) {
+    storeUserID();
     return Scaffold(
       backgroundColor: Color.fromARGB(255, 171, 195, 47),
       // appBar: AppBar(title: const Text('Registration Form'), centerTitle: true,),
@@ -339,6 +401,7 @@ class _RegChildState extends State<RegChild> {
                                   .currentState?.fields['usertype']
                                   ?.validate() ??
                               false);
+                          idno = getIdNo(setIndicator(_formKey.currentState?.value['usertype']));
                         });
                       },
                       valueTransformer: (val) => val?.toString(),
@@ -355,7 +418,9 @@ class _RegChildState extends State<RegChild> {
                         if (_formKey.currentState?.saveAndValidate() ?? false) {
                           debugPrint(_formKey.currentState!.value.toString());
                           newUser = _formKey.currentState!.value;
-                          await db.createUser(newUser).then((value) => Get.off(const LoginParent()));
+                          Map<String, dynamic> cloneMap = {...newUser};
+                          cloneMap['idno'] = idno;
+                          await db.createUser(cloneMap).then((value) => Get.off(const LoginParent()));
                         } else {
                           debugPrint(_formKey.currentState?.value.toString());
                           debugPrint('Validation failed');
