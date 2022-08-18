@@ -1,4 +1,5 @@
 import 'package:Dinhi_v1/profile.dart';
+import 'package:Dinhi_v1/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -25,38 +26,14 @@ class EditProfilePage extends StatefulWidget {
 }
 
 class _EditProfilePageState extends State<EditProfilePage> {
+  final title = 'Edit Profile';
   bool showPassword = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color.fromARGB(255, 236, 236, 163),
-      appBar: AppBar(
-        centerTitle: true,
-        title: Text(
-          'Edit Profile', 
-          style: TextStyle(
-            color: Colors.white,
-            fontFamily: 'Montserrat',
-          ),
-        ),
-        backgroundColor: Color.fromARGB(255, 111, 174, 23),
-        leading: IconButton(
-          onPressed: (){}, 
-          icon: Icon(
-            Icons.arrow_back,
-            color: Colors.white,
-          )
-        ),
-        // actions: [
-        //   IconButton(
-        //     onPressed: () {}, 
-        //     icon: Icon(
-        //       Icons.save_rounded,
-        //       color: Colors.white,
-        //     )
-        //   )
-        // ],
-      ),
+      appBar: buildAppbar(context, title),
       body: Container(
         padding: EdgeInsets.all(10),
         child: GestureDetector(
@@ -117,6 +94,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
               buildTextField("Last Name", "Sibor", false),
               buildTextField("Email", "siborjejetra@gmail.com", false),
               buildTextField("Password", "********", true),
+              buildTextField("About Me", "Set info", false),
               buildTextField("Birthday", "12/10/1999", false),
               buildTextField("Contact Number", "09364575235", false),
               buildTextField("Address", "Calamba", false),

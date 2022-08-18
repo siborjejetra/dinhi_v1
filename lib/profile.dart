@@ -1,101 +1,154 @@
-import 'dart:core';
+import 'dart:ui';
+
+import 'package:Dinhi_v1/editprofile.dart';
+import 'package:Dinhi_v1/model/user.dart';
+import 'package:Dinhi_v1/utils/user_preference.dart';
 import 'package:flutter/material.dart';
-import 'package:avatar_glow/avatar_glow.dart';
-import 'package:dotted_border/dotted_border.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:Dinhi_v1/widgets.dart';
+import 'package:flutter/src/foundation/key.dart';
+import 'package:flutter/src/widgets/framework.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/get_core.dart';
 
-class Profile extends StatefulWidget {
-  Profile({
-    required this.imageUrl,
-    required this.name,
-    required this.website,
-    required this.designation,
-    required this.email,
-    required this.phone_number,
-  });
-  final String imageUrl;
-  final String name;
-  final String website;
-  final String designation;
-  final String email;
-  final String phone_number;
+class ProfileParent extends StatelessWidget {
+  const ProfileParent({Key? key}) : super(key: key);
 
-  @override
-  State<Profile> createState() => _ProfileState();
-}
-
-class _ProfileState extends State<Profile> {
   @override
   Widget build(BuildContext context) {
-    final Uri imagelUrl = Uri.parse(widget.imageUrl);
-    final Uri nameUrl = Uri.parse(widget.name);
-    final Uri webUrl = Uri.parse("http://" + widget.website);
-    final Uri designationUrl = Uri.parse(widget.designation);
-    final Uri emailUrl = Uri.parse("mailto:" + widget.email);
-    final Uri phoneUrl = Uri.parse("tel:" + widget.phone_number);
-    final Uri smsUrl = Uri.parse("sms:" + widget.phone_number);
-    void getUrlLauncher(Uri url) async {
-      if (await canLaunchUrl(url)) {
-        await launchUrl(url);
-      } else {
-        throw 'Could not launch $url';
-      }
-    }
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        primaryColor: Color.fromARGB(255, 111, 174, 23),
+      ),
+      title: 'User Profile',
+      home: ProfileChild(),
+    );
+  }
+}
 
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Column(
+class ProfileChild extends StatefulWidget {
+  const ProfileChild({Key? key}) : super(key: key);
+
+  @override
+  State<ProfileChild> createState() => _ProfileChildState();
+}
+
+class _ProfileChildState extends State<ProfileChild> {
+  final title = 'Profile';
+
+  @override
+  Widget build(BuildContext context) {
+    final user = UserPreferences.myUser;
+    return Scaffold(
+      backgroundColor: Color.fromARGB(255, 236, 236, 163),
+      appBar: buildAppbar(context, title),
+      body: ListView(
+        physics: BouncingScrollPhysics(),
         children: [
-          SizedBox(
-            width: 160,
-            height: 160,
-            child: AvatarGlow(
-              glowColor: Color.fromARGB(255, 15, 233, 106),
-              endRadius: 90.0,
-              duration: Duration(milliseconds: 2000),
-              repeat: true,
-              showTwoGlows: true,
-              repeatPauseDuration: Duration(milliseconds: 100),
-              child: DottedBorder(
-                radius: Radius.circular(10),
-                color: Colors.blue,
-                strokeWidth: 8,
-                borderType: BorderType.Circle,
-                dashPattern: [1, 12],
-                strokeCap: StrokeCap.butt,
-                child: Center(
-                  child: SizedBox(
-                    width: 130,
-                    height: 130,
-                    child: CircleAvatar(
-                      foregroundImage: NetworkImage(widget.imageUrl),
-                      radius: 10,
-                    ),
-                  ),
-                ),
-              ),
+          const SizedBox(height: 30),
+          ProfileWidget(
+            imagePath: user.imagePath,
+            onClicked: () async {},
+          ),
+          const SizedBox(height: 24),
+          buildName(user),
+          const SizedBox(height: 24),
+          Center(child: buildEditButton()),
+          const SizedBox(height: 24),
+          buildAbout(user),
+          
+          
+        ],
+      )
+    );
+  }
+
+  Widget buildName(User user) {
+    return Column(
+      children: [
+        Text(
+          user.name,
+          style: TextStyle(
+            fontWeight: FontWeight.bold, 
+            fontSize: 24,
+            fontFamily: 'Montserrat'
+          ),
+        ),
+        const SizedBox(height: 4),
+        Text(
+          user.email,
+          style: TextStyle(
+            color: Colors.grey,
+            fontFamily: 'Montserrat'
+          ),
+        ),
+        const SizedBox(height: 4),
+        Text(
+          user.birthday,
+          style: TextStyle(
+            color: Colors.grey,
+            fontFamily: 'Montserrat'
+          ),
+        ),
+      ],
+    );
+  }
+  
+  Widget buildEditButton() {
+    return ElevatedButton(
+    style:ButtonStyle(
+        backgroundColor: MaterialStateProperty.all(Color.fromARGB(255, 111, 174, 23)),
+        padding:MaterialStateProperty.all(EdgeInsets.symmetric(horizontal: 50)),
+        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+          RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          )
+        )
+      ),
+      onPressed: (){Get.to(const SettingsUI());}, 
+      child: Text(
+        'EDIT PROFILE',
+        style: TextStyle(
+          fontSize: 14,
+          fontFamily: 'Montserrat',
+          letterSpacing: 2.2,
+          color: Colors.white
+        ),
+      ),
+    );
+  }
+  
+  Widget buildAbout(User user) {
+    return Container(
+      // decoration: BoxDecoration(
+      //   shape: BoxShape.rectangle,
+      //   borderRadius: BorderRadius.circular(8),
+      //   color: Colors.white
+      // ),
+      padding: EdgeInsets.symmetric(horizontal: 48),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'About',
+            style: TextStyle(
+              fontWeight: FontWeight.bold, 
+              fontSize: 24,
+              fontFamily: 'Montserrat'
             ),
           ),
-          SizedBox(
-            height: 10,
-          ),
+          const SizedBox(height: 10),
           Text(
-            widget.name,
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ),
-          Text(widget.designation),
-          TextButton(
-              onPressed: () async {
-                getUrlLauncher(emailUrl);
-              },
-              child: Text(widget.email)),
-          TextButton(
-              onPressed: () async {
-                getUrlLauncher(phoneUrl);
-              },
-              child: Text(widget.phone_number)),
+            user.about,
+            style: TextStyle(
+              height: 1.4, 
+              fontSize: 16,
+              fontFamily: 'Montserrat'
+            ),
+          )
         ],
       ),
     );
   }
+
 }
