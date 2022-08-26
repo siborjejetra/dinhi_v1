@@ -1,18 +1,19 @@
-import 'package:Dinhi_v1/profile.dart';
+import 'package:Dinhi_v1/model/user.dart';
+import 'package:Dinhi_v1/utils/user_preference.dart';
 import 'package:Dinhi_v1/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
 
-class SettingsUI extends StatelessWidget {
-  const SettingsUI({Key? key}) : super(key: key);
+class EditProfile extends StatelessWidget {
+  const EditProfile({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Setting UI',
+      title: 'Edit Profile',
       home: EditProfilePage(),
     );
   }
@@ -27,7 +28,7 @@ class EditProfilePage extends StatefulWidget {
 
 class _EditProfilePageState extends State<EditProfilePage> {
   final title = 'Edit Profile';
-  bool showPassword = false;
+  User user = UserPreferences.myUser;
 
   @override
   Widget build(BuildContext context) {
@@ -41,64 +42,65 @@ class _EditProfilePageState extends State<EditProfilePage> {
             FocusScope.of(context).unfocus();
           },
           child: ListView(
+            padding: EdgeInsets.symmetric(horizontal: 32),
+            physics: BouncingScrollPhysics(),
             children: [
-              Center(
-                child: Stack(
-                  children: [
-                    Container(
-                      width: 130,
-                      height: 130,
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          width: 4,
-                          color: Theme.of(context).scaffoldBackgroundColor
-                        ),
-                        boxShadow: [BoxShadow(
-                          spreadRadius: 2,
-                          blurRadius: 10,
-                          color: Colors.black.withOpacity(0.1),
-                          offset: Offset(0,10)
-                        )],
-                        shape: BoxShape.circle,
-                        image: DecorationImage(
-                          fit: BoxFit.cover,
-                          image: NetworkImage('https://cdn-icons-png.flaticon.com/512/949/949646.png')
-                        )
-                      ),
-                    ),
-                    Positioned(
-                      bottom: 0,
-                      right: 0,
-                      child: Container(
-                        height: 40,
-                        width: 40,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          border: Border.all(
-                            width: 4,
-                            color: Theme.of(context).scaffoldBackgroundColor
-                          ),
-                          color: Color.fromARGB(255, 111, 174, 23),
-                        ),
-                        child: Icon(
-                          Icons.edit,
-                          color: Colors.white,
-                        ),
-                      )
-                    )
-                  ],
-                ),
+              ProfileWidget(
+                imagePath: user.imagePath,
+                isEdit: true, 
+                onClicked: (){}),
+              const SizedBox(height: 24),
+              TextFieldWidget(
+                label: "First Name", 
+                text: user.firstname, 
+                onChanged: (firstname) {}
               ),
-              const SizedBox(height: 15),
-              buildTextField("First Name", "Jetra Mae", false),
-              buildTextField("Last Name", "Sibor", false),
-              buildTextField("Email", "siborjejetra@gmail.com", false),
-              buildTextField("Password", "********", true),
-              buildTextField("About Me", "Set info", false),
-              buildTextField("Birthday", "12/10/1999", false),
-              buildTextField("Contact Number", "09364575235", false),
-              buildTextField("Address", "Calamba", false),
-              const SizedBox(height: 20,),
+              const SizedBox(height: 10),
+              TextFieldWidget(
+                label: "Last Name", 
+                text: user.lastname, 
+                onChanged: (lastname) {}
+              ),
+              const SizedBox(height: 10),
+              TextFieldWidget(
+                label: "Email", 
+                text: user.email, 
+                onChanged: (email) {}
+              ),
+              // const SizedBox(height: 10),
+              // TextFieldWidget(
+              //   label: "Change Password", 
+              //   isObscured: true,
+              //   text: user.password, 
+              //   onChanged: (password) {}
+              // ),
+              const SizedBox(height: 10),
+              TextFieldWidget(
+                label: "About Me", 
+                text: user.about, 
+                maxLines: 5,
+                onChanged: (about) {}
+              ),
+              const SizedBox(height: 10),
+              TextFieldWidget(
+                label: "Birthday", 
+                text: user.birthday, 
+                onChanged: (birthday) {}
+              ),
+              const SizedBox(height: 10),
+              TextFieldWidget(
+                label: "Contact Number", 
+                text: user.cellnumber, 
+                onChanged: (cellnumber) {}
+              ),
+              const SizedBox(height: 10),
+              TextFieldWidget(
+                label: "Address", 
+                text: user.address, 
+                maxLines: 3,
+                onChanged: (address) {}
+              ),
+              const SizedBox(height: 20),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
@@ -137,7 +139,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                       )
                     ),
                     onPressed: (){
-
+                      Get.back();
                     }, 
                     child: Text(
                       'CANCEL',
@@ -158,35 +160,38 @@ class _EditProfilePageState extends State<EditProfilePage> {
     );
   }
 
-  Padding buildTextField(String labelText, String placeHolder, bool isObscured) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 20.0),
-      child: TextField(
-        obscureText: isObscured ? showPassword: false,
-        decoration: InputDecoration(
-          suffixIcon: isObscured ? IconButton(
-            onPressed:(){
-              setState(() {
-                showPassword = !showPassword;
-              });
-            }, 
-            icon: Icon(
-              Icons.remove_red_eye,
-              color: Color.fromARGB(255, 111, 174, 23),
-            )
-          ) : null,
-          contentPadding: EdgeInsets.only(bottom: 3),
-          labelText: labelText,
-          floatingLabelBehavior: FloatingLabelBehavior.always,
-          hintText: placeHolder,
-          hintStyle: TextStyle(
-            fontSize: 16,
-            fontFamily: 'Montserrat',
-            fontWeight: FontWeight.bold,
-            color: Colors.black,
-          )
-        ),
-      ),
-    );
-  }
+  // Padding buildTextField(String labelText, String placeHolder, bool isObscured) {
+  //   return Padding(
+  //     padding: const EdgeInsets.symmetric(horizontal:5, vertical: 5),
+  //     child: TextField(
+  //       obscureText: isObscured ? showPassword: false,
+  //       decoration: InputDecoration(
+  //         border: OutlineInputBorder(
+  //           borderRadius: BorderRadius.circular(12),
+  //         ),
+  //         suffixIcon: isObscured ? IconButton(
+  //           onPressed:(){
+  //             setState(() {
+  //               showPassword = !showPassword;
+  //             });
+  //           }, 
+  //           icon: Icon(
+  //             Icons.remove_red_eye,
+  //             color: Color.fromARGB(255, 111, 174, 23),
+  //           )
+  //         ) : null,
+  //         contentPadding: EdgeInsets.only(bottom: 3),
+  //         labelText: labelText,
+  //         floatingLabelBehavior: FloatingLabelBehavior.always,
+  //         hintText: placeHolder,
+  //         hintStyle: TextStyle(
+  //           fontSize: 16,
+  //           fontFamily: 'Montserrat',
+  //           fontWeight: FontWeight.bold,
+  //           color: Colors.black,
+  //         )
+  //       ),
+  //     ),
+  //   );
+  // }
 }

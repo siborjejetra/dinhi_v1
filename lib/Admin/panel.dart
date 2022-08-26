@@ -1,7 +1,7 @@
 import 'package:Dinhi_v1/Admin/home.dart';
-import 'package:Dinhi_v1/hello.dart';
+import 'package:Dinhi_v1/settings.dart';
 import 'package:Dinhi_v1/login.dart';
-import 'package:Dinhi_v1/profile.dart';
+import 'package:Dinhi_v1/Admin/profile.dart';
 import 'package:easy_dashboard/easy_dashboard.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -125,7 +125,7 @@ final SideBarTile tile1 = SideBarTile(
                   crossAxisCount: 2,
                   children: <Widget>[
                      InkWell(
-                      onTap: () {Get.to(const MyWidgetParent());},
+                      onTap: () {},
                       child:
                       Card(
                         color: Color.fromARGB(255, 111, 174, 23),
@@ -146,7 +146,7 @@ final SideBarTile tile1 = SideBarTile(
                       ),
                     ),
                     InkWell(
-                      onTap: () {Get.to(const MyWidgetParent());},
+                      onTap: () {},
                       child:
                       Card(
                         color: Color.fromARGB(255, 111, 174, 23),
@@ -223,31 +223,21 @@ List<SideTile> returnTiles(BuildContext context){
         ),
       ),
       icon: Icons.person,
-      body: Center(
-        child: Icon(
-          IconData(0xe57f, fontFamily: 'MaterialIcons'),
-          size: 280,
-        ),
-      ),
+      body: const ProfileParent(),
     name: 'Profile',
     ),
     SideBarTile(
       title: const Text(
-        'Account Settings',
+        'Settings',
         style: TextStyle(
           color: Colors.white,
           fontSize: 20,
           fontFamily: 'Montserrat'
         ),
       ),
-      icon: IconData(0xe57f, fontFamily: 'MaterialIcons'),
-      body: const Center(
-        child: Icon(
-          IconData(0xe57f, fontFamily: 'MaterialIcons'),
-          size: 280,
-        ),
-      ),
-      name: 'Account Settings',
+      icon: Icons.settings,
+      body: SettingsUI(),
+      name: 'Settings',
     ),
     SideBarTile(
       title: const Text(
@@ -271,7 +261,7 @@ List<SideTile> returnTiles(BuildContext context){
             ),
           ),
           content: const Text(
-            'Are you sure you want to exit this application?',
+            'Are you sure you want to log-out?',
             style: TextStyle(
               fontFamily: "Montserrat",
               color: Colors.black,

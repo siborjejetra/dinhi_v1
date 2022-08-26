@@ -1,4 +1,6 @@
+import 'package:Dinhi_v1/Seller/profile.dart';
 import 'package:Dinhi_v1/Seller/home.dart';
+import 'package:Dinhi_v1/settings.dart';
 import 'package:Dinhi_v1/addproduct.dart';
 import 'package:Dinhi_v1/login.dart';
 import 'package:easy_dashboard/easy_dashboard.dart';
@@ -231,12 +233,7 @@ List<SideTile> returnTiles(BuildContext context){
         ),
       ),
       icon: Icons.person,
-      body: const Center(
-        child: Icon(
-          Icons.person,
-          size: 280,
-        ),
-      ),
+      body: const ProfileParent(),
       name: 'Profile',
     ),
     SideBarTile(
@@ -258,20 +255,15 @@ List<SideTile> returnTiles(BuildContext context){
     ),
     SideBarTile(
       title: const Text(
-        'Account Settings',
+        'Settings',
         style: TextStyle(
           color: Colors.white,
           fontSize: 20,
         ),
       ),
-      icon: IconData(0xe57f, fontFamily: 'MaterialIcons'),
-      body: const Center(
-        child: Icon(
-          IconData(0xe57f, fontFamily: 'MaterialIcons'),
-          size: 280,
-        ),
-      ),
-      name: 'Account Settings',
+      icon: Icons.settings,
+      body: const SettingsUI(),
+      name: 'Settings',
     ),
     SideBarTile(
       title: const Text(
@@ -295,7 +287,7 @@ List<SideTile> returnTiles(BuildContext context){
             ),
           ),
           content: const Text(
-            'Are you sure you want to exit this application?',
+            'Are you sure you want to log-out?',
             style: TextStyle(
               fontFamily: "Montserrat",
               color: Colors.black,
