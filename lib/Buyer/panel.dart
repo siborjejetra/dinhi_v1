@@ -2,12 +2,11 @@ import 'package:Dinhi_v1/Buyer/profile.dart';
 import 'package:Dinhi_v1/Buyer/home.dart';
 import 'package:Dinhi_v1/settings.dart';
 import 'package:Dinhi_v1/login.dart';
+import 'package:Dinhi_v1/widgets.dart';
 import 'package:easy_dashboard/easy_dashboard.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
-var cardTextStyle = TextStyle(fontFamily: 'Montserrat', fontSize: 14, color:Colors.black);
 
 var buttonStyle = ButtonStyle(backgroundColor: MaterialStateProperty.all(Color.fromARGB(255, 111, 174, 23)));
 
@@ -80,99 +79,19 @@ final SideBarTile tile1 = SideBarTile(
                 children: <Widget>[
                   InkWell(
                     onTap: () {},
-                    child: Card(
-                      color: Color.fromRGBO(111, 174, 23, 1),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8)
-                      ),
-                      elevation: 4,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Image.asset(
-                            'assets/images/Rambutan.png',
-                            width: 140, 
-                            height: 140,),
-                          Text('Rambutan', style: cardTextStyle)
-                        ],
-                      ),
-                    ),
+                    child: buildCard('assets/images/Rambutan.png', 'Rambutan', 29, 'kg.')
                   ),
                   InkWell(
-                    child: Card(
-                      color: Color.fromARGB(255, 9, 117, 8),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8)
-                      ),
-                      elevation: 4,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Image.asset(
-                            'assets/images/Pomelo.png',
-                            width: 140, 
-                            height: 140,),
-                          Text('Suha', style: cardTextStyle)
-                        ],
-                      ),
-                    ),
+                    child: buildCard('assets/images/Pomelo.png', 'Suha', 119, 'kg.')
                   ),
                   InkWell(
-                    child: Card(
-                      color: Color.fromARGB(255, 9, 117, 8),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8)
-                      ),
-                      elevation: 4,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Image.asset(
-                            'assets/images/Niyog.png',
-                            width: 140, 
-                            height: 140,),
-                          Text('Niyog', style: cardTextStyle)
-                        ],
-                      ),
-                    ),
+                    child: buildCard('assets/images/Niyog.png', 'Niyog', 30, 'pc.(medium-size)')
                   ),
                   InkWell(
-                    child: Card(
-                      color: Color.fromRGBO(111, 174, 23, 1),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8)
-                      ),
-                      elevation: 4,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Image.asset(
-                            'assets/images/Buko.png',
-                            width: 140, 
-                            height: 140,),
-                          Text('Buko', style: cardTextStyle)
-                        ],
-                      ),
-                    ),
+                    child: buildCard('assets/images/Buko.png', 'Buko', 35, 'pc.(large-size)')
                   ),
                   InkWell(
-                    child: Card(
-                      color: Color.fromRGBO(111, 174, 23, 1),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8)
-                      ),
-                      elevation: 4,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Image.asset(
-                            'assets/images/Corn.png',
-                            width: 140, 
-                            height: 140,),
-                          Text('Mais', style: cardTextStyle)
-                        ],
-                      ),
-                    ),
+                    child: buildCard('assets/images/Corn.png', 'Corn', 49, 'kg.')
                   ),
                 ],)
           ))),

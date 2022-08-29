@@ -1,4 +1,7 @@
+import 'package:Dinhi_v1/database.dart';
 import 'package:Dinhi_v1/model/user.dart';
+
+Database db = Database();
 
 class UserPreferences {
   static const myUser = User(
@@ -12,5 +15,6 @@ class UserPreferences {
     about: 'BS Computer Science Student - UPLB Women\'s Basketball Team #15 - 22 y/o - Co-developer of Dinhi',
     birthday: '12/10/1999',
     address: 'Canlubang, Calamba, Laguna',
+    idno: 'A000',
   );
 }

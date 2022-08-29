@@ -67,13 +67,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
                 text: user.email, 
                 onChanged: (email) {}
               ),
-              // const SizedBox(height: 10),
-              // TextFieldWidget(
-              //   label: "Change Password", 
-              //   isObscured: true,
-              //   text: user.password, 
-              //   onChanged: (password) {}
-              // ),
               const SizedBox(height: 10),
               TextFieldWidget(
                 label: "About Me", 

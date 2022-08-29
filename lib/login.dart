@@ -10,13 +10,6 @@ import 'package:Dinhi_v1/Courier/home.dart';
 import 'package:Dinhi_v1/Seller/home.dart';
 import 'database.dart';
 
-const users = const {
-  'dribbble@gmail.com': '12345',
-  'hunter@gmail.com': 'hunter',
-  'mariapranseska@gmail.com': 'ayeyeye',
-  'siborjejetra@gmail.com': 'hellojet'
-};
-
 class LoginParent extends StatelessWidget {
   const LoginParent({Key? key}) : super(key: key);
 
@@ -52,7 +45,6 @@ class _LoginChildState extends State<LoginChild> {
     debugPrint('Name: ${data.name}, Password: ${data.password}');
     return Future.delayed(loginTime).then((_) async{
       List<dynamic> userList = await db.readUsers();
-      // print(userList);
       if (!userList.any((item){ return item['email'] == data.name; })) {
         return 'User not exists';
       }
@@ -66,6 +58,7 @@ class _LoginChildState extends State<LoginChild> {
         });
         for (dynamic item in userList){
           if (item['email'] == data.name){
+
             if (item['usertype'] == 'Admin'){
               await setFlag('A');
             }
@@ -96,7 +89,8 @@ class _LoginChildState extends State<LoginChild> {
   Future<String> _recoverPassword(String name) {
     debugPrint('Name: $name');
     return Future.delayed(loginTime).then((_) async{
-      if (!users.containsKey(name)) {
+    List<dynamic> userList = await db.readUsers();
+      if (!userList.any((item){ return item['email'] == name; })) {
         return 'User not exists';
       }
       return '';

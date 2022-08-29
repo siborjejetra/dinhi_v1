@@ -6,7 +6,6 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:Dinhi_v1/Admin/panel.dart';
 import 'package:easy_dashboard/easy_dashboard.dart';
 
-
 class HomeAdminParent extends StatelessWidget {
   const HomeAdminParent({Key? key}) : super(key: key);
 

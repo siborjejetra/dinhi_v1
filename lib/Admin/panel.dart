@@ -6,7 +6,10 @@ import 'package:easy_dashboard/easy_dashboard.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:Dinhi_v1/model/user.dart';
+import 'package:Dinhi_v1/utils/user_preference.dart';
 
+User user = UserPreferences.myUser;
 
 var cardTextStyle = TextStyle(fontFamily: 'Montserrat', fontSize: 14, color:Colors.white);
 
@@ -18,9 +21,9 @@ var topOpenWidget = Container(
     shape: BoxShape.circle,
     color: Color.fromARGB(255, 9, 117, 8),
   ),
-  child: const Center(
+  child: Center(
     child: Text(
-      'JS',
+      user.firstname[0]+user.lastname[0],
       style: TextStyle(
         fontSize: 40,
         color: Colors.white,
@@ -87,7 +90,7 @@ final SideBarTile tile1 = SideBarTile(
                     CircleAvatar(
                       radius: 32,
                       backgroundColor: Colors.white,
-                      backgroundImage: NetworkImage('https://cdn-icons-png.flaticon.com/512/949/949646.png'),
+                      backgroundImage: NetworkImage(user.imagePath),
                     ),
                     SizedBox(
                       width: 16,
@@ -97,7 +100,7 @@ final SideBarTile tile1 = SideBarTile(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Text(
-                          'Jetra Mae Sibor',
+                          user.firstname+' '+user.lastname,
                           style: TextStyle(
                             fontFamily: "Montserrat",
                             color: Colors.white,
@@ -105,7 +108,7 @@ final SideBarTile tile1 = SideBarTile(
                           ),
                         ),
                         Text(
-                          'A000',
+                          user.idno,
                           style: TextStyle(
                             fontFamily: "Montserrat",
                             color: Colors.white,

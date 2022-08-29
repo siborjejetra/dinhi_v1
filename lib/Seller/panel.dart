@@ -100,6 +100,7 @@ final SideBarTile tile1 = SideBarTile(
                             'ADD PRODUCT',
                             style: TextStyle(
                               fontFamily: "Montserrat",
+                              letterSpacing: 2.2,
                               color: Colors.white,
                               fontSize: 20
                             ),

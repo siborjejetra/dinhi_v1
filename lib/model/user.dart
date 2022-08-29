@@ -8,6 +8,7 @@ class User {
   final String about;
   final String birthday;
   final String address;
+  final String idno;
 
   const User({
     required this.imagePath,
@@ -19,5 +20,6 @@ class User {
     required this.about,
     required this.birthday,
     required this.address,
+    required this.idno,
   });
 }

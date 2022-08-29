@@ -35,6 +35,41 @@ AppBar buildAppbar(BuildContext context, String title){
   );
 }
 
+Widget buildCard(String imagePath, String name, int price, String unit){
+  var cardTextStyle = TextStyle(fontFamily: 'Montserrat', fontSize: 14, color:Colors.black);
+  var priceTextStyle = TextStyle(fontFamily: 'Montserrat', fontSize: 12, color:Colors.black);
+
+  return Card(
+    color: Color.fromRGBO(111, 174, 23, 1),
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(8)
+    ),
+    elevation: 4,
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        Image.asset(
+          imagePath,
+          width: 140, 
+          height: 140,),
+        Container(
+          width: double.maxFinite,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(8)
+          ),
+          child: Column(
+            children: [
+              Text(name, style: cardTextStyle),
+              Text('₱'+price.toString()+'/'+unit, style: priceTextStyle)
+            ],
+          )
+        )
+      ],
+    ),
+  );
+}
+
 class ProfileWidget extends StatelessWidget {
   final String imagePath;
   final bool isEdit;

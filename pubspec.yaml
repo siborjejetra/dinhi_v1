@@ -46,6 +46,8 @@ dependencies:
   avatar_glow: ^2.0.2
   dotted_border: ^2.0.0+2
   typicons_flutter: ^0.5.0
+  firebase_storage: ^10.3.7
+  image_picker: ^0.8.5+3
 
 dev_dependencies:
   flutter_test:
@@ -81,6 +83,7 @@ flutter:
   - assets/images/OrdersAvail.png
   - assets/images/UpdatePayment.png
   - assets/images/ViewFeedback.png
+  - assets/images/AddImage.png
   - assets/images/Rambutan.png
   - assets/images/Pomelo.png
   - assets/images/Corn.png
