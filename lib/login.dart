@@ -8,6 +8,7 @@ import 'package:Dinhi_v1/Admin/home.dart';
 import 'package:Dinhi_v1/Buyer/home.dart';
 import 'package:Dinhi_v1/Courier/home.dart';
 import 'package:Dinhi_v1/Seller/home.dart';
+import 'package:localstorage/localstorage.dart';
 import 'database.dart';
 
 class LoginParent extends StatelessWidget {
@@ -29,6 +30,7 @@ class LoginChild extends StatefulWidget {
 class _LoginChildState extends State<LoginChild> {
   Duration get loginTime => Duration(milliseconds: 2250);
   Database db = Database();
+  LocalStorage localStorage = new LocalStorage('user');
   List docs = [];
   var username;
   var password;
@@ -58,7 +60,7 @@ class _LoginChildState extends State<LoginChild> {
         });
         for (dynamic item in userList){
           if (item['email'] == data.name){
-
+            localStorage.setItem('userID', item['id']);
             if (item['usertype'] == 'Admin'){
               await setFlag('A');
             }

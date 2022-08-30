@@ -7,6 +7,10 @@ import 'package:easy_dashboard/easy_dashboard.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:localstorage/localstorage.dart';
+
+
+LocalStorage localStorage = new LocalStorage('user');
 
 var cardTextStyle = TextStyle(fontFamily: 'Montserrat', fontSize: 14, color:Colors.white);
 
@@ -95,7 +99,9 @@ final SideBarTile tile1 = SideBarTile(
                     Column(
                       children: <Widget>[
                         TextButton(
-                          onPressed: () {Get.to(const ProductParent());},
+                          onPressed: () {
+                            Get.to(const ProductParent());
+                            },
                           child: Text(
                             'ADD PRODUCT',
                             style: TextStyle(
@@ -299,6 +305,7 @@ List<SideTile> returnTiles(BuildContext context){
             ElevatedButton(
               style: buttonStyle,
               onPressed: () {
+                localStorage.clear();
                 Get.off(const LoginParent());
               },
               child: const Text('Yes',

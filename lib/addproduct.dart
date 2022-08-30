@@ -1,6 +1,8 @@
 import 'dart:io';
 
+import 'package:Dinhi_v1/database.dart';
 import 'package:Dinhi_v1/widgets.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -8,6 +10,8 @@ import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:localstorage/localstorage.dart';
+import 'database.dart';
 
 class ProductParent extends StatelessWidget {
   const ProductParent({Key? key}) : super(key: key);
@@ -36,10 +40,14 @@ class _ProductChildState extends State<ProductChild> {
   TextEditingController priceController = new TextEditingController();
   TextEditingController descriptionController = new TextEditingController();
   TextEditingController unitController = new TextEditingController();
+  
+  LocalStorage localStorage = new LocalStorage('user');
 
   File? inputImage;
   String path = '';
   bool hasUploaded = false;
+
+  Database db = Database();
 
   @override
   void initState(){
@@ -106,9 +114,17 @@ class _ProductChildState extends State<ProductChild> {
                         )
                       ),
                       onPressed: () {
-                        
+                        db.createProduct(
+                          localStorage.getItem('userID'),
+                          inputImage,
+                          nameController.text,
+                          priceController.text,
+                          unitController.text,
+                          descriptionController.text,
+                          );
+                        Get.back();
                       }, 
-                      child: Text(
+                      child: const Text(
                         'SAVE',
                         style: TextStyle(
                           fontSize: 14,
@@ -132,7 +148,7 @@ class _ProductChildState extends State<ProductChild> {
                       onPressed: (){
                         Get.back();
                       }, 
-                      child: Text(
+                      child: const Text(
                         'CANCEL',
                         style: TextStyle(
                           fontSize: 14,
@@ -154,6 +170,7 @@ class _ProductChildState extends State<ProductChild> {
 
   Widget buildTextField(String label, TextEditingController controller){
     return TextField(
+      controller: controller,
       decoration: InputDecoration(
         filled: true,
         fillColor: Colors.white,

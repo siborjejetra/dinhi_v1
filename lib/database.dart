@@ -2,11 +2,16 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/get_core.dart';
 
-String idno = '';
-void setIdNo(String value) {
-    idno = value;
-}
+String url = '';
+
+
+// String idno = '';
+// void setIdNo(String value) {
+//     idno = value;
+// }
 
 class Database {
 
@@ -20,24 +25,57 @@ class Database {
     }
   }
 
-  Future<void> createProduct(Map<String, dynamic> newProduct) async {
+  Future<void> createProduct(
+    String userIdno,
+    File? inputImage, 
+    String name, 
+    String price,
+    String unit,
+    String description) async {
 
     try {
       final ref = FirebaseStorage.instance.ref()
-          .child('productImages') //kung anong pangalan ng folder ng storage
-          .child(
-              '${DateTime.now()}'); //filename so kahit random ikaw bahala
+          .child('productImages')
+          .child('${DateTime.now()}');
 
-      var inputImage;
+      // var inputImage;
       await ref.putFile(File(inputImage!.path));
 
+      url = await ref.getDownloadURL();
 
-      var url = await ref.getDownloadURL();
+      final docProduct = FirebaseFirestore.instance
+          .collection("products").doc();
 
-      // widget.plant.icon = url;
+      Map<String, dynamic> newProduct = {
+        'image' : url,
+        'productId' : docProduct.id,
+        'name' : name,
+        'price' : price,
+        'unit' : unit,
+        'description' : description,
+      };
+
+      addProductArray(userIdno, newProduct['productId']);
+
+      await docProduct.set(newProduct); 
     } catch (e) {
-      print('fail');
-      
+      print(e);
+    }
+  }
+
+  Future<void> addProductArray(String userId, String productIdno) async {
+
+    try{
+      var collectionRef = FirebaseFirestore.instance.collection('users');
+      final doc = await collectionRef.doc(userId).get();
+      var docUser = await FirebaseFirestore.instance.collection('users').doc(userId);
+
+      List<dynamic> products = doc.data()!['products'];
+      products.add(productIdno);
+      docUser.update({'products': products});
+    }
+    catch (e){
+      print(e);
     }
   }
 
@@ -61,6 +99,11 @@ class Database {
             "address": doc['address'],
             "image": doc['image']
             };
+
+            if (doc['usertype'] == 'Seller'){
+              a['products'] = doc['products'];
+            }
+          
           docs.add(a);
         }
         return docs;
