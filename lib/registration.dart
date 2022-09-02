@@ -14,7 +14,7 @@ class RegParent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter FormBuilder Demo',
+      title: 'Registration Page',
       debugShowCheckedModeBanner: false,
       localizationsDelegates: const [
         FormBuilderLocalizations.delegate,
@@ -43,6 +43,7 @@ class _RegChildState extends State<RegChild> {
   final _formKey = GlobalKey<FormBuilderState>();
   bool _fnHasError = false;
   bool _lnHasError = false;
+  bool _honorificHasError = false;
   bool _cnHasError = false;
   bool _emailHasError = false;
   bool _pwordHasError = false;
@@ -52,6 +53,7 @@ class _RegChildState extends State<RegChild> {
   bool _userIdHasError = false;
 
   var userOptions = ['Buyer', 'Seller', 'Courier'];
+  var honorificOptions = ['Mr.', 'Mrs.', 'Ms.', 'Mx.'];
   var pword = '';
   String idno = '';
   List user1 = [];
@@ -123,6 +125,7 @@ class _RegChildState extends State<RegChild> {
   TextEditingController passwordController = new TextEditingController();
   TextEditingController firstnameController = new TextEditingController();
   TextEditingController lastnameController = new TextEditingController();
+  TextEditingController honorificController = new TextEditingController();
   TextEditingController idnoController = new TextEditingController();
   TextEditingController usertypeController = new TextEditingController();
   TextEditingController cellnumberController = new TextEditingController();
@@ -377,6 +380,39 @@ class _RegChildState extends State<RegChild> {
                     const SizedBox(height: 10),
                     FormBuilderDropdown<String>(
                       // autovalidate: true,
+                      name: 'honorific',
+                      decoration: InputDecoration(
+                        filled: true,
+                        fillColor: Colors.white,
+                        labelText: 'Title/Honorific',
+                        suffix: _honorificHasError
+                            ? const Icon(Icons.error)
+                            : const Icon(Icons.check),
+                      ),
+                      allowClear: true,
+                      // hint: const Text('Select User'),
+                      validator: FormBuilderValidators.compose(
+                          [FormBuilderValidators.required()]),
+                      items: honorificOptions
+                          .map((user) => DropdownMenuItem(
+                                alignment: AlignmentDirectional.center,
+                                value: user,
+                                child: Text(user),
+                              ))
+                          .toList(),
+                      onChanged: (val) {
+                        setState(() {
+                          _honorificHasError = !(_formKey
+                                  .currentState?.fields['honorific']
+                                  ?.validate() ??
+                              false);
+                        });
+                      },
+                      valueTransformer: (val) => val?.toString(),
+                    ),
+                    const SizedBox(height: 10),
+                    FormBuilderDropdown<String>(
+                      // autovalidate: true,
                       name: 'usertype',
                       decoration: InputDecoration(
                         filled: true,
@@ -422,6 +458,9 @@ class _RegChildState extends State<RegChild> {
                           newUser = _formKey.currentState!.value;
                           Map<String, dynamic> cloneMap = {...newUser};
                           cloneMap['idno'] = idno;
+                          cloneMap['image'] = '';
+                          cloneMap['about'] = '';
+                          if (idno.startsWith('S', 0)) cloneMap['products'] = '';
                           await db.createUser(cloneMap).then((value) => Get.off(const LoginParent()));
                         } else {
                           debugPrint(_formKey.currentState?.value.toString());

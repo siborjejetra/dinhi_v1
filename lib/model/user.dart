@@ -5,6 +5,7 @@ class User {
   final String email;
   final String password;
   final String cellnumber;
+  final String honorific;
   final String about;
   final String birthday;
   final String address;
@@ -17,6 +18,7 @@ class User {
     required this.email,
     required this.password,
     required this.cellnumber,
+    required this.honorific,
     required this.about,
     required this.birthday,
     required this.address,

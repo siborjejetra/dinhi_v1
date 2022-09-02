@@ -5,8 +5,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
+import 'package:localstorage/localstorage.dart';
+
+
+LocalStorage localStorage =  LocalStorage('user');
 
 class EditProfile extends StatelessWidget {
+  
   const EditProfile({Key? key}) : super(key: key);
 
   @override
@@ -30,11 +35,21 @@ class _EditProfilePageState extends State<EditProfilePage> {
   final title = 'Edit Profile';
   User user = UserPreferences.myUser;
 
+  TextEditingController imageController = new TextEditingController(); 
+  TextEditingController firstnameController = new TextEditingController();
+  TextEditingController lastnameController = new TextEditingController();
+  TextEditingController emailController = new TextEditingController();
+  TextEditingController birthdayController = new TextEditingController(); 
+  TextEditingController aboutController = new TextEditingController();
+  TextEditingController cellnumberController = new TextEditingController();
+  TextEditingController addressController = new TextEditingController();
+
   @override
   Widget build(BuildContext context) {
+    // Fix upload image, user details
     return Scaffold(
       backgroundColor: Color.fromARGB(255, 236, 236, 163),
-      appBar: buildAppbar(context, title),
+      appBar: buildAppbar(context, title, false),
       body: Container(
         padding: EdgeInsets.all(10),
         child: GestureDetector(
@@ -52,25 +67,29 @@ class _EditProfilePageState extends State<EditProfilePage> {
               const SizedBox(height: 24),
               TextFieldWidget(
                 label: "First Name", 
-                text: user.firstname, 
+                text: user.firstname,
+                controller: firstnameController,
                 onChanged: (firstname) {}
               ),
               const SizedBox(height: 10),
               TextFieldWidget(
                 label: "Last Name", 
                 text: user.lastname, 
+                controller: lastnameController,
                 onChanged: (lastname) {}
               ),
               const SizedBox(height: 10),
               TextFieldWidget(
                 label: "Email", 
                 text: user.email, 
+                controller: emailController,
                 onChanged: (email) {}
               ),
               const SizedBox(height: 10),
               TextFieldWidget(
                 label: "About Me", 
                 text: user.about, 
+                controller: aboutController,
                 maxLines: 5,
                 onChanged: (about) {}
               ),
@@ -78,18 +97,21 @@ class _EditProfilePageState extends State<EditProfilePage> {
               TextFieldWidget(
                 label: "Birthday", 
                 text: user.birthday, 
+                controller: birthdayController,
                 onChanged: (birthday) {}
               ),
               const SizedBox(height: 10),
               TextFieldWidget(
                 label: "Contact Number", 
                 text: user.cellnumber, 
+                controller: cellnumberController,
                 onChanged: (cellnumber) {}
               ),
               const SizedBox(height: 10),
               TextFieldWidget(
                 label: "Address", 
                 text: user.address, 
+                controller: addressController,
                 maxLines: 3,
                 onChanged: (address) {}
               ),
@@ -108,7 +130,16 @@ class _EditProfilePageState extends State<EditProfilePage> {
                       )
                     ),
                     onPressed: () {
-
+                      Map<String,dynamic> newUserMap = {
+                        'firstname': firstnameController.text,
+                        'lastname': lastnameController.text,
+                        'email': emailController.text,
+                        'about': aboutController.text,
+                        'birthday': birthdayController.text,
+                        'cellnumber': cellnumberController.text,
+                        'address': addressController.text
+                      };
+                      db.editUser(newUserMap);
                     }, 
                     child: Text(
                       'SAVE',

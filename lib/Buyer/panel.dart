@@ -2,6 +2,7 @@ import 'package:Dinhi_v1/Buyer/profile.dart';
 import 'package:Dinhi_v1/Buyer/home.dart';
 import 'package:Dinhi_v1/settings.dart';
 import 'package:Dinhi_v1/login.dart';
+import 'package:Dinhi_v1/viewproduct.dart';
 import 'package:Dinhi_v1/widgets.dart';
 import 'package:easy_dashboard/easy_dashboard.dart';
 import 'package:flutter/foundation.dart';
@@ -88,7 +89,8 @@ final SideBarTile tile1 = SideBarTile(
                     child: buildCard('assets/images/Niyog.png', 'Niyog', 30, 'pc.(medium-size)')
                   ),
                   InkWell(
-                    child: buildCard('assets/images/Buko.png', 'Buko', 35, 'pc.(large-size)')
+                    child: buildCard('assets/images/Buko.png', 'Buko', 35, 'pc.(large-size)'),
+                    onTap: () {Get.to(const ViewProductParent());},
                   ),
                   InkWell(
                     child: buildCard('assets/images/Corn.png', 'Corn', 49, 'kg.')

@@ -40,7 +40,8 @@ class _ProfileChildState extends State<ProfileChild> {
 
   @override
   Widget build(BuildContext context) {
-    const user = UserPreferences.myUser;
+    String userID = '';
+    User user = UserPreferences.myUser;
     return Scaffold(
       backgroundColor: Color.fromARGB(255, 236, 236, 163),
       body: ListView(

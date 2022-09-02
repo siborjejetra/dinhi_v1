@@ -8,5 +8,6 @@ class ProductPreferences {
     price: 35,
     unit: 'pc.(medium-size)',
     description: 'Fruit that contains refreshing buko juice and rich meat perfect for your fruit salad.',
+    rating: '4.5',
   );
 }

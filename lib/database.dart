@@ -2,16 +2,15 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/get_core.dart';
+import 'package:localstorage/localstorage.dart';
 
 String url = '';
 
+LocalStorage localStorage = LocalStorage('user');
 
-// String idno = '';
-// void setIdNo(String value) {
-//     idno = value;
-// }
 
 class Database {
 
@@ -53,6 +52,7 @@ class Database {
         'price' : price,
         'unit' : unit,
         'description' : description,
+        'rating' : '0',
       };
 
       addProductArray(userIdno, newProduct['productId']);
@@ -64,7 +64,6 @@ class Database {
   }
 
   Future<void> addProductArray(String userId, String productIdno) async {
-
     try{
       var collectionRef = FirebaseFirestore.instance.collection('users');
       final doc = await collectionRef.doc(userId).get();
@@ -73,6 +72,18 @@ class Database {
       List<dynamic> products = doc.data()!['products'];
       products.add(productIdno);
       docUser.update({'products': products});
+    }
+    catch (e){
+      print(e);
+    }
+  }
+
+  Future<void> editUser(Map<String,dynamic> newUserMap) async {
+    String userID = localStorage.getItem('userID');
+    try{
+      var docUser = FirebaseFirestore.instance.collection('users').doc(userID);
+
+      docUser.update(newUserMap);
     }
     catch (e){
       print(e);
@@ -92,12 +103,14 @@ class Database {
             "password": doc['password'],
             "firstname": doc['firstname'],
             "lastname": doc['lastname'],
+            "honorific" : doc['honorific'],
             "idno": doc['idno'],
             "usertype": doc['usertype'],
             "cellnumber": doc['cellnumber'],
             "birthday": doc['birthday'],
             "address": doc['address'],
-            "image": doc['image']
+            "image": doc['image'],
+            "about": doc['about']
             };
 
             if (doc['usertype'] == 'Seller'){
@@ -119,7 +132,7 @@ class Database {
     QuerySnapshot querySnapshot;
     List docs=[];
     try {
-      querySnapshot = await FirebaseFirestore.instance.collection('users').get();
+      querySnapshot = await FirebaseFirestore.instance.collection('products').get();
       if(querySnapshot.docs.isNotEmpty) {
         for (var doc in querySnapshot.docs.toList()) {
           Map b = {
@@ -127,7 +140,8 @@ class Database {
             "name": doc['name'], 
             "price": doc['price'],
             "description": doc['description'],
-            "image": doc['image']
+            "image": doc['image'],
+            "rating": doc['rating']
             };
           docs.add(b);
         }
@@ -140,6 +154,40 @@ class Database {
     return docs;
   }
 
+
+  Future<Map> storeUser (String userId) async{
+    // List<dynamic> userList = await readUsers();
+    QuerySnapshot querySnapshot;
+    Map userDeets = {};
+    try{
+      querySnapshot = await FirebaseFirestore.instance.collection('users').get();
+      if(querySnapshot.docs.isNotEmpty){
+        for (var doc in querySnapshot.docs.toList()) {
+          if (doc.id == userId){
+            userDeets = {
+              "id": doc.id, 
+              "email": doc['email'], 
+              "password": doc['password'],
+              "firstname": doc['firstname'],
+              "lastname": doc['lastname'],
+              "honorific" : doc['honorific'],
+              "idno": doc['idno'],
+              "usertype": doc['usertype'],
+              "cellnumber": doc['cellnumber'],
+              "birthday": doc['birthday'],
+              "address": doc['address'],
+              "image": doc['image'],
+              "about": doc['about']
+            };
+          }
+        }
+      }
+      return userDeets;
+    }catch(e){
+      print(e);
+    }
+    return userDeets;
+  }
 
 
 }

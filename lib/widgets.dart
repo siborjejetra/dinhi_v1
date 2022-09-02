@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/get_core.dart';
 
-AppBar buildAppbar(BuildContext context, String title){ 
+AppBar buildAppbar(BuildContext context, String title, bool isViewProd){ 
   return AppBar(
     centerTitle: true,
     title: Text(
@@ -23,15 +23,21 @@ AppBar buildAppbar(BuildContext context, String title){
         color: Colors.white,
       )
     ),
-    // actions: [
-    //   IconButton(
-    //     onPressed: () {}, 
-    //     icon: Icon(
-    //       CupertinoIcons.moon_stars,
-    //       color: Colors.white,
-    //     )
-    //   )
-    // ],
+    actions: [
+      isViewProd ? IconButton(
+        onPressed: () {}, 
+        icon: Icon(
+          Icons.shopping_basket,
+          color: Colors.white,
+        )
+      ) : IconButton(
+        onPressed: () {}, 
+        icon: Icon(
+          CupertinoIcons.moon_stars,
+          color: Colors.transparent,
+        )
+      ) ,
+    ],
   );
 }
 
@@ -107,7 +113,7 @@ class ProfileWidget extends StatelessWidget {
 
     return ClipOval(
       child: Material(
-        color: Colors.transparent,
+        color: Colors.white,
         child:Ink.image(
           image: image,
           fit: BoxFit.cover,
@@ -146,14 +152,18 @@ class TextFieldWidget extends StatefulWidget {
   final String text;
   final int maxLines;
   final bool isObscured;
+  final TextEditingController controller;
+  // final bool isDropdown;
   final ValueChanged<String> onChanged;
 
   const TextFieldWidget({
     Key? key,
     this.maxLines = 1,
     this.isObscured = false,
+    // this.isDropdown = false,
     required this.label,
     required this.text,
+    required this.controller,
     required this.onChanged,
     }) : super(key: key);
 
@@ -162,20 +172,6 @@ class TextFieldWidget extends StatefulWidget {
 }
 
 class _TextFieldWidgetState extends State<TextFieldWidget> {
-  late final TextEditingController controller;
-
-  @override
-  void initState(){
-    super.initState();
-    controller = TextEditingController(text:widget.text);
-  }
-
-  @override
-  void dispose(){
-    controller.dispose();
-
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -196,9 +192,11 @@ class _TextFieldWidgetState extends State<TextFieldWidget> {
         ),
         TextField(
           obscureText: widget.isObscured ? showPassword: false,
-          controller: controller,
+          controller: widget.controller,
           maxLines: widget.maxLines,
           decoration: InputDecoration(
+            filled: true,
+            fillColor: Colors.white,
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
             ),

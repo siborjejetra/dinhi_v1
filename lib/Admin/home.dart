@@ -6,29 +6,50 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:Dinhi_v1/Admin/panel.dart';
 import 'package:easy_dashboard/easy_dashboard.dart';
 
+import '../model/user.dart';
+
 class HomeAdminParent extends StatelessWidget {
-  const HomeAdminParent({Key? key}) : super(key: key);
+  const HomeAdminParent({Key? key, required this.userMap}) : super(key: key);
+
+  final Map<dynamic,dynamic> userMap;
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(home:HomeAdminChild());
+    return MaterialApp(home:HomeAdminChild(userDetails: userMap));
   }
 }
 
 class HomeAdminChild extends StatefulWidget {
-  const HomeAdminChild({Key? key}) : super(key: key);
+  const HomeAdminChild({Key? key, required this.userDetails}): super(key: key);
+
+  final Map<dynamic,dynamic> userDetails;
    
   @override
   State<HomeAdminChild> createState() => _HomeAdminChildState();
 }
 
 class _HomeAdminChildState extends State<HomeAdminChild> {
-  late final EasyAppController controller = EasyAppController(
-  intialBody: EasyBody(child: tile1.body, title: tile1.title),
+  late final User user = User(
+    imagePath: (widget.userDetails['image'] as String).isEmpty ? 'https://img.icons8.com/pastel-glyph/64/FD7E14/person-male--v3.png': widget.userDetails['image'], 
+    firstname: widget.userDetails['firstname'], 
+    lastname: widget.userDetails['lastname'], 
+    email: widget.userDetails['email'], 
+    password: widget.userDetails['password'], 
+    cellnumber: widget.userDetails['cellnumber'], 
+    honorific: widget.userDetails['honorific'], 
+    about: (widget.userDetails['about'] as String).isEmpty ? 'Set about': widget.userDetails['about'], 
+    birthday: widget.userDetails['birthday'].toString(), 
+    address: widget.userDetails['address'], 
+    idno: widget.userDetails['idno']
   );
-
+  late final EasyAppController controller = EasyAppController(
+  intialBody: EasyBody(child: buildSideBarTile(user).body, title: buildSideBarTile(user).title),
+  );
+  
   @override
   Widget build(BuildContext context) {
+    
+    print(user.imagePath);
     final List<Widget> actions = [
     IconButton(
       icon: const Icon(Icons.search, color: Colors.white),
@@ -70,11 +91,11 @@ class _HomeAdminChildState extends State<HomeAdminChild> {
           selectedIconColor: Color.fromARGB(255, 236, 236, 163),
           textColor: Colors.black.withGreen(20),
           selectedTileColor: Color.fromARGB(255, 111, 174, 23).withOpacity(.8),
-          tiles: returnTiles(context),
+          tiles: returnTiles(context, user),
           topWidget: SideBox(
             scrollable: true,
             height: 150,
-            child: topOpenWidget,
+            child: topOpenWidget(user),
           ),
           bottomWidget: SideBox(
             scrollable: false,

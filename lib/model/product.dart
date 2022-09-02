@@ -4,6 +4,7 @@ class Product {
   final int price;
   final String unit;
   final String description;
+  final String rating;
   
 
   const Product({
@@ -12,5 +13,6 @@ class Product {
     required this.price,
     required this.unit,
     required this.description,
+    required this.rating
   });
 }

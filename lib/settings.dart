@@ -6,9 +6,12 @@ import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/get_core.dart';
+import 'package:localstorage/localstorage.dart';
 
 import 'model/user.dart';
 import 'utils/user_preference.dart';
+
+LocalStorage localStorage =  LocalStorage('user');
 
 class SettingsUI extends StatelessWidget {
   const SettingsUI({Key? key}) : super(key: key);
@@ -32,6 +35,7 @@ class SettingsPage extends StatefulWidget {
 
 class _SettingsPageState extends State<SettingsPage> {
   final title = 'Change Password';
+  String userID = '';
   User user = UserPreferences.myUser;
   
   @override
@@ -133,65 +137,65 @@ class _SettingsPageState extends State<SettingsPage> {
           );
   }
 
-  Widget ChangePwordUI(User user){
-    List<Widget> widgetList = [];
-    return Scaffold(
-      backgroundColor: Color.fromARGB(255, 236, 236, 163),
-      appBar: buildAppbar(context, title),
-      body: Container(
-        child: ListView(
-          physics: const BouncingScrollPhysics(),
-          children: [
-              const SizedBox(height: 10),
-              TextFieldWidget(
-                label: "Current Password", 
-                isObscured: true,
-                text: 'Enter Password', 
-                onChanged: (password) {
-                  if (password == user.password){
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return const AlertDialog(
-                          backgroundColor: Colors.white,
-                          title: Text(
-                            'Log-out', 
-                            style: TextStyle(
-                              fontFamily: "Montserrat",
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black,
-                              fontSize: 20
-                            ),
-                          ),
-                          content: const Text(
-                            'Your current password does not match with the input.',
-                            style: TextStyle(
-                              fontFamily: "Montserrat",
-                              color: Colors.black,
-                              fontSize: 14
-                            )
-                          ),
-                        );
-                      }
-                    );
-                  }
-                }
-              ),
-              TextFieldWidget(
-                label: "New Password", 
-                isObscured: true,
-                text: 'Enter Password', 
-                onChanged: (password) {}
-              ),
-              TextFieldWidget(
-                label: "Current Password", 
-                isObscured: true,
-                text: 'Confirm Password', 
-                onChanged: (password) {}
-              ),
-          ]
-        )
-      )
-    );
-  }
+  // Widget ChangePwordUI(User user){
+  //   List<Widget> widgetList = [];
+  //   return Scaffold(
+  //     backgroundColor: Color.fromARGB(255, 236, 236, 163),
+  //     appBar: buildAppbar(context, title, false),
+  //     body: Container(
+  //       child: ListView(
+  //         physics: const BouncingScrollPhysics(),
+  //         children: [
+  //             const SizedBox(height: 10),
+  //             TextFieldWidget(
+  //               label: "Current Password", 
+  //               isObscured: true,
+  //               text: 'Enter Password', 
+  //               onChanged: (password) {
+  //                 if (password == user.password){
+  //                   showDialog(
+  //                     context: context,
+  //                     builder: (BuildContext context) {
+  //                       return const AlertDialog(
+  //                         backgroundColor: Colors.white,
+  //                         title: Text(
+  //                           'Log-out', 
+  //                           style: TextStyle(
+  //                             fontFamily: "Montserrat",
+  //                             fontWeight: FontWeight.bold,
+  //                             color: Colors.black,
+  //                             fontSize: 20
+  //                           ),
+  //                         ),
+  //                         content: const Text(
+  //                           'Your current password does not match with the input.',
+  //                           style: TextStyle(
+  //                             fontFamily: "Montserrat",
+  //                             color: Colors.black,
+  //                             fontSize: 14
+  //                           )
+  //                         ),
+  //                       );
+  //                     }
+  //                   );
+  //                 }
+  //               }
+  //             ),
+  //             TextFieldWidget(
+  //               label: "New Password", 
+  //               isObscured: true,
+  //               text: 'Enter Password', 
+  //               onChanged: (password) {}
+  //             ),
+  //             TextFieldWidget(
+  //               label: "Current Password", 
+  //               isObscured: true,
+  //               text: 'Confirm Password', 
+  //               onChanged: (password) {}
+  //             ),
+  //         ]
+  //       )
+  //     )
+  //   );
+  // }
 }

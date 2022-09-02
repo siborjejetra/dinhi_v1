@@ -40,7 +40,8 @@ class _ProfileChildState extends State<ProfileChild> {
 
   @override
   Widget build(BuildContext context) {
-    const user = UserPreferences.myUser;
+    String userID = '';
+    User user = UserPreferences.myUser;
     return Scaffold(
       backgroundColor: Color.fromARGB(255, 236, 236, 163),
       body: ListView(
@@ -102,7 +103,7 @@ class _ProfileChildState extends State<ProfileChild> {
         )
       ),
       onPressed: (){Get.to(const EditProfile());}, 
-      child: Text(
+      child: const Text(
         'EDIT PROFILE',
         style: TextStyle(
           fontSize: 14,
@@ -121,7 +122,7 @@ class _ProfileChildState extends State<ProfileChild> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
+            const Text(
               'About',
               style: TextStyle(
                 fontWeight: FontWeight.bold, 

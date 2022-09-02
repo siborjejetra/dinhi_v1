@@ -35,6 +35,7 @@ class _LoginChildState extends State<LoginChild> {
   var username;
   var password;
   var idno;
+
   String flag = '';
 
   Future<void> setFlag(String value) async {
@@ -108,9 +109,11 @@ class _LoginChildState extends State<LoginChild> {
       theme: LoginTheme(
         primaryColor: Color.fromARGB(255, 171, 195, 47)
       ),
-      onSubmitAnimationCompleted: () {
+      onSubmitAnimationCompleted: () async {
+        Map<dynamic,dynamic> userDeets = await db.storeUser(localStorage.getItem('userID'));
+        print(userDeets);
         if (flag == 'A'){
-          Get.to(const HomeAdminParent());
+          Get.to(HomeAdminParent(userMap: userDeets));
         }
         else if (flag == 'B'){
           Get.to(const HomeBuyerParent());

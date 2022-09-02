@@ -41,7 +41,7 @@ class _ProductChildState extends State<ProductChild> {
   TextEditingController descriptionController = new TextEditingController();
   TextEditingController unitController = new TextEditingController();
   
-  LocalStorage localStorage = new LocalStorage('user');
+  LocalStorage localStorage = LocalStorage('user');
 
   File? inputImage;
   String path = '';
@@ -59,7 +59,7 @@ class _ProductChildState extends State<ProductChild> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color.fromARGB(255, 236, 236, 163),
-      appBar: buildAppbar(context, title),
+      appBar: buildAppbar(context, title, false),
       body: Container(
         padding: EdgeInsets.all(10),
         child: GestureDetector(
