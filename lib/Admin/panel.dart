@@ -8,8 +8,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:Dinhi_v1/model/user.dart';
 import 'package:Dinhi_v1/utils/user_preference.dart';
+import 'package:localstorage/localstorage.dart';
 
 
+LocalStorage localStorage = new LocalStorage('user');
 
 var cardTextStyle = TextStyle(fontFamily: 'Montserrat', fontSize: 14, color:Colors.white);
 
@@ -233,7 +235,7 @@ List<SideTile> returnTiles(BuildContext context, User user){
         ),
       ),
       icon: Icons.person,
-      body: const ProfileParent(),
+      body: ProfileParent(user: user),
     name: 'Profile',
     ),
     SideBarTile(
@@ -282,6 +284,7 @@ List<SideTile> returnTiles(BuildContext context, User user){
             ElevatedButton(
               style: buttonStyle,
               onPressed: () {
+                localStorage.clear();
                 Get.off(const LoginParent());
               },
               child: const Text('Yes',

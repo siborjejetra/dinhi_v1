@@ -13,7 +13,8 @@ import 'package:get/get.dart';
 import 'package:get/get_core/get_core.dart';
 
 class ProfileParent extends StatelessWidget {
-  const ProfileParent({Key? key}) : super(key: key);
+  const ProfileParent({Key? key, required this.user}) : super(key: key);
+  final User user;
 
   @override
   Widget build(BuildContext context) {
@@ -23,13 +24,14 @@ class ProfileParent extends StatelessWidget {
         primaryColor: Color.fromARGB(255, 111, 174, 23),
       ),
       title: 'User Profile',
-      home: ProfileChild(),
+      home: ProfileChild(newUser: user,),
     );
   }
 }
 
 class ProfileChild extends StatefulWidget {
-  const ProfileChild({Key? key}) : super(key: key);
+  const ProfileChild({Key? key, required this.newUser}) : super(key: key);
+  final User newUser;
 
   @override
   State<ProfileChild> createState() => _ProfileChildState();
@@ -37,11 +39,10 @@ class ProfileChild extends StatefulWidget {
 
 class _ProfileChildState extends State<ProfileChild> {
   final title = 'Profile';
+  late final User user = widget.newUser;
 
   @override
   Widget build(BuildContext context) {
-    String userID = '';
-    User user = UserPreferences.myUser;
     return Scaffold(
       backgroundColor: Color.fromARGB(255, 236, 236, 163),
       body: ListView(
@@ -49,9 +50,9 @@ class _ProfileChildState extends State<ProfileChild> {
         children: [
           const SizedBox(height: 30),
           ProfileWidget(
-            imagePath: user.imagePath,
+            imagePath: Image.network(user.imagePath, width: 128, height:128),
             onClicked: () async {
-              Get.to(EditProfile());
+              Get.to(EditProfile(user: user));
             },
           ),
           const SizedBox(height: 24),
@@ -80,7 +81,7 @@ class _ProfileChildState extends State<ProfileChild> {
         ),
         const SizedBox(height: 4),
         Text(
-          user.birthday,
+          (user.birthday).toString(),
           style: TextStyle(
             color: Colors.grey,
             fontFamily: 'Montserrat'
@@ -101,7 +102,7 @@ class _ProfileChildState extends State<ProfileChild> {
           )
         )
       ),
-      onPressed: (){Get.to(const EditProfile());}, 
+      onPressed: (){Get.to(EditProfile(user: user));}, 
       child: Text(
         'EDIT PROFILE',
         style: TextStyle(

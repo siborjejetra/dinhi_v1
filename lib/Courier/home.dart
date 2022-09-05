@@ -1,3 +1,4 @@
+import 'package:Dinhi_v1/model/user.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -6,22 +7,38 @@ import 'package:easy_dashboard/easy_dashboard.dart';
 
 
 class HomeCourierParent extends StatelessWidget {
-  const HomeCourierParent({Key? key}) : super(key: key);
+  const HomeCourierParent({Key? key, required this.userMap}) : super(key: key);
+  final Map<dynamic,dynamic> userMap;
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(home:HomeCourierChild());
+    return MaterialApp(home:HomeCourierChild(userDetails: userMap));
   }
 }
 
 class HomeCourierChild extends StatefulWidget {
-  const HomeCourierChild({Key? key}) : super(key: key);
+  const HomeCourierChild({Key? key, required this.userDetails}) : super(key: key);
+  final Map<dynamic,dynamic> userDetails;
+
   
   @override
   State<HomeCourierChild> createState() => _HomeCourierChildState();
 }
 
 class _HomeCourierChildState extends State<HomeCourierChild> {
+  late final User user = User(
+    imagePath: (widget.userDetails['image'] as String).isEmpty ? 'https://cdn3.iconfinder.com/data/icons/flatastic-4-1/256/user_orange-512.png': widget.userDetails['image'], 
+    firstname: widget.userDetails['firstname'], 
+    lastname: widget.userDetails['lastname'], 
+    email: widget.userDetails['email'], 
+    password: widget.userDetails['password'], 
+    cellnumber: widget.userDetails['cellnumber'], 
+    honorific: widget.userDetails['honorific'], 
+    about: (widget.userDetails['about'] as String).isEmpty ? 'Set about': widget.userDetails['about'], 
+    birthday: widget.userDetails['birthday'], 
+    address: widget.userDetails['address'], 
+    idno: widget.userDetails['idno']
+  );
   late final EasyAppController controller = EasyAppController(
   intialBody: EasyBody(child: tile1.body, title: tile1.title),
   );
@@ -69,11 +86,11 @@ class _HomeCourierChildState extends State<HomeCourierChild> {
           selectedIconColor: Color.fromARGB(255, 236, 236, 163),
           textColor: Colors.black.withGreen(20),
           selectedTileColor: Color.fromARGB(255, 111, 174, 23).withOpacity(.8),
-          tiles: returnTiles(context),
+          tiles: returnTiles(context, user),
           topWidget: SideBox(
             scrollable: true,
             height: 150,
-            child: topOpenWidget,
+            child: topOpenWidget(user),
           ),
           bottomWidget: SideBox(
             scrollable: false,

@@ -1,4 +1,5 @@
 import 'dart:ui';
+import 'package:Dinhi_v1/model/user.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -6,22 +7,37 @@ import 'package:Dinhi_v1/Buyer/panel.dart';
 import 'package:easy_dashboard/easy_dashboard.dart';
 
 class HomeBuyerParent extends StatelessWidget {
-  const HomeBuyerParent({Key? key}) : super(key: key);
+  const HomeBuyerParent({Key? key, required this.userMap}) : super(key: key);
+  final Map<dynamic,dynamic> userMap;
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(home:HomeBuyerChild());
+    return MaterialApp(home:HomeBuyerChild(userDetails: userMap,));
   }
 }
 
 class HomeBuyerChild extends StatefulWidget {
-  const HomeBuyerChild({Key? key}) : super(key: key);
-   
+  const HomeBuyerChild({Key? key, required this.userDetails}) : super(key: key);
+  final Map<dynamic,dynamic> userDetails;
+
   @override
   State<HomeBuyerChild> createState() => _HomeBuyerChildState();
 }
 
 class _HomeBuyerChildState extends State<HomeBuyerChild> {
+  late final User user = User(
+    imagePath: (widget.userDetails['image'] as String).isEmpty ? 'https://cdn3.iconfinder.com/data/icons/flatastic-4-1/256/user_orange-512.png': widget.userDetails['image'], 
+    firstname: widget.userDetails['firstname'], 
+    lastname: widget.userDetails['lastname'], 
+    email: widget.userDetails['email'], 
+    password: widget.userDetails['password'], 
+    cellnumber: widget.userDetails['cellnumber'], 
+    honorific: widget.userDetails['honorific'], 
+    about: (widget.userDetails['about'] as String).isEmpty ? 'Set about': widget.userDetails['about'], 
+    birthday: widget.userDetails['birthday'], 
+    address: widget.userDetails['address'], 
+    idno: widget.userDetails['idno']
+  );
   late final EasyAppController controller = EasyAppController(
   intialBody: EasyBody(child: tile1.body, title: tile1.title),
   );
@@ -69,11 +85,11 @@ class _HomeBuyerChildState extends State<HomeBuyerChild> {
           selectedIconColor: Color.fromARGB(255, 236, 236, 163),
           textColor: Colors.black.withGreen(20),
           selectedTileColor: Color.fromARGB(255, 111, 174, 23).withOpacity(.8),
-          tiles: returnTiles(context),
+          tiles: returnTiles(context, user),
           topWidget: SideBox(
             scrollable: true,
             height: 150,
-            child: topOpenWidget,
+            child: topOpenWidget(user),
           ),
           bottomWidget: SideBox(
             scrollable: false,

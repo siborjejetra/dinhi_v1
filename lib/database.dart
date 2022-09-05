@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:Dinhi_v1/model/user.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
@@ -67,7 +68,7 @@ class Database {
     try{
       var collectionRef = FirebaseFirestore.instance.collection('users');
       final doc = await collectionRef.doc(userId).get();
-      var docUser = await FirebaseFirestore.instance.collection('users').doc(userId);
+      var docUser = await collectionRef.doc(userId);
 
       List<dynamic> products = doc.data()!['products'];
       products.add(productIdno);
@@ -78,16 +79,32 @@ class Database {
     }
   }
 
-  Future<void> editUser(Map<String,dynamic> newUserMap) async {
+  Future<Map> editUser(Map<String,dynamic> newUserMap, File? inputImage) async {
     String userID = localStorage.getItem('userID');
     try{
-      var docUser = FirebaseFirestore.instance.collection('users').doc(userID);
+      final ref = FirebaseStorage.instance.ref()
+          .child('userImages')
+          .child('${DateTime.now()}');
 
+      // var inputImage;
+      await ref.putFile(File(inputImage!.path));
+
+      url = await ref.getDownloadURL();
+
+      var collectionRef = FirebaseFirestore.instance.collection('users');
+      final doc = await collectionRef.doc(userID).get();
+      var docUser = collectionRef.doc(userID);
+
+      newUserMap['image'] = url;
+      newUserMap['password'] = doc.data()!['password'];
+      newUserMap['honorific'] = doc.data()!['honorific'];
+      newUserMap['idno'] = doc.data()!['idno'];
       docUser.update(newUserMap);
     }
     catch (e){
       print(e);
     }
+    return newUserMap;
   }
 
   Future<List> readUsers() async {

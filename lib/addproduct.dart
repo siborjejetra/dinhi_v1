@@ -76,15 +76,11 @@ class _ProductChildState extends State<ProductChild> {
                   color: Colors.transparent,
                   child: Ink(
                     child: InkWell(
-                      child: inputImage != null ? Container(
-                        child:Image.file(inputImage!, 
-                          width: 128,
-                          height:128,)
-                        ): Container(
-                          child:Image.asset('assets/images/AddImage.png', 
-                          width: 128,
-                          height:128,)
-                        ),
+                      child: inputImage != null ? Image.file(inputImage!, 
+                        width: 128,
+                        height:128,): Image.asset('assets/images/AddImage.png', 
+                        width: 128,
+                        height:128,),
                       onTap: () {
                         pickImage(ImageSource.gallery);
                       },

@@ -30,7 +30,7 @@ class HomeAdminChild extends StatefulWidget {
 
 class _HomeAdminChildState extends State<HomeAdminChild> {
   late final User user = User(
-    imagePath: (widget.userDetails['image'] as String).isEmpty ? 'https://img.icons8.com/pastel-glyph/64/FD7E14/person-male--v3.png': widget.userDetails['image'], 
+    imagePath: (widget.userDetails['image'] as String).isEmpty ? 'https://cdn3.iconfinder.com/data/icons/flatastic-4-1/256/user_orange-512.png': widget.userDetails['image'], 
     firstname: widget.userDetails['firstname'], 
     lastname: widget.userDetails['lastname'], 
     email: widget.userDetails['email'], 
@@ -38,7 +38,7 @@ class _HomeAdminChildState extends State<HomeAdminChild> {
     cellnumber: widget.userDetails['cellnumber'], 
     honorific: widget.userDetails['honorific'], 
     about: (widget.userDetails['about'] as String).isEmpty ? 'Set about': widget.userDetails['about'], 
-    birthday: widget.userDetails['birthday'].toString(), 
+    birthday: widget.userDetails['birthday'], 
     address: widget.userDetails['address'], 
     idno: widget.userDetails['idno']
   );

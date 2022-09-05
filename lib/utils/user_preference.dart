@@ -26,19 +26,19 @@ class UserPreferences {
   //   );
   //   return myUser;
   // } 
-  static const myUser = User(
-    // userDeets['image'] != null ? userDeets['image'] :
-    imagePath: 
-      'https://cdn-icons-png.flaticon.com/512/6097/6097946.png',
-    firstname: 'Jetra Mae',
-    lastname: 'Sibor',
-    email: 'siborjejetra@gmail.com',
-    password: 'hellojet',
-    cellnumber: '09364575235',
-    honorific: 'Ms.',
-    about: 'BS Computer Science Student - UPLB Women\'s Basketball Team #15 - 22 y/o - Co-developer of Dinhi',
-    birthday: '12/10/1999',
-    address: 'Canlubang, Calamba, Laguna',
-    idno: 'A000',
-  );
+  // static const myUser = User(
+  //   // userDeets['image'] != null ? userDeets['image'] :
+  //   imagePath: 
+  //     'https://cdn-icons-png.flaticon.com/512/6097/6097946.png',
+  //   firstname: 'Jetra Mae',
+  //   lastname: 'Sibor',
+  //   email: 'siborjejetra@gmail.com',
+  //   password: 'hellojet',
+  //   cellnumber: '09364575235',
+  //   honorific: 'Ms.',
+  //   about: 'BS Computer Science Student - UPLB Women\'s Basketball Team #15 - 22 y/o - Co-developer of Dinhi',
+  //   birthday: '12/10/1999',
+  //   address: 'Canlubang, Calamba, Laguna',
+  //   idno: 'A000',
+  // );
 }

@@ -111,18 +111,17 @@ class _LoginChildState extends State<LoginChild> {
       ),
       onSubmitAnimationCompleted: () async {
         Map<dynamic,dynamic> userDeets = await db.storeUser(localStorage.getItem('userID'));
-        print(userDeets);
         if (flag == 'A'){
           Get.to(HomeAdminParent(userMap: userDeets));
         }
         else if (flag == 'B'){
-          Get.to(const HomeBuyerParent());
+          Get.to(HomeBuyerParent(userMap: userDeets));
         }
         else if (flag == 'C'){
-          Get.to(const HomeCourierParent());
+          Get.to(HomeCourierParent(userMap: userDeets));
         }
         else {
-          Get.to(const HomeSellerParent());
+          Get.to(HomeSellerParent(userMap: userDeets));
         }
       },
       onRecoverPassword: _recoverPassword,

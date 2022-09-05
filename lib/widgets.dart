@@ -77,14 +77,16 @@ Widget buildCard(String imagePath, String name, int price, String unit){
 }
 
 class ProfileWidget extends StatelessWidget {
-  final String imagePath;
+  final Image imagePath;
   final bool isEdit;
   final VoidCallback onClicked;
+  final bool isEdited;
 
   const ProfileWidget({
     Key? key,
     required this.imagePath,
     this.isEdit = false,
+    this.isEdited = false,
     required this.onClicked,
   }) : super(key: key);
 
@@ -109,19 +111,14 @@ class ProfileWidget extends StatelessWidget {
   }
   
   Widget buildImage() {
-    final image = NetworkImage(imagePath);
+    // final image = imagePath;
 
     return ClipOval(
       child: Material(
         color: Colors.white,
-        child:Ink.image(
-          image: image,
-          fit: BoxFit.cover,
-          width: 128,
-          height: 128,
-          child: InkWell(
-            onTap: onClicked,
-          ),
+        child: InkWell(
+          child: imagePath,
+          onTap: onClicked,
         ),
       ),
     );
@@ -213,10 +210,10 @@ class _TextFieldWidgetState extends State<TextFieldWidget> {
             ) : null,
             contentPadding: EdgeInsets.only(bottom: 3, left: 10),
             floatingLabelBehavior: FloatingLabelBehavior.always,
+            hintText: widget.text,
             hintStyle: TextStyle(
               fontSize: 16,
               fontFamily: 'Montserrat',
-              fontWeight: FontWeight.bold,
               color: Colors.black,
             ),
           )

@@ -11,8 +11,6 @@ import 'package:localstorage/localstorage.dart';
 import 'model/user.dart';
 import 'utils/user_preference.dart';
 
-LocalStorage localStorage =  LocalStorage('user');
-
 class SettingsUI extends StatelessWidget {
   const SettingsUI({Key? key}) : super(key: key);
 
@@ -36,7 +34,7 @@ class SettingsPage extends StatefulWidget {
 class _SettingsPageState extends State<SettingsPage> {
   final title = 'Change Password';
   String userID = '';
-  User user = UserPreferences.myUser;
+  late User user;
   
   @override
   Widget build(BuildContext context) {
@@ -58,9 +56,9 @@ class _SettingsPageState extends State<SettingsPage> {
             ),
             Divider(height: 15, thickness: 2, color: Color.fromARGB(255, 111, 174, 23)),
             SizedBox(height: 10,),
-            buildAccountOption(context, 'Change Password', EditProfile()),
-            buildAccountOption(context, 'Language', EditProfile()),
-            buildAccountOption(context, 'Privacy and Security', EditProfile()),
+            buildAccountOption(context, 'Change Password', EditProfile(user: user,)),
+            buildAccountOption(context, 'Language', EditProfile(user: user,)),
+            buildAccountOption(context, 'Privacy and Security', EditProfile(user: user,)),
             SizedBox(height: 40,),
             Row(
               children: [

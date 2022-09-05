@@ -1,5 +1,6 @@
 import 'package:Dinhi_v1/Courier/home.dart';
 import 'package:Dinhi_v1/Courier/profile.dart';
+import 'package:Dinhi_v1/model/user.dart';
 import 'package:Dinhi_v1/settings.dart';
 import 'package:Dinhi_v1/addproduct.dart';
 import 'package:Dinhi_v1/login.dart';
@@ -7,27 +8,33 @@ import 'package:easy_dashboard/easy_dashboard.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:localstorage/localstorage.dart';
+
+
+LocalStorage localStorage = new LocalStorage('user');
 
 var cardTextStyle = const TextStyle(fontFamily: 'Montserrat', fontSize: 14, color:Colors.white);
 
 var buttonStyle = ButtonStyle(backgroundColor: MaterialStateProperty.all(Color.fromARGB(255, 9, 117, 8)));
 
-var topOpenWidget = Container(
-  margin: const EdgeInsets.symmetric(vertical: 10),
-  decoration: const BoxDecoration(
-    shape: BoxShape.circle,
-    color: Color.fromARGB(255, 9, 117, 8),
-  ),
-  child: const Center(
-    child: Text(
-      'GM',
-      style: TextStyle(
-        fontSize: 40,
-        color: Colors.white,
+Widget topOpenWidget (User user) {
+  return Container(
+    margin: const EdgeInsets.symmetric(vertical: 10),
+    decoration: const BoxDecoration(
+      shape: BoxShape.circle,
+      color: Color.fromARGB(255, 9, 117, 8),
+    ),
+    child: Center(
+      child: Text(
+        user.firstname[0]+user.lastname[0],
+        style: TextStyle(
+          fontSize: 40,
+          color: Colors.white,
+        ),
       ),
     ),
-  ),
-);
+  );
+}
 
 var bottomOpenWidget = Padding(
   padding: const EdgeInsets.all(8.0),
@@ -211,7 +218,7 @@ final SideBarTile tile1 = SideBarTile(
       name: 'Home',
     );
 
-List<SideTile> returnTiles(BuildContext context){
+List<SideTile> returnTiles(BuildContext context, User user){
   late final List<SideTile> tiles = [
   tile1,
   SideBarTile(
@@ -223,7 +230,7 @@ List<SideTile> returnTiles(BuildContext context){
       ),
     ),
     icon: Icons.person,
-    body: const ProfileParent(),
+    body: ProfileParent(user: user),
     name: 'Profile',
   ),
   SideBarTile(
@@ -288,6 +295,7 @@ List<SideTile> returnTiles(BuildContext context){
           ElevatedButton(
             style: buttonStyle,
               onPressed: () {
+                localStorage.clear();
                 Get.off(const LoginParent());
               },
               child: const Text('Yes',
@@ -301,7 +309,7 @@ List<SideTile> returnTiles(BuildContext context){
             new ElevatedButton(
               style: buttonStyle,
               onPressed: () {
-                Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const HomeCourierParent()));
+                Get.back();
               },
               child: const Text('No',
                 style: TextStyle(

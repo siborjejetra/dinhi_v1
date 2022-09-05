@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class User {
   final String imagePath;
   final String firstname;
@@ -7,7 +9,7 @@ class User {
   final String cellnumber;
   final String honorific;
   final String about;
-  final String birthday;
+  final Timestamp birthday;
   final String address;
   final String idno;
 
