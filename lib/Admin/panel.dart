@@ -2,6 +2,7 @@ import 'package:Dinhi_v1/Admin/home.dart';
 import 'package:Dinhi_v1/settings.dart';
 import 'package:Dinhi_v1/login.dart';
 import 'package:Dinhi_v1/Admin/profile.dart';
+import 'package:Dinhi_v1/viewallproducts.dart';
 import 'package:easy_dashboard/easy_dashboard.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -157,7 +158,9 @@ SideBarTile buildSideBarTile(User user){
                     ),
                   ),
                   InkWell(
-                    onTap: () {},
+                    onTap: () {
+                      
+                    },
                     child:
                     Card(
                       color: Color.fromARGB(255, 111, 174, 23),
@@ -178,6 +181,7 @@ SideBarTile buildSideBarTile(User user){
                     ),
                   ),
                   InkWell(
+                    onTap: () {Get.to(() => const ViewAllProdParent());},
                     child: Card(
                       color: Color.fromARGB(255, 111, 174, 23),
                       shape: RoundedRectangleBorder(

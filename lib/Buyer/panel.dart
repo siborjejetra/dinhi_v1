@@ -3,6 +3,7 @@ import 'package:Dinhi_v1/Buyer/home.dart';
 import 'package:Dinhi_v1/model/user.dart';
 import 'package:Dinhi_v1/settings.dart';
 import 'package:Dinhi_v1/login.dart';
+import 'package:Dinhi_v1/Buyer/viewallproducts.dart';
 import 'package:Dinhi_v1/viewproduct.dart';
 import 'package:Dinhi_v1/widgets.dart';
 import 'package:easy_dashboard/easy_dashboard.dart';
@@ -74,35 +75,7 @@ final SideBarTile tile1 = SideBarTile(
         ),
       ),
       icon: Icons.home,
-      body: SafeArea(
-        child: Padding(
-          padding: EdgeInsets.only(bottom: 16, left: 16, right: 16),
-          child: Container( 
-              child: GridView.count(
-                mainAxisSpacing: 10,
-                crossAxisSpacing: 10,
-                primary: false,
-                crossAxisCount: 2,
-                children: <Widget>[
-                  InkWell(
-                    onTap: () {},
-                    child: buildCard('assets/images/Rambutan.png', 'Rambutan', 29, 'kg.')
-                  ),
-                  InkWell(
-                    child: buildCard('assets/images/Pomelo.png', 'Suha', 119, 'kg.')
-                  ),
-                  InkWell(
-                    child: buildCard('assets/images/Niyog.png', 'Niyog', 30, 'pc.(medium-size)')
-                  ),
-                  InkWell(
-                    child: buildCard('assets/images/Buko.png', 'Buko', 35, 'pc.(large-size)'),
-                    onTap: () {Get.to(const ViewProductParent());},
-                  ),
-                  InkWell(
-                    child: buildCard('assets/images/Corn.png', 'Corn', 49, 'kg.')
-                  ),
-                ],)
-          ))),
+      body: ViewAllProdParent(),
       name: 'Home',
     );
 

@@ -41,7 +41,7 @@ AppBar buildAppbar(BuildContext context, String title, bool isViewProd){
   );
 }
 
-Widget buildCard(String imagePath, String name, int price, String unit){
+Widget buildCard(String imagePath, String name, String price, String unit){
   var cardTextStyle = TextStyle(fontFamily: 'Montserrat', fontSize: 14, color:Colors.black);
   var priceTextStyle = TextStyle(fontFamily: 'Montserrat', fontSize: 12, color:Colors.black);
 
@@ -54,7 +54,7 @@ Widget buildCard(String imagePath, String name, int price, String unit){
     child: Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
-        Image.asset(
+        Image.network(
           imagePath,
           width: 140, 
           height: 140,),
@@ -67,7 +67,7 @@ Widget buildCard(String imagePath, String name, int price, String unit){
           child: Column(
             children: [
               Text(name, style: cardTextStyle),
-              Text('₱'+price.toString()+'/'+unit, style: priceTextStyle)
+              Text('₱'+price+'/'+unit, style: priceTextStyle)
             ],
           )
         )

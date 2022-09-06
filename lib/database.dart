@@ -81,29 +81,42 @@ class Database {
 
   Future<Map> editUser(Map<String,dynamic> newUserMap, File? inputImage) async {
     String userID = localStorage.getItem('userID');
+    // Map<String, dynamic> newUserMapDB = {};
     try{
-      final ref = FirebaseStorage.instance.ref()
-          .child('userImages')
-          .child('${DateTime.now()}');
+      if(inputImage != null){
+        final ref = FirebaseStorage.instance.ref()
+            .child('userImages')
+            .child('${DateTime.now()}');
 
-      // var inputImage;
-      await ref.putFile(File(inputImage!.path));
+        // var inputImage;
+        await ref.putFile(File(inputImage.path));
 
-      url = await ref.getDownloadURL();
+        url = await ref.getDownloadURL();
+        newUserMap['image'] = url;
+      }
+      
 
       var collectionRef = FirebaseFirestore.instance.collection('users');
       final doc = await collectionRef.doc(userID).get();
       var docUser = collectionRef.doc(userID);
 
-      newUserMap['image'] = url;
       newUserMap['password'] = doc.data()!['password'];
       newUserMap['honorific'] = doc.data()!['honorific'];
       newUserMap['idno'] = doc.data()!['idno'];
+      if (doc.data()!['usertype'] == 'Seller'){
+        newUserMap['products'] = doc.data()!['products'];
+      }
+
       docUser.update(newUserMap);
+
+      print(newUserMap);
+      return newUserMap;
+
     }
     catch (e){
       print(e);
     }
+    // print(newUserMapDB);
     return newUserMap;
   }
 
@@ -132,6 +145,8 @@ class Database {
 
             if (doc['usertype'] == 'Seller'){
               a['products'] = doc['products'];
+            }else{
+              a['products'] = null;
             }
           
           docs.add(a);
@@ -156,6 +171,7 @@ class Database {
             "id": doc.id, 
             "name": doc['name'], 
             "price": doc['price'],
+            "unit": doc['unit'],
             "description": doc['description'],
             "image": doc['image'],
             "rating": doc['rating']
@@ -196,9 +212,15 @@ class Database {
               "image": doc['image'],
               "about": doc['about']
             };
+            if (doc['usertype'] == 'Seller'){
+                userDeets['products'] = List<String>.from(doc['products']);
+              }else{
+                userDeets['products'] = null;
+            }
           }
         }
       }
+      print(userDeets);
       return userDeets;
     }catch(e){
       print(e);

@@ -36,7 +36,8 @@ class _HomeBuyerChildState extends State<HomeBuyerChild> {
     about: (widget.userDetails['about'] as String).isEmpty ? 'Set about': widget.userDetails['about'], 
     birthday: widget.userDetails['birthday'], 
     address: widget.userDetails['address'], 
-    idno: widget.userDetails['idno']
+    idno: widget.userDetails['idno'],
+    products: widget.userDetails['products'],
   );
   late final EasyAppController controller = EasyAppController(
   intialBody: EasyBody(child: tile1.body, title: tile1.title),

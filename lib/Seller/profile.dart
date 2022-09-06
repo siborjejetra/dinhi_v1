@@ -68,6 +68,12 @@ class _ProfileChildState extends State<ProfileChild> {
     );
   }
 
+  String formatBirthday(User user){
+    late final dateTime = user.birthday.toDate();
+    late final formatted = "${dateTime.month}/${dateTime.day}/${dateTime.year}";
+    return formatted;
+  }
+
   Widget buildName(User user) {
     return Column(
       children: [
@@ -81,7 +87,7 @@ class _ProfileChildState extends State<ProfileChild> {
         ),
         const SizedBox(height: 4),
         Text(
-          (user.birthday).toString(),
+          formatBirthday(user),
           style: TextStyle(
             color: Colors.grey,
             fontFamily: 'Montserrat'
@@ -192,7 +198,7 @@ class _ProfileChildState extends State<ProfileChild> {
         children: [
           buildNumbersButton(context, '4.5', "Ratings"),
           buildDivider(),
-          buildNumbersButton(context, '10', "Products"),
+          buildNumbersButton(context, user.products != null ? user.products!.length.toString() : '0', "Products"),
           buildDivider(),
           buildNumbersButton(context, '3', "Transactions"),
         ],

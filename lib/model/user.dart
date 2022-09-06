@@ -12,6 +12,7 @@ class User {
   final Timestamp birthday;
   final String address;
   final String idno;
+  final List<String>? products;
 
   const User({
     required this.imagePath,
@@ -25,5 +26,6 @@ class User {
     required this.birthday,
     required this.address,
     required this.idno,
+    required this.products,
   });
 }

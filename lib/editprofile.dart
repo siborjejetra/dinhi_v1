@@ -152,6 +152,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     ),
                     onPressed: () {
                       Map<String,dynamic> newUserMap = {
+                        'image': user.imagePath,
                         'firstname': firstnameController.text.isEmpty ? user.firstname: firstnameController.text,
                         'lastname': lastnameController.text.isEmpty ? user.lastname: lastnameController.text,
                         'email': emailController.text.isEmpty ? user.email: emailController.text,
@@ -161,18 +162,22 @@ class _EditProfilePageState extends State<EditProfilePage> {
                         'address': addressController.text.isEmpty ? user.address: addressController.text
                       };
                       db.editUser(newUserMap, inputImage).then(
-                        (editMap) {editedUserMap = editMap;}
-                      );
+                        (newUserMapDB) {
+                          editedUserMap = newUserMapDB;
+                          // print(newUserMapDB);
+                          String idNumber = editedUserMap['idno'];
                       
-                      if ((editedUserMap['idno'])[0] == 'A'){
-                        Get.to(HomeAdminParent(userMap: editedUserMap));
-                      }else if ((editedUserMap['idno'])[0] == 'B'){
-                        Get.to(HomeBuyerParent(userMap: editedUserMap));
-                      }else if ((editedUserMap['idno'])[0] == 'C'){
-                        Get.to(HomeCourierParent(userMap: editedUserMap));
-                      }else{
-                        Get.to(HomeSellerParent(userMap: editedUserMap));
-                      }
+                          if (idNumber[0] == 'A'){
+                            Get.to(HomeAdminParent(userMap: editedUserMap));
+                          }else if (idNumber[0] == 'B'){
+                            Get.to(HomeBuyerParent(userMap: editedUserMap));
+                          }else if (idNumber[0] == 'C'){
+                            Get.to(HomeCourierParent(userMap: editedUserMap));
+                          }else{
+                            Get.to(HomeSellerParent(userMap: editedUserMap));
+                          }
+                        }
+                      );
                     }, 
                     child: const Text(
                       'SAVE',

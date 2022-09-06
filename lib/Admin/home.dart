@@ -30,7 +30,7 @@ class HomeAdminChild extends StatefulWidget {
 
 class _HomeAdminChildState extends State<HomeAdminChild> {
   late final User user = User(
-    imagePath: (widget.userDetails['image'] as String).isEmpty ? 'https://cdn3.iconfinder.com/data/icons/flatastic-4-1/256/user_orange-512.png': widget.userDetails['image'], 
+    imagePath: widget.userDetails['image'] == null || (widget.userDetails['image'] as String).isEmpty ? 'https://cdn3.iconfinder.com/data/icons/flatastic-4-1/256/user_orange-512.png': widget.userDetails['image'], 
     firstname: widget.userDetails['firstname'], 
     lastname: widget.userDetails['lastname'], 
     email: widget.userDetails['email'], 
@@ -40,7 +40,8 @@ class _HomeAdminChildState extends State<HomeAdminChild> {
     about: (widget.userDetails['about'] as String).isEmpty ? 'Set about': widget.userDetails['about'], 
     birthday: widget.userDetails['birthday'], 
     address: widget.userDetails['address'], 
-    idno: widget.userDetails['idno']
+    idno: widget.userDetails['idno'],
+    products: widget.userDetails['products'],
   );
   late final EasyAppController controller = EasyAppController(
   intialBody: EasyBody(child: buildSideBarTile(user).body, title: buildSideBarTile(user).title),
@@ -49,7 +50,6 @@ class _HomeAdminChildState extends State<HomeAdminChild> {
   @override
   Widget build(BuildContext context) {
     
-    print(user.imagePath);
     final List<Widget> actions = [
     IconButton(
       icon: const Icon(Icons.search, color: Colors.white),

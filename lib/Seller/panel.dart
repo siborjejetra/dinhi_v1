@@ -1,8 +1,8 @@
+import 'package:Dinhi_v1/viewallproducts.dart';
 import 'package:Dinhi_v1/Seller/profile.dart';
 import 'package:Dinhi_v1/Seller/home.dart';
 import 'package:Dinhi_v1/model/user.dart';
 import 'package:Dinhi_v1/settings.dart';
-import 'package:Dinhi_v1/addproduct.dart';
 import 'package:Dinhi_v1/login.dart';
 import 'package:easy_dashboard/easy_dashboard.dart';
 import 'package:flutter/foundation.dart';
@@ -76,156 +76,7 @@ final SideBarTile tile1 = SideBarTile(
         ),
       ),
       icon: Icons.home,
-      body: SafeArea(
-        child: Padding(
-          padding: EdgeInsets.only(bottom: 16, left: 16, right: 16),
-          child: Column(
-            children: <Widget>[
-              Container(
-                decoration: BoxDecoration(
-                  color: Color.fromARGB(255, 9, 117, 8),
-                  borderRadius: BorderRadius.circular(8)
-                ),
-                height: 50,
-                margin: EdgeInsets.only(bottom: 10),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    // SizedBox(
-                    //   width: 80,
-                    // ),
-                    Icon(
-                      Icons.add,
-                      color: Colors.white
-                    ),
-                    Column(
-                      children: <Widget>[
-                        TextButton(
-                          onPressed: () {
-                            Get.to(const ProductParent());
-                            },
-                          child: Text(
-                            'ADD PRODUCT',
-                            style: TextStyle(
-                              fontFamily: "Montserrat",
-                              letterSpacing: 2.2,
-                              color: Colors.white,
-                              fontSize: 20
-                            ),
-                          ),
-                        )
-                      ],
-                    )
-                  ],
-                ),
-              ),
-              Expanded( 
-                child: GridView.count(
-                  mainAxisSpacing: 10,
-                  crossAxisSpacing: 10,
-                  primary: false,
-                  crossAxisCount: 2,
-                  children: <Widget>[
-                    InkWell(
-                      onTap: () {Get.to(const ProductParent());},
-                      child: Card(
-                        color: Color.fromRGBO(111, 174, 23, 1),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8)
-                        ),
-                        elevation: 4,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Image.asset(
-                              'assets/images/Rambutan.png',
-                              width: 140, 
-                              height: 140,),
-                            Text('Rambutan', style: cardTextStyle)
-                          ],
-                        ),
-                      ),
-                    ),
-                    InkWell(
-                      child: Card(
-                        color: Color.fromARGB(255, 9, 117, 8),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8)
-                        ),
-                        elevation: 4,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Image.asset(
-                              'assets/images/Pomelo.png',
-                              width: 140, 
-                              height: 140,),
-                            Text('Suha', style: cardTextStyle)
-                          ],
-                        ),
-                      ),
-                    ),
-                    InkWell(
-                      child: Card(
-                        color: Color.fromARGB(255, 9, 117, 8),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8)
-                        ),
-                        elevation: 4,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Image.asset(
-                              'assets/images/Niyog.png',
-                              width: 140, 
-                              height: 140,),
-                            Text('Niyog', style: cardTextStyle)
-                          ],
-                        ),
-                      ),
-                    ),
-                    InkWell(
-                      child: Card(
-                        color: Color.fromRGBO(111, 174, 23, 1),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8)
-                        ),
-                        elevation: 4,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Image.asset(
-                              'assets/images/Buko.png',
-                              width: 140, 
-                              height: 140,),
-                            Text('Buko', style: cardTextStyle)
-                          ],
-                        ),
-                      ),
-                    ),
-                    InkWell(
-                      child: Card(
-                        color: Color.fromRGBO(111, 174, 23, 1),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8)
-                        ),
-                        elevation: 4,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Image.asset(
-                              'assets/images/Corn.png',
-                              width: 140, 
-                              height: 140,),
-                            Text('Mais', style: cardTextStyle)
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],))
-            ],
-          ))),
+      body: const ViewAllProdParent(),
       name: 'Home',
     );
 

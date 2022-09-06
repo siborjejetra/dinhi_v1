@@ -7,20 +7,22 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 
 class ViewProductParent extends StatelessWidget {
-  const ViewProductParent({Key? key}) : super(key: key);
+  final Map productMap;
+  ViewProductParent({required this.productMap});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'View Product',
-      home: ViewProductChild(),
+      home: ViewProductChild(productDetails: productMap,),
     );
   }
 }
 
 class ViewProductChild extends StatefulWidget {
-  const ViewProductChild({Key? key}) : super(key: key);
+  final Map productDetails;
+  ViewProductChild({required this.productDetails});
 
   @override
   State<ViewProductChild> createState() => _ViewProductChildState();
@@ -48,7 +50,7 @@ class _ViewProductChildState extends State<ViewProductChild> {
                   color: Colors.white70,
                   borderRadius: BorderRadius.circular(30)
                 ),
-                child: Image.asset('assets/images/Buko.png', 
+                child: Image.network(widget.productDetails['image'], 
                   width: 256,
                   height:256,) //Insert product image
               ),
@@ -62,11 +64,11 @@ class _ViewProductChildState extends State<ViewProductChild> {
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const [
+                  children: [
                     Text(
                       // Insert product name
-                      'Buko',
-                      style: TextStyle(
+                      widget.productDetails['name'],
+                      style: const TextStyle(
                         fontSize: 24,
                         fontFamily: 'Montserrat',
                         fontWeight: FontWeight.bold,
@@ -75,8 +77,8 @@ class _ViewProductChildState extends State<ViewProductChild> {
                     ),
                     Text(
                       // Insert product price and unit
-                      '35/pc. (medium-size)',
-                      style: TextStyle( 
+                      '₱'+widget.productDetails['price']+'/'+widget.productDetails['unit'],
+                      style: const TextStyle( 
                         fontSize: 20,
                         fontFamily: 'Montserrat',
                         fontWeight: FontWeight.bold,
@@ -95,11 +97,11 @@ class _ViewProductChildState extends State<ViewProductChild> {
                   borderRadius: BorderRadius.circular(8)
                 ),
                 child: Column(
-                  children: const [
+                  children: [
                     Text(
                       // Insert description
-                      'Fruit that contains refreshing buko juice and rich meat perfect for your fruit salad.',
-                      style: TextStyle(
+                      widget.productDetails['description'],
+                      style: const TextStyle(
                         fontSize: 16,
                         fontFamily: 'Montserrat',
                         fontWeight: FontWeight.bold,
@@ -110,7 +112,7 @@ class _ViewProductChildState extends State<ViewProductChild> {
                 )
               ),
               // const SizedBox(height: 10),
-              buildRatingAndReview('4.5'), // Insert product rating and list of reviews
+              buildRatingAndReview(widget.productDetails['rating']), // Insert product rating and list of reviews
               const SizedBox(height: 30),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
