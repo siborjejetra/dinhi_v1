@@ -43,7 +43,7 @@ class _HomeSellerChildState extends State<HomeSellerChild> {
     products: widget.userDetails['products']
   );
   late final EasyAppController controller = EasyAppController(
-  intialBody: EasyBody(child: tile1.body, title: tile1.title),
+  intialBody: EasyBody(child: buildtile1(user).body, title: buildtile1(user).title),
   );
 
   @override

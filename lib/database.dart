@@ -31,7 +31,8 @@ class Database {
     String name, 
     String price,
     String unit,
-    String description) async {
+    String description,
+    Timestamp expiration) async {
 
     try {
       final ref = FirebaseStorage.instance.ref()
@@ -54,6 +55,7 @@ class Database {
         'unit' : unit,
         'description' : description,
         'rating' : '0',
+        'expiration' : expiration
       };
 
       addProductArray(userIdno, newProduct['productId']);
@@ -69,10 +71,11 @@ class Database {
       var collectionRef = FirebaseFirestore.instance.collection('users');
       final doc = await collectionRef.doc(userId).get();
       var docUser = await collectionRef.doc(userId);
-
-      List<dynamic> products = doc.data()!['products'];
-      products.add(productIdno);
-      docUser.update({'products': products});
+      if(doc.data()!['usertype'] == 'Seller'){
+        List<dynamic> products = doc.data()!['products'];
+        products.add(productIdno);
+        docUser.update({'products': products});
+      }
     }
     catch (e){
       print(e);
@@ -174,7 +177,8 @@ class Database {
             "unit": doc['unit'],
             "description": doc['description'],
             "image": doc['image'],
-            "rating": doc['rating']
+            "rating": doc['rating'],
+            "expiration": doc['expiration']
             };
           docs.add(b);
         }

@@ -13,6 +13,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:localstorage/localstorage.dart';
@@ -115,11 +116,28 @@ class _EditProfilePageState extends State<EditProfilePage> {
                 onChanged: (about) {}
               ),
               const SizedBox(height: 10),
-              TextFieldWidget(
-                label: "Birthday", 
-                text: f.format(user.birthday.toDate()).toString(), 
+              FormBuilderDateTimePicker(
+                name: 'birthday',
                 controller: birthdayController,
-                onChanged: (birthday) {}
+                initialEntryMode: DatePickerEntryMode.calendar,
+                initialValue: DateTime.now(),
+                inputType: InputType.date,
+                decoration: InputDecoration(
+                  filled: true,
+                  fillColor: Colors.white,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  contentPadding: EdgeInsets.only(bottom: 3, left: 10),
+                  floatingLabelBehavior: FloatingLabelBehavior.always,
+                  labelText: 'Birthday',
+                  hintText: f.format(user.birthday.toDate()).toString(),
+                  hintStyle: const TextStyle(
+                    fontSize: 16,
+                    fontFamily: 'Montserrat',
+                    color: Colors.black,
+                  ),
+                ),
               ),
               const SizedBox(height: 10),
               TextFieldWidget(

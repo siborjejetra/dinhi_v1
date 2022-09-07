@@ -1,4 +1,4 @@
-import 'package:Dinhi_v1/viewallproducts.dart';
+import 'package:Dinhi_v1/Seller/viewallproducts.dart';
 import 'package:Dinhi_v1/Seller/profile.dart';
 import 'package:Dinhi_v1/Seller/home.dart';
 import 'package:Dinhi_v1/model/user.dart';
@@ -66,7 +66,8 @@ var topSmallWidget = Container(
   ),
 );
 
-final SideBarTile tile1 = SideBarTile(
+SideBarTile buildtile1(User user) {
+  return SideBarTile(
       title: const Text(
         'Home',
         style: TextStyle(
@@ -76,15 +77,15 @@ final SideBarTile tile1 = SideBarTile(
         ),
       ),
       icon: Icons.home,
-      body: const ViewAllProdParent(),
+      body: ViewAllProdParent(userProducts: user.products),
       name: 'Home',
     );
-
+}
 
 
 List<SideTile> returnTiles(BuildContext context, User user){
   late final List<SideTile> tiles = [
-    tile1,
+    buildtile1(user),
     SideBarTile(
       title: const Text(
         'Profile',

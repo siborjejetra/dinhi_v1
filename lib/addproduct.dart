@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:localstorage/localstorage.dart';
@@ -40,6 +41,7 @@ class _ProductChildState extends State<ProductChild> {
   TextEditingController priceController = new TextEditingController();
   TextEditingController descriptionController = new TextEditingController();
   TextEditingController unitController = new TextEditingController();
+  TextEditingController expDateController = new TextEditingController();
   
   LocalStorage localStorage = LocalStorage('user');
 
@@ -96,6 +98,24 @@ class _ProductChildState extends State<ProductChild> {
                 const SizedBox(height: 20),
                 buildTextField('Decription', descriptionController),
                 const SizedBox(height: 20),
+                FormBuilderDateTimePicker(
+                  name: 'expiration',
+                  controller: expDateController,
+                  initialEntryMode: DatePickerEntryMode.calendar,
+                  initialValue: DateTime.now(),
+                  inputType: InputType.date,
+                  decoration: InputDecoration(
+                    filled: true,
+                    fillColor: Colors.white,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    contentPadding: EdgeInsets.only(bottom: 3, left: 10),
+                    floatingLabelBehavior: FloatingLabelBehavior.always,
+                    labelText: 'Expiration Date',
+                  ),
+                ),
+                const SizedBox(height: 20),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
@@ -117,6 +137,7 @@ class _ProductChildState extends State<ProductChild> {
                           priceController.text,
                           unitController.text,
                           descriptionController.text,
+                          Timestamp.fromDate(DateTime.parse(expDateController.text))
                           );
                         Get.back();
                       }, 
@@ -176,7 +197,7 @@ class _ProductChildState extends State<ProductChild> {
         contentPadding: EdgeInsets.only(bottom: 3, left: 10),
         floatingLabelBehavior: FloatingLabelBehavior.always,
         labelText: label,
-        hintStyle: TextStyle(
+        hintStyle: const TextStyle(
           fontSize: 16,
           fontFamily: 'Montserrat',
           fontWeight: FontWeight.bold,
