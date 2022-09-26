@@ -70,7 +70,7 @@ class _ViewAllProdChildState extends State<ViewAllProdChild> {
                       children: <Widget>[
                         TextButton(
                           onPressed: () {
-                            Get.to(const ProductParent());
+                            // Get.to(ProductParent());
                             },
                           child: Text(
                             'ADD PRODUCT',

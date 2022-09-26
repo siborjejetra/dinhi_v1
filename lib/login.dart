@@ -111,6 +111,8 @@ class _LoginChildState extends State<LoginChild> {
       ),
       onSubmitAnimationCompleted: () async {
         Map<dynamic,dynamic> userDeets = await db.storeUser(localStorage.getItem('userID'));
+        // print(userDeets);
+        // print("This is userDeets");
         if (flag == 'A'){
           Get.to(HomeAdminParent(userMap: userDeets));
         }

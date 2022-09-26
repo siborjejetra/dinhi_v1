@@ -8,22 +8,26 @@ import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
 
+import '../model/user.dart';
+
 class ViewAllProdParent extends StatelessWidget {
   final List<String>? userProducts;
-  const ViewAllProdParent({Key? key, required this.userProducts}) : super(key: key);
+  final Map userDetails;
+  const ViewAllProdParent({Key? key, required this.userProducts, required this.userDetails}) : super(key: key);
   
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: ViewAllProdChild(userProds: userProducts,)
+      home: ViewAllProdChild(userProds: userProducts, userDetails: userDetails)
       );
   }
 }
 
 class ViewAllProdChild extends StatefulWidget {
-  const ViewAllProdChild({Key? key, required this.userProds}) : super(key: key);
+  const ViewAllProdChild({Key? key, required this.userProds, required this.userDetails}) : super(key: key);
   final List<String>? userProds;
+  final Map userDetails;
   @override
   State<ViewAllProdChild> createState() => _ViewAllProdChildState();
 }
@@ -47,9 +51,10 @@ class _ViewAllProdChildState extends State<ViewAllProdChild> {
 
   @override
   Widget build(BuildContext context) {
+    Map userDetails = widget.userDetails;
     productID = widget.userProds;
     storage = storeUserProd(products, productID);
-    print(productID);
+    // print(productID);
     print(products);
     return Scaffold(
       backgroundColor: Color.fromARGB(255, 236, 236, 163),
@@ -77,7 +82,7 @@ class _ViewAllProdChildState extends State<ViewAllProdChild> {
                       children: <Widget>[
                         TextButton(
                           onPressed: () {
-                            Get.to(const ProductParent());
+                            Get.to(ProductParent(userMap: userDetails));
                             },
                           child: const Text(
                             'ADD PRODUCT',

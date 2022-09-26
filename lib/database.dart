@@ -25,15 +25,16 @@ class Database {
     }
   }
 
-  Future<void> createProduct(
+  Future<Map<String,dynamic>> createProduct(
     String userIdno,
     File? inputImage, 
     String name, 
     String price,
     String unit,
     String description,
-    Timestamp expiration) async {
-
+    Timestamp expiration,
+    Map<dynamic,dynamic> userDetails) async {
+    Map<String, dynamic> cloneMap = {};
     try {
       final ref = FirebaseStorage.instance.ref()
           .child('productImages')
@@ -58,28 +59,41 @@ class Database {
         'expiration' : expiration
       };
 
-      addProductArray(userIdno, newProduct['productId']);
-
+      addProductArray(userIdno, newProduct['productId']).then((value) {
+        userDetails['products'] = value;
+        cloneMap = {...userDetails};
+        print(cloneMap);
+        });
+      print(cloneMap);
       await docProduct.set(newProduct); 
+      return cloneMap;
     } catch (e) {
       print(e);
     }
+    return cloneMap;
   }
 
-  Future<void> addProductArray(String userId, String productIdno) async {
+  Future<List> addProductArray(String userId, String productIdno) async {
+    List<String> products = [];
     try{
       var collectionRef = FirebaseFirestore.instance.collection('users');
       final doc = await collectionRef.doc(userId).get();
       var docUser = await collectionRef.doc(userId);
       if(doc.data()!['usertype'] == 'Seller'){
-        List<dynamic> products = doc.data()!['products'];
+        // print(doc.data()!['products']);
+        List<dynamic> newProducts = doc.data()!['products'];
+        for (var a in newProducts){
+          products.add(a.toString());
+        }
         products.add(productIdno);
         docUser.update({'products': products});
       }
+      return products;
     }
     catch (e){
       print(e);
     }
+    return products;
   }
 
   Future<Map> editUser(Map<String,dynamic> newUserMap, File? inputImage) async {

@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:Dinhi_v1/Seller/home.dart';
 import 'package:Dinhi_v1/database.dart';
 import 'package:Dinhi_v1/widgets.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -13,23 +14,25 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:localstorage/localstorage.dart';
 import 'database.dart';
+import 'model/user.dart';
 
 class ProductParent extends StatelessWidget {
-  const ProductParent({Key? key}) : super(key: key);
+  Map userMap;
+  ProductParent({Key? key, required this.userMap}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Add Product',
-      home: ProductChild(),
+      home: ProductChild(userMap: userMap),
     );
   }
 }
 
 class ProductChild extends StatefulWidget {
-  const ProductChild({Key? key}) : super(key: key);
-
+  ProductChild({Key? key, required this.userMap}) : super(key: key);
+  Map userMap;
   @override
   State<ProductChild> createState() => _ProductChildState();
 }
@@ -59,6 +62,7 @@ class _ProductChildState extends State<ProductChild> {
   
   @override
   Widget build(BuildContext context) {
+    Map userDetails = widget.userMap;
     return Scaffold(
       backgroundColor: Color.fromARGB(255, 236, 236, 163),
       appBar: buildAppbar(context, title, false),
@@ -137,9 +141,16 @@ class _ProductChildState extends State<ProductChild> {
                           priceController.text,
                           unitController.text,
                           descriptionController.text,
-                          Timestamp.fromDate(DateTime.parse(expDateController.text))
+                          Timestamp.fromDate(DateTime.now()),
+                          userDetails).then(
+                            (cloneMap) {
+                              print('Here');
+                              print(cloneMap);
+                              Get.to(HomeSellerParent(userMap: cloneMap));}
                           );
-                        Get.back();
+                          // Timestamp.fromDate(DateTime.parse(expDateController.text))
+                        
+                        
                       }, 
                       child: const Text(
                         'SAVE',

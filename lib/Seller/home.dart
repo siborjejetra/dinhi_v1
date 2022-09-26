@@ -43,11 +43,12 @@ class _HomeSellerChildState extends State<HomeSellerChild> {
     products: widget.userDetails['products']
   );
   late final EasyAppController controller = EasyAppController(
-  intialBody: EasyBody(child: buildtile1(user).body, title: buildtile1(user).title),
+  intialBody: EasyBody(child: buildtile1(user, widget.userDetails).body, title: buildtile1(user, widget.userDetails).title),
   );
 
   @override
   Widget build(BuildContext context) {
+    // print(user.products);
     final List<Widget> actions = [
     IconButton(
       icon: const Icon(Icons.search, color: Colors.white),
@@ -89,7 +90,7 @@ class _HomeSellerChildState extends State<HomeSellerChild> {
           selectedIconColor: Color.fromARGB(255, 236, 236, 163),
           textColor: Colors.black.withGreen(20),
           selectedTileColor: Color.fromARGB(255, 111, 174, 23).withOpacity(.8),
-          tiles: returnTiles(context, user),
+          tiles: returnTiles(context, user, widget.userDetails),
           topWidget: SideBox(
             scrollable: true,
             height: 150,

@@ -154,7 +154,19 @@ class _RegChildState extends State<RegChild> {
                 // enabled: false,
                 onChanged: () {
                   _formKey.currentState!.save();
-                  debugPrint(_formKey.currentState!.value.toString());
+                  // debugPrint(_formKey.currentState!.value.toString());
+                },
+                autovalidateMode: AutovalidateMode.disabled,
+                initialValue: const {
+                  'firstname': 'First Name',
+                  'lastname': 'Last Name',
+                  'cellnumber': '09XXXXXXXXX',
+                  'email': 'Email',
+                  'password': 'Password',
+                  'cpassword': 'Confirm Password',
+                  'address': 'Address',
+                  'honorific': 'Mx.',
+                  'usertype' : 'Buyer',
                 },
                 skipDisabled: true,
                 child: Column(
@@ -175,7 +187,7 @@ class _RegChildState extends State<RegChild> {
                       onChanged: (val) {
                         setState(() {
                           _fnHasError = !(_formKey.currentState?.fields['firstname']
-                                  ?.validate() ??
+                                  ?.validate() != null ? true:
                               false);
                         });
                       },
@@ -183,7 +195,6 @@ class _RegChildState extends State<RegChild> {
                       validator: FormBuilderValidators.compose([
                         FormBuilderValidators.required(),
                       ]),
-                      // initialValue: '12',
                       keyboardType: TextInputType.name,
                       textInputAction: TextInputAction.next,
                     ),
@@ -202,7 +213,7 @@ class _RegChildState extends State<RegChild> {
                       onChanged: (val) {
                         setState(() {
                           _lnHasError = !(_formKey.currentState?.fields['lastname']
-                                  ?.validate() ??
+                                  ?.validate() != null ? true:
                               false);
                         });
                       },
@@ -212,13 +223,12 @@ class _RegChildState extends State<RegChild> {
                         // FormBuilderValidators.numeric(),
                         // FormBuilderValidators.max(70),
                       ]),
-                      // initialValue: '12',
                       keyboardType: TextInputType.name,
                       textInputAction: TextInputAction.next,
                     ),
                     const SizedBox(height: 10),
                     FormBuilderTextField(
-                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      autovalidateMode: AutovalidateMode.always,
                       name: 'cellnumber',
                       decoration: InputDecoration(
                         filled: true,
@@ -231,7 +241,7 @@ class _RegChildState extends State<RegChild> {
                       onChanged: (val) {
                         setState(() {
                           _cnHasError = !(_formKey.currentState?.fields['cellnumber']
-                                  ?.validate() ??
+                                  ?.validate() != null ? true:
                               false);
                         });
                       },
@@ -239,8 +249,7 @@ class _RegChildState extends State<RegChild> {
                       validator: FormBuilderValidators.compose([
                         FormBuilderValidators.required(),
                       ]),
-                      // initialValue: '12',
-                      keyboardType: TextInputType.phone,
+                      keyboardType: TextInputType.name,
                       textInputAction: TextInputAction.next,
                     ),
                     const SizedBox(height: 10),
@@ -258,7 +267,7 @@ class _RegChildState extends State<RegChild> {
                       onChanged: (val) {
                         setState(() {
                           _emailHasError = !(_formKey.currentState?.fields['email']
-                                  ?.validate() ??
+                                  ?.validate() != null ? true:
                               false);
                         });
                       },
@@ -267,8 +276,7 @@ class _RegChildState extends State<RegChild> {
                         FormBuilderValidators.required(),
                         FormBuilderValidators.email(),
                       ]),
-                      // initialValue: '12',
-                      keyboardType: TextInputType.emailAddress,
+                      keyboardType: TextInputType.name,
                       textInputAction: TextInputAction.next,
                     ),
                     const SizedBox(height: 10),
@@ -288,7 +296,7 @@ class _RegChildState extends State<RegChild> {
                         setState(() {
                           pword = _formKey.currentState?.value['password'];
                           _pwordHasError = !(_formKey.currentState?.fields['password']
-                                  ?.validate() ??
+                                  ?.validate() != null ? true:
                               false);
                         });
                       },
@@ -296,7 +304,6 @@ class _RegChildState extends State<RegChild> {
                       validator: FormBuilderValidators.compose([
                         FormBuilderValidators.required(),
                       ]),
-                      // initialValue: '12',
                       keyboardType: TextInputType.visiblePassword,
                       textInputAction: TextInputAction.next,
                     ),
@@ -316,7 +323,7 @@ class _RegChildState extends State<RegChild> {
                       onChanged: (val) {
                         setState(() {
                           _cpwordHasError = !(_formKey.currentState?.fields['cpassword']
-                                  ?.validate() ??
+                                  ?.validate() != null ? true:
                               false);
                         });
                       },
@@ -325,7 +332,6 @@ class _RegChildState extends State<RegChild> {
                         FormBuilderValidators.required(),
                         FormBuilderValidators.match(pword),
                       ]),
-                      // initialValue: '12',
                       keyboardType: TextInputType.visiblePassword,
                       textInputAction: TextInputAction.next,
                     ),
@@ -365,7 +371,7 @@ class _RegChildState extends State<RegChild> {
                       onChanged: (val) {
                         setState(() {
                           _addressHasError = !(_formKey.currentState?.fields['address']
-                                  ?.validate() ??
+                                  ?.validate() != null ? true:
                               false);
                         });
                       },
@@ -373,7 +379,6 @@ class _RegChildState extends State<RegChild> {
                       validator: FormBuilderValidators.compose([
                         FormBuilderValidators.required(),
                       ]),
-                      // initialValue: '12',
                       keyboardType: TextInputType.streetAddress,
                       textInputAction: TextInputAction.next,
                     ),
@@ -404,7 +409,7 @@ class _RegChildState extends State<RegChild> {
                         setState(() {
                           _honorificHasError = !(_formKey
                                   .currentState?.fields['honorific']
-                                  ?.validate() ??
+                                  ?.validate() != null ? true:
                               false);
                         });
                       },
@@ -437,7 +442,7 @@ class _RegChildState extends State<RegChild> {
                         setState(() {
                           _userTypeHasError = !(_formKey
                                   .currentState?.fields['usertype']
-                                  ?.validate() ??
+                                  ?.validate() != null ? true:
                               false);
                           idno = getIdNo(setIndicator(_formKey.currentState?.value['usertype']));
                         });
@@ -460,7 +465,8 @@ class _RegChildState extends State<RegChild> {
                           cloneMap['idno'] = idno;
                           cloneMap['image'] = '';
                           cloneMap['about'] = '';
-                          if (idno.startsWith('S', 0)) cloneMap['products'] = '';
+                          if (idno.startsWith('S', 0)) cloneMap['products'] = <String>[];
+                          // print(cloneMap);
                           await db.createUser(cloneMap).then((value) => Get.off(const LoginParent()));
                         } else {
                           debugPrint(_formKey.currentState?.value.toString());
@@ -468,7 +474,7 @@ class _RegChildState extends State<RegChild> {
                         }
                       },
                       child: const Text(
-                        'Submit',
+                        'SUBMIT',
                         style: TextStyle(color: Colors.white),
                       ),
                     ),
@@ -481,7 +487,7 @@ class _RegChildState extends State<RegChild> {
                         Get.off(const LoginParent());
                       },
                       child: Text(
-                        'Cancel',
+                        'CANCEL',
                         style: TextStyle(
                             color: Colors.white,
                         ),

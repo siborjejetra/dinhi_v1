@@ -66,7 +66,7 @@ var topSmallWidget = Container(
   ),
 );
 
-SideBarTile buildtile1(User user) {
+SideBarTile buildtile1(User user, Map userDetails) {
   return SideBarTile(
       title: const Text(
         'Home',
@@ -77,15 +77,15 @@ SideBarTile buildtile1(User user) {
         ),
       ),
       icon: Icons.home,
-      body: ViewAllProdParent(userProducts: user.products),
+      body: ViewAllProdParent(userProducts: user.products, userDetails: userDetails),
       name: 'Home',
     );
 }
 
 
-List<SideTile> returnTiles(BuildContext context, User user){
+List<SideTile> returnTiles(BuildContext context, User user, Map userMap){
   late final List<SideTile> tiles = [
-    buildtile1(user),
+    buildtile1(user, userMap),
     SideBarTile(
       title: const Text(
         'Profile',
