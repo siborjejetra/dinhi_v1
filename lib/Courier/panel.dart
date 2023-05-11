@@ -10,14 +10,17 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:localstorage/localstorage.dart';
 
+import '../widgets.dart';
 
 LocalStorage localStorage = new LocalStorage('user');
 
-var cardTextStyle = const TextStyle(fontFamily: 'Montserrat', fontSize: 14, color:Colors.white);
+var cardTextStyle = const TextStyle(
+    fontFamily: 'Montserrat', fontSize: 14, color: Colors.white);
 
-var buttonStyle = ButtonStyle(backgroundColor: MaterialStateProperty.all(Color.fromARGB(255, 9, 117, 8)));
+var buttonStyle = ButtonStyle(
+    backgroundColor: MaterialStateProperty.all(Color.fromARGB(255, 9, 117, 8)));
 
-Widget topOpenWidget (User user) {
+Widget topOpenWidget(User user) {
   return Container(
     margin: const EdgeInsets.symmetric(vertical: 10),
     decoration: const BoxDecoration(
@@ -26,7 +29,7 @@ Widget topOpenWidget (User user) {
     ),
     child: Center(
       child: Text(
-        user.firstname[0]+user.lastname[0],
+        user.firstname[0] + user.lastname[0],
         style: TextStyle(
           fontSize: 40,
           color: Colors.white,
@@ -42,14 +45,14 @@ var bottomOpenWidget = Padding(
     children: const [
       Text('DINHI'),
       Spacer(),
-      Text('© 2022'),
+      Text('© 2023'),
       Spacer(),
     ],
   ),
 );
 
 var bottomSmallWidget = const Center(
-  child: Text('© 2022'),
+  child: Text('© 2023'),
 );
 
 var topSmallWidget = Container(
@@ -66,109 +69,105 @@ var topSmallWidget = Container(
   ),
 );
 
-
-final SideBarTile tile1 = SideBarTile(
-      title: const Text(
-        'Home',
-        style: TextStyle(
-          color: Colors.white,
-          fontSize: 20,
-          fontFamily: 'Montserrat'
-        ),
-      ),
-      icon: Icons.home,
-      body: SafeArea(
+SideBarTile buildSideBarTile(User user) {
+  return SideBarTile(
+    title: const Text(
+      'Home',
+      style: TextStyle(
+          color: Colors.white, fontSize: 20, fontFamily: 'Montserrat'),
+    ),
+    icon: Icons.home,
+    body: SafeArea(
         child: Padding(
-          padding: EdgeInsets.only(bottom: 16, left: 16, right: 16),
-          child: Column(
-            children: <Widget>[
-              Container(
-                decoration: BoxDecoration(
-                  color: Color.fromARGB(255, 111, 174, 23),
-                  borderRadius: BorderRadius.circular(8)
-                ),
-                height: 64,
-                margin: EdgeInsets.only(bottom: 20),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    CircleAvatar(
-                      radius: 32,
-                      backgroundColor: Colors.white,
-                      backgroundImage: NetworkImage('https://cdn-icons-png.flaticon.com/512/949/949663.png'),
-                    ),
-                    SizedBox(
-                      width: 16,
-                    ),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Text(
-                          'Gio Miguel',
-                          style: TextStyle(
-                            fontFamily: "Montserrat",
-                            color: Colors.white,
-                            fontSize: 20
-                          ),
+            padding: EdgeInsets.only(bottom: 16, left: 16, right: 16),
+            child: Column(
+              children: <Widget>[
+                Container(
+                  decoration: BoxDecoration(
+                      color: Color.fromARGB(255, 111, 174, 23),
+                      borderRadius: BorderRadius.circular(8)),
+                  height: 64,
+                  margin: EdgeInsets.only(bottom: 20),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.only(left: 20, top: 8),
+                        child: CircleAvatar(
+                          radius: 25,
+                          backgroundColor: Colors.white,
+                          backgroundImage: NetworkImage(user.imagePath),
                         ),
-                        Text(
-                          'C000',
-                          style: TextStyle(
-                            fontFamily: "Montserrat",
-                            color: Colors.white,
-                            fontSize: 14
+                      ),
+                      SizedBox(
+                        width: 16,
+                      ),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Text(
+                            user.firstname + ' ' + user.lastname,
+                            style: TextStyle(
+                                fontFamily: "Montserrat",
+                                color: Colors.white,
+                                fontSize: 20),
                           ),
-                        )
-                      ],
-                    )
-                  ],
+                          Text(
+                            user.idno,
+                            style: TextStyle(
+                                fontFamily: "Montserrat",
+                                color: Colors.white,
+                                fontSize: 14),
+                          )
+                        ],
+                      )
+                    ],
+                  ),
                 ),
-              ),
-              Expanded( 
-                child: GridView.count(
+                Expanded(
+                    child: GridView.count(
                   mainAxisSpacing: 10,
                   crossAxisSpacing: 10,
                   primary: false,
                   crossAxisCount: 2,
                   children: <Widget>[
-                     InkWell(
+                    InkWell(
                       onTap: () {},
-                      child:
-                      Card(
+                      child: Card(
                         color: Color.fromARGB(255, 111, 174, 23),
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8)
-                        ),
+                            borderRadius: BorderRadius.circular(8)),
                         elevation: 4,
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
                             Image.asset(
                               'assets/images/OrdersAvail.png',
-                              width: 140, 
-                              height: 140,),
-                            Text('View Orders for Delivery', style: cardTextStyle)
+                              width: 140,
+                              height: 140,
+                            ),
+                            Text('View Orders for Delivery',
+                                style: cardTextStyle)
                           ],
                         ),
                       ),
                     ),
                     InkWell(
                       onTap: () {},
-                      child:
-                      Card(
+                      child: Card(
                         color: Color.fromARGB(255, 111, 174, 23),
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8)
-                        ),
+                            borderRadius: BorderRadius.circular(8)),
                         elevation: 4,
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
                             Image.asset(
                               'assets/images/UpdatePayment.png',
-                              width: 140, 
-                              height: 140,),
+                              width: 140,
+                              height: 140,
+                            ),
                             Text('Update Payment', style: cardTextStyle)
                           ],
                         ),
@@ -178,16 +177,16 @@ final SideBarTile tile1 = SideBarTile(
                       child: Card(
                         color: Color.fromARGB(255, 111, 174, 23),
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8)
-                        ),
+                            borderRadius: BorderRadius.circular(8)),
                         elevation: 4,
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
                             Image.asset(
                               'assets/images/ViewFeedback.png',
-                              width: 140, 
-                              height: 140,),
+                              width: 140,
+                              height: 140,
+                            ),
                             Text('View Feedback', style: cardTextStyle)
                           ],
                         ),
@@ -197,134 +196,86 @@ final SideBarTile tile1 = SideBarTile(
                       child: Card(
                         color: Color.fromARGB(255, 111, 174, 23),
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8)
-                        ),
+                            borderRadius: BorderRadius.circular(8)),
                         elevation: 4,
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
                             Image.asset(
                               'assets/images/Chat.png',
-                              width: 140, 
-                              height: 140,),
+                              width: 140,
+                              height: 140,
+                            ),
                             Text('View Chat', style: cardTextStyle)
                           ],
                         ),
                       ),
                     ),
-                  ],))
-            ],
-          ))),
-      name: 'Home',
-    );
+                  ],
+                ))
+              ],
+            ))),
+    name: 'Home',
+  );
+}
 
-List<SideTile> returnTiles(BuildContext context, User user){
+List<SideTile> returnTiles(BuildContext context, User user) {
   late final List<SideTile> tiles = [
-  tile1,
-  SideBarTile(
-    title: const Text(
-      'Profile',
-      style: TextStyle(
-        color: Colors.white,
-        fontSize: 20,
-      ),
-    ),
-    icon: Icons.person,
-    body: ProfileParent(user: user),
-    name: 'Profile',
-  ),
-  SideBarTile(
-    title: const Text(
-      'Order History',
-      style: TextStyle(
-        color: Colors.white,
-        fontSize: 20,
-      ),
-    ),
-    icon: Icons.chrome_reader_mode_outlined,
-    body: const Center(
-      child: Icon(
-        Icons.chrome_reader_mode_outlined,
-        size: 280,
-      ),
-    ),
-    name: 'Delivery History',
-  ),
-  SideBarTile(
-    title: const Text(
-      'Settings',
-      style: TextStyle(
-        color: Colors.white,
-        fontSize: 20,
-      ),
-    ),
-    icon: Icons.settings,
-    body: const SettingsUI(),
-    name: 'Settings',
-  ),
-  SideBarTile(
-    title: const Text(
-      'Logout',
-      style: TextStyle(
-        color: Colors.white,
-        fontSize: 20,
-      ),
-    ),
-    icon: IconData(0xf88b, fontFamily: 'MaterialIcons'),
-    body: Center(
-      child: AlertDialog(
-        backgroundColor: Color.fromARGB(255, 111, 174, 23),
-        title: const Text(
-          'Log-out', 
-          style: TextStyle(
-            fontFamily: "Montserrat",
-            fontWeight: FontWeight.bold,
-            color: Colors.white,
-            fontSize: 20
-          ),
+    buildSideBarTile(user),
+    SideBarTile(
+      title: const Text(
+        'Profile',
+        style: TextStyle(
+          color: Colors.white,
+          fontSize: 20,
         ),
-        content: const Text(
-          'Are you sure you want to log-out?',
-          style: TextStyle(
-            fontFamily: "Montserrat",
-            color: Colors.white,
-            fontSize: 14
-          )
-        ),
-        actions: <Widget>[
-          ElevatedButton(
-            style: buttonStyle,
-              onPressed: () {
-                localStorage.clear();
-                Get.off(const LoginParent());
-              },
-              child: const Text('Yes',
-                style: TextStyle(
-                  fontFamily: "Montserrat",
-                  color: Colors.black,
-                  fontSize: 14
-                )
-              ),
-            ),
-            new ElevatedButton(
-              style: buttonStyle,
-              onPressed: () {
-                Get.back();
-              },
-              child: const Text('No',
-                style: TextStyle(
-                  fontFamily: "Montserrat",
-                  color: Colors.black,
-                  fontSize: 14
-                )
-              )
-          ),
-        ]),
       ),
+      icon: Icons.person,
+      body: ProfileParent(user: user),
+      name: 'Profile',
+    ),
+    SideBarTile(
+      title: const Text(
+        'Order History',
+        style: TextStyle(
+          color: Colors.white,
+          fontSize: 20,
+        ),
+      ),
+      icon: Icons.chrome_reader_mode_outlined,
+      body: const Center(
+        child: Icon(
+          Icons.chrome_reader_mode_outlined,
+          size: 280,
+        ),
+      ),
+      name: 'Delivery History',
+    ),
+    SideBarTile(
+      title: const Text(
+        'Settings',
+        style: TextStyle(
+          color: Colors.white,
+          fontSize: 20,
+        ),
+      ),
+      icon: Icons.settings,
+      body: const SettingsUI(),
+      name: 'Settings',
+    ),
+    SideBarTile(
+      title: const Text(
+        'Logout',
+        style: TextStyle(
+          color: Colors.black,
+          fontSize: 20,
+        ),
+      ),
+      icon: IconData(0xf88b, fontFamily: 'MaterialIcons'),
+      body: Center(child: buildAlertDialog(buttonStyle, localStorage)),
       name: 'Logout',
     ),
   ];
 
   return tiles;
 }
-

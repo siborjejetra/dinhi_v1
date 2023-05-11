@@ -16,7 +16,7 @@ class LoginParent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(home:LoginChild());
+    return const MaterialApp(home: LoginChild());
   }
 }
 
@@ -46,32 +46,32 @@ class _LoginChildState extends State<LoginChild> {
 
   Future<String?> _authUser(LoginData data) {
     debugPrint('Name: ${data.name}, Password: ${data.password}');
-    return Future.delayed(loginTime).then((_) async{
+    return Future.delayed(loginTime).then((_) async {
       List<dynamic> userList = await db.readUsers();
-      if (!userList.any((item){ return item['email'] == data.name; })) {
+      if (!userList.any((item) {
+        return item['email'] == data.name;
+      })) {
         return 'User not exists';
-      }
-      else if (userList.any((item){ return ( (item['email'] == data.name) && (item['password'] != data.password)); })) {
+      } else if (userList.any((item) {
+        return ((item['email'] == data.name) &&
+            (item['password'] != data.password));
+      })) {
         return 'Password does not match';
-      }
-      else {
+      } else {
         setState(() {
           username = data.name;
           password = data.password;
         });
-        for (dynamic item in userList){
-          if (item['email'] == data.name){
+        for (dynamic item in userList) {
+          if (item['email'] == data.name) {
             localStorage.setItem('userID', item['id']);
-            if (item['usertype'] == 'Admin'){
+            if (item['usertype'] == 'Admin') {
               await setFlag('A');
-            }
-            else if (item['usertype'] == 'Buyer'){
+            } else if (item['usertype'] == 'Buyer') {
               await setFlag('B');
-            }
-            else if (item['usertype'] == 'Courier'){
+            } else if (item['usertype'] == 'Courier') {
               await setFlag('C');
-            }
-            else {
+            } else {
               await setFlag('S');
             }
           }
@@ -91,9 +91,11 @@ class _LoginChildState extends State<LoginChild> {
 
   Future<String> _recoverPassword(String name) {
     debugPrint('Name: $name');
-    return Future.delayed(loginTime).then((_) async{
-    List<dynamic> userList = await db.readUsers();
-      if (!userList.any((item){ return item['email'] == name; })) {
+    return Future.delayed(loginTime).then((_) async {
+      List<dynamic> userList = await db.readUsers();
+      if (!userList.any((item) {
+        return item['email'] == name;
+      })) {
         return 'User not exists';
       }
       return '';
@@ -106,23 +108,19 @@ class _LoginChildState extends State<LoginChild> {
       logo: const AssetImage('assets/images/Logo.PNG'),
       onLogin: _authUser,
       onSignup: _signupUser,
-      theme: LoginTheme(
-        primaryColor: Color.fromARGB(255, 171, 195, 47)
-      ),
+      theme: LoginTheme(primaryColor: Color.fromARGB(255, 171, 195, 47)),
       onSubmitAnimationCompleted: () async {
-        Map<dynamic,dynamic> userDeets = await db.storeUser(localStorage.getItem('userID'));
+        Map<dynamic, dynamic> userDeets =
+            await db.storeUser(localStorage.getItem('userID'));
         // print(userDeets);
         // print("This is userDeets");
-        if (flag == 'A'){
+        if (flag == 'A') {
           Get.to(HomeAdminParent(userMap: userDeets));
-        }
-        else if (flag == 'B'){
+        } else if (flag == 'B') {
           Get.to(HomeBuyerParent(userMap: userDeets));
-        }
-        else if (flag == 'C'){
+        } else if (flag == 'C') {
           Get.to(HomeCourierParent(userMap: userDeets));
-        }
-        else {
+        } else {
           Get.to(HomeSellerParent(userMap: userDeets));
         }
       },
@@ -130,6 +128,3 @@ class _LoginChildState extends State<LoginChild> {
     );
   }
 }
-
-
-

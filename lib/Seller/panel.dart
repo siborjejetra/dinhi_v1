@@ -9,15 +9,18 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:localstorage/localstorage.dart';
-
+import 'package:Dinhi_v1/widgets.dart';
 
 LocalStorage localStorage = new LocalStorage('user');
 
-var cardTextStyle = TextStyle(fontFamily: 'Montserrat', fontSize: 14, color:Colors.white);
+var cardTextStyle =
+    TextStyle(fontFamily: 'Montserrat', fontSize: 14, color: Colors.white);
 
-var buttonStyle = ButtonStyle(backgroundColor: MaterialStateProperty.all(Color.fromARGB(255, 111, 174, 23)));
+var buttonStyle = ButtonStyle(
+    backgroundColor:
+        MaterialStateProperty.all(Color.fromARGB(255, 111, 174, 23)));
 
-Widget topOpenWidget (User user){
+Widget topOpenWidget(User user) {
   return Container(
     margin: const EdgeInsets.symmetric(vertical: 10),
     decoration: const BoxDecoration(
@@ -26,7 +29,7 @@ Widget topOpenWidget (User user){
     ),
     child: Center(
       child: Text(
-        user.firstname[0]+user.lastname[0],
+        user.firstname[0] + user.lastname[0],
         style: TextStyle(
           fontSize: 40,
           color: Colors.white,
@@ -34,7 +37,7 @@ Widget topOpenWidget (User user){
       ),
     ),
   );
-} 
+}
 
 var bottomOpenWidget = Padding(
   padding: const EdgeInsets.all(8.0),
@@ -68,22 +71,19 @@ var topSmallWidget = Container(
 
 SideBarTile buildtile1(User user, Map userDetails) {
   return SideBarTile(
-      title: const Text(
-        'Home',
-        style: TextStyle(
-          color: Colors.white,
-          fontSize: 20,
-          fontFamily: 'Montserrat'
-        ),
-      ),
-      icon: Icons.home,
-      body: ViewAllProdParent(userProducts: user.products, userDetails: userDetails),
-      name: 'Home',
-    );
+    title: const Text(
+      'Home',
+      style: TextStyle(
+          color: Colors.white, fontSize: 20, fontFamily: 'Montserrat'),
+    ),
+    icon: Icons.home,
+    body: ViewAllProdParent(
+        userProducts: user.products, userDetails: userDetails),
+    name: 'Home',
+  );
 }
 
-
-List<SideTile> returnTiles(BuildContext context, User user, Map userMap){
+List<SideTile> returnTiles(BuildContext context, User user, Map userMap) {
   late final List<SideTile> tiles = [
     buildtile1(user, userMap),
     SideBarTile(
@@ -136,56 +136,7 @@ List<SideTile> returnTiles(BuildContext context, User user, Map userMap){
         ),
       ),
       icon: IconData(0xf88b, fontFamily: 'MaterialIcons'),
-      body: Center(
-        child: AlertDialog(
-          backgroundColor: Colors.white,
-          title: const Text(
-            'Log-out', 
-            style: TextStyle(
-              fontFamily: "Montserrat",
-              fontWeight: FontWeight.bold,
-              color: Colors.black,
-              fontSize: 20
-            ),
-          ),
-          content: const Text(
-            'Are you sure you want to log-out?',
-            style: TextStyle(
-              fontFamily: "Montserrat",
-              color: Colors.black,
-              fontSize: 14
-            )
-          ),
-          actions: <Widget>[
-            ElevatedButton(
-              style: buttonStyle,
-              onPressed: () {
-                localStorage.clear();
-                Get.off(const LoginParent());
-              },
-              child: const Text('Yes',
-                style: TextStyle(
-                  fontFamily: "Montserrat",
-                  color: Colors.black,
-                  fontSize: 14
-                )
-              ),
-            ),
-            new ElevatedButton(
-              style: buttonStyle,
-              onPressed: () {
-                Get.back();
-              },
-              child: const Text('No',
-                style: TextStyle(
-                  fontFamily: "Montserrat",
-                  color: Colors.black,
-                  fontSize: 14
-                )
-              )
-            ),
-          ]),
-      ),
+      body: Center(child: buildAlertDialog(buttonStyle, localStorage)),
       name: 'Logout',
     ),
   ];

@@ -9,7 +9,7 @@ import 'package:intl/intl.dart';
 import 'database.dart';
 
 class RegParent extends StatelessWidget {
-  const RegParent({Key? key}) : super(key: key);
+  const RegParent({Key? key, required}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -65,55 +65,52 @@ class _RegChildState extends State<RegChild> {
 
   Future<void> storeUserID() async {
     List<dynamic> userList = await db.readUsers();
-    for (dynamic item in userList){
-      if (item['usertype'] == 'Admin'){
+    for (dynamic item in userList) {
+      if (item['usertype'] == 'Admin') {
         user1.add(item['idno']);
-      }
-      else if (item['usertype'] == 'Buyer'){
+      } else if (item['usertype'] == 'Buyer') {
         user2.add(item['idno']);
-      }
-      else if (item['usertype'] == 'Courier'){
+      } else if (item['usertype'] == 'Courier') {
         user3.add(item['idno']);
-      }
-      else {
+      } else {
         user4.add(item['idno']);
       }
     }
   }
 
-  String setIndicator(String value){
+  String setIndicator(String value) {
     String indicator = '';
-    if(value == 'Admin'){
+    if (value == 'Admin') {
       indicator = 'A';
-    }else if(value == 'Buyer'){
+    } else if (value == 'Buyer') {
       indicator = 'B';
-    }else if(value == 'Courier'){
+    } else if (value == 'Courier') {
       indicator = 'C';
-    }else{
+    } else {
       indicator = 'S';
     }
     return indicator;
   }
 
-  String getIdNo(String indicator){
+  String getIdNo(String indicator) {
     List userType = [];
     String temp = '';
     String temp1 = '';
     var temp2 = 0;
-    if (indicator == 'A'){
+    if (indicator == 'A') {
       userType = user1;
-    } else if (indicator == 'B'){
+    } else if (indicator == 'B') {
       userType = user2;
-    } else if (indicator == 'C'){
+    } else if (indicator == 'C') {
       userType = user3;
     } else {
       userType = user4;
     }
 
     temp = userType.last;
-    temp1 = temp.substring(1,4);
+    temp1 = temp.substring(1, 4);
     temp2 = int.parse(temp1);
-    idno = indicator+(temp2+1).toString().padLeft(3,'0');
+    idno = indicator + (temp2 + 1).toString().padLeft(3, '0');
 
     return idno;
   }
@@ -121,7 +118,7 @@ class _RegChildState extends State<RegChild> {
   Database db = Database();
   Map<String, dynamic> newUser = {};
 
-  TextEditingController emailController = new TextEditingController(); 
+  TextEditingController emailController = new TextEditingController();
   TextEditingController passwordController = new TextEditingController();
   TextEditingController firstnameController = new TextEditingController();
   TextEditingController lastnameController = new TextEditingController();
@@ -148,7 +145,11 @@ class _RegChildState extends State<RegChild> {
         child: SingleChildScrollView(
           child: Column(
             children: <Widget>[
-              Image.asset('assets/images/Logo.PNG', width: 150, height: 150,),
+              Image.asset(
+                'assets/images/Logo.PNG',
+                width: 150,
+                height: 150,
+              ),
               FormBuilder(
                 key: _formKey,
                 // enabled: false,
@@ -157,38 +158,52 @@ class _RegChildState extends State<RegChild> {
                   // debugPrint(_formKey.currentState!.value.toString());
                 },
                 autovalidateMode: AutovalidateMode.disabled,
-                initialValue: const {
-                  'firstname': 'First Name',
-                  'lastname': 'Last Name',
-                  'cellnumber': '09XXXXXXXXX',
-                  'email': 'Email',
-                  'password': 'Password',
-                  'cpassword': 'Confirm Password',
-                  'address': 'Address',
-                  'honorific': 'Mx.',
-                  'usertype' : 'Buyer',
-                },
+                // initialValue: const {
+                //   'firstname': 'First Name',
+                //   'lastname': 'Last Name',
+                //   'cellnumber': '09XXXXXXXXX',
+                //   'email': 'Email',
+                //   'password': 'Password',
+                //   'cpassword': 'Confirm Password',
+                //   'address': 'Address',
+                //   'honorific': 'Mx.',
+                //   'usertype': 'Buyer',
+                // },
                 skipDisabled: true,
                 child: Column(
                   children: <Widget>[
                     const SizedBox(height: 15),
                     FormBuilderTextField(
-                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      autovalidateMode: AutovalidateMode.disabled,
                       name: 'firstname',
                       decoration: InputDecoration(
-                        contentPadding: EdgeInsets.all(10),
+                        contentPadding: EdgeInsets.only(bottom: 3, left: 10),
                         filled: true,
                         fillColor: Colors.white,
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        floatingLabelBehavior: FloatingLabelBehavior.always,
                         labelText: 'First Name',
-                        suffixIcon: _fnHasError
-                            ? const Icon(Icons.error, color: Colors.red)
-                            : const Icon(Icons.check, color: Colors.green),
+                        hintText: 'Enter First Name',
+                        hintStyle: const TextStyle(
+                          fontSize: 12,
+                          fontFamily: 'Montserrat',
+                          fontWeight: FontWeight.bold,
+                          color: Color.fromARGB(255, 117, 113, 113),
+                        ),
+                        // suffixIcon: _fnHasError
+                        //     ? const Icon(Icons.error, color: Colors.red)
+                        //     : const Icon(Icons.check, color: Colors.green),
                       ),
                       onChanged: (val) {
                         setState(() {
-                          _fnHasError = !(_formKey.currentState?.fields['firstname']
-                                  ?.validate() != null ? true:
-                              false);
+                          _fnHasError = !(_formKey
+                                      .currentState?.fields['firstname']
+                                      ?.validate() !=
+                                  null
+                              ? true
+                              : false);
                         });
                       },
                       // valueTransformer: (text) => num.tryParse(text),
@@ -200,21 +215,36 @@ class _RegChildState extends State<RegChild> {
                     ),
                     const SizedBox(height: 10),
                     FormBuilderTextField(
-                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      autovalidateMode: AutovalidateMode.disabled,
                       name: 'lastname',
                       decoration: InputDecoration(
+                        contentPadding: EdgeInsets.only(bottom: 3, left: 10),
                         filled: true,
                         fillColor: Colors.white,
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        floatingLabelBehavior: FloatingLabelBehavior.always,
                         labelText: 'Last Name',
-                        suffixIcon: _lnHasError
-                            ? const Icon(Icons.error, color: Colors.red)
-                            : const Icon(Icons.check, color: Colors.green),
+                        hintText: 'Enter Last Name',
+                        hintStyle: const TextStyle(
+                          fontSize: 12,
+                          fontFamily: 'Montserrat',
+                          fontWeight: FontWeight.bold,
+                          color: Color.fromARGB(255, 117, 113, 113),
+                        ),
+                        // suffixIcon: _lnHasError
+                        //     ? const Icon(Icons.error, color: Colors.red)
+                        //     : const Icon(Icons.check, color: Colors.green),
                       ),
                       onChanged: (val) {
                         setState(() {
-                          _lnHasError = !(_formKey.currentState?.fields['lastname']
-                                  ?.validate() != null ? true:
-                              false);
+                          _lnHasError = !(_formKey
+                                      .currentState?.fields['lastname']
+                                      ?.validate() !=
+                                  null
+                              ? true
+                              : false);
                         });
                       },
                       // valueTransformer: (text) => num.tryParse(text),
@@ -228,21 +258,36 @@ class _RegChildState extends State<RegChild> {
                     ),
                     const SizedBox(height: 10),
                     FormBuilderTextField(
-                      autovalidateMode: AutovalidateMode.always,
+                      autovalidateMode: AutovalidateMode.disabled,
                       name: 'cellnumber',
                       decoration: InputDecoration(
+                        contentPadding: EdgeInsets.only(bottom: 3, left: 10),
                         filled: true,
                         fillColor: Colors.white,
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        floatingLabelBehavior: FloatingLabelBehavior.always,
                         labelText: 'Contact Number',
-                        suffixIcon: _cnHasError
-                            ? const Icon(Icons.error, color: Colors.red)
-                            : const Icon(Icons.check, color: Colors.green),
+                        hintText: 'Enter Contact Number',
+                        hintStyle: const TextStyle(
+                          fontSize: 12,
+                          fontFamily: 'Montserrat',
+                          fontWeight: FontWeight.bold,
+                          color: Color.fromARGB(255, 117, 113, 113),
+                        ),
+                        // suffixIcon: _cnHasError
+                        //     ? const Icon(Icons.error, color: Colors.red)
+                        //     : const Icon(Icons.check, color: Colors.green),
                       ),
                       onChanged: (val) {
                         setState(() {
-                          _cnHasError = !(_formKey.currentState?.fields['cellnumber']
-                                  ?.validate() != null ? true:
-                              false);
+                          _cnHasError = !(_formKey
+                                      .currentState?.fields['cellnumber']
+                                      ?.validate() !=
+                                  null
+                              ? true
+                              : false);
                         });
                       },
                       // valueTransformer: (text) => num.tryParse(text),
@@ -254,21 +299,36 @@ class _RegChildState extends State<RegChild> {
                     ),
                     const SizedBox(height: 10),
                     FormBuilderTextField(
-                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      autovalidateMode: AutovalidateMode.disabled,
                       name: 'email',
                       decoration: InputDecoration(
+                        contentPadding: EdgeInsets.only(bottom: 3, left: 10),
                         filled: true,
                         fillColor: Colors.white,
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        floatingLabelBehavior: FloatingLabelBehavior.always,
                         labelText: 'Email',
-                        suffixIcon: _emailHasError
-                            ? const Icon(Icons.error, color: Colors.red)
-                            : const Icon(Icons.check, color: Colors.green),
+                        hintText: 'Enter Email',
+                        hintStyle: const TextStyle(
+                          fontSize: 12,
+                          fontFamily: 'Montserrat',
+                          fontWeight: FontWeight.bold,
+                          color: Color.fromARGB(255, 117, 113, 113),
+                        ),
+                        // suffixIcon: _emailHasError
+                        //     ? const Icon(Icons.error, color: Colors.red)
+                        //     : const Icon(Icons.check, color: Colors.green),
                       ),
                       onChanged: (val) {
                         setState(() {
-                          _emailHasError = !(_formKey.currentState?.fields['email']
-                                  ?.validate() != null ? true:
-                              false);
+                          _emailHasError = !(_formKey
+                                      .currentState?.fields['email']
+                                      ?.validate() !=
+                                  null
+                              ? true
+                              : false);
                         });
                       },
                       // valueTransformer: (text) => num.tryParse(text),
@@ -282,22 +342,37 @@ class _RegChildState extends State<RegChild> {
                     const SizedBox(height: 10),
                     FormBuilderTextField(
                       obscureText: true,
-                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      autovalidateMode: AutovalidateMode.disabled,
                       name: 'password',
                       decoration: InputDecoration(
+                        contentPadding: EdgeInsets.only(bottom: 3, left: 10),
                         filled: true,
                         fillColor: Colors.white,
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        floatingLabelBehavior: FloatingLabelBehavior.always,
                         labelText: 'Password',
-                        suffixIcon: _pwordHasError
-                            ? const Icon(Icons.error, color: Colors.red)
-                            : const Icon(Icons.check, color: Colors.green),
+                        hintText: 'Enter Password',
+                        hintStyle: const TextStyle(
+                          fontSize: 12,
+                          fontFamily: 'Montserrat',
+                          fontWeight: FontWeight.bold,
+                          color: Color.fromARGB(255, 117, 113, 113),
+                        ),
+                        // suffixIcon: _pwordHasError
+                        //     ? const Icon(Icons.error, color: Colors.red)
+                        //     : const Icon(Icons.check, color: Colors.green),
                       ),
                       onChanged: (val) {
                         setState(() {
                           pword = _formKey.currentState?.value['password'];
-                          _pwordHasError = !(_formKey.currentState?.fields['password']
-                                  ?.validate() != null ? true:
-                              false);
+                          _pwordHasError = !(_formKey
+                                      .currentState?.fields['password']
+                                      ?.validate() !=
+                                  null
+                              ? true
+                              : false);
                         });
                       },
                       // valueTransformer: (text) => num.tryParse(text),
@@ -310,21 +385,36 @@ class _RegChildState extends State<RegChild> {
                     const SizedBox(height: 10),
                     FormBuilderTextField(
                       obscureText: true,
-                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      autovalidateMode: AutovalidateMode.disabled,
                       name: 'cpassword',
                       decoration: InputDecoration(
+                        contentPadding: EdgeInsets.only(bottom: 3, left: 10),
                         filled: true,
                         fillColor: Colors.white,
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        floatingLabelBehavior: FloatingLabelBehavior.always,
                         labelText: 'Confirm Password',
-                        suffixIcon: _cpwordHasError
-                            ? const Icon(Icons.error, color: Colors.red)
-                            : const Icon(Icons.check, color: Colors.green),
+                        hintText: 'Confirm Password',
+                        hintStyle: const TextStyle(
+                          fontSize: 12,
+                          fontFamily: 'Montserrat',
+                          fontWeight: FontWeight.bold,
+                          color: Color.fromARGB(255, 117, 113, 113),
+                        ),
+                        // suffixIcon: _cpwordHasError
+                        //     ? const Icon(Icons.error, color: Colors.red)
+                        //     : const Icon(Icons.check, color: Colors.green),
                       ),
                       onChanged: (val) {
                         setState(() {
-                          _cpwordHasError = !(_formKey.currentState?.fields['cpassword']
-                                  ?.validate() != null ? true:
-                              false);
+                          _cpwordHasError = !(_formKey
+                                      .currentState?.fields['cpassword']
+                                      ?.validate() !=
+                                  null
+                              ? true
+                              : false);
                         });
                       },
                       // valueTransformer: (text) => num.tryParse(text),
@@ -343,8 +433,13 @@ class _RegChildState extends State<RegChild> {
                       initialValue: DateTime.now(),
                       inputType: InputType.date,
                       decoration: InputDecoration(
+                        contentPadding: EdgeInsets.only(bottom: 3, left: 10),
                         filled: true,
                         fillColor: Colors.white,
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        floatingLabelBehavior: FloatingLabelBehavior.always,
                         labelText: 'Date of Birth',
                         suffixIcon: IconButton(
                           icon: const Icon(Icons.close),
@@ -358,21 +453,36 @@ class _RegChildState extends State<RegChild> {
                     ),
                     const SizedBox(height: 10),
                     FormBuilderTextField(
-                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      autovalidateMode: AutovalidateMode.disabled,
                       name: 'address',
                       decoration: InputDecoration(
+                        contentPadding: EdgeInsets.only(bottom: 3, left: 10),
                         filled: true,
                         fillColor: Colors.white,
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        floatingLabelBehavior: FloatingLabelBehavior.always,
                         labelText: 'Complete Address',
-                        suffixIcon: _addressHasError
-                            ? const Icon(Icons.error, color: Colors.red)
-                            : const Icon(Icons.check, color: Colors.green),
+                        hintText: 'Enter Complete Address',
+                        hintStyle: const TextStyle(
+                          fontSize: 12,
+                          fontFamily: 'Montserrat',
+                          fontWeight: FontWeight.bold,
+                          color: Color.fromARGB(255, 117, 113, 113),
+                        ),
+                        // suffixIcon: _addressHasError
+                        //     ? const Icon(Icons.error, color: Colors.red)
+                        //     : const Icon(Icons.check, color: Colors.green),
                       ),
                       onChanged: (val) {
                         setState(() {
-                          _addressHasError = !(_formKey.currentState?.fields['address']
-                                  ?.validate() != null ? true:
-                              false);
+                          _addressHasError = !(_formKey
+                                      .currentState?.fields['address']
+                                      ?.validate() !=
+                                  null
+                              ? true
+                              : false);
                         });
                       },
                       // valueTransformer: (text) => num.tryParse(text),
@@ -387,14 +497,25 @@ class _RegChildState extends State<RegChild> {
                       // autovalidate: true,
                       name: 'honorific',
                       decoration: InputDecoration(
+                        contentPadding: EdgeInsets.only(bottom: 3, left: 10),
                         filled: true,
                         fillColor: Colors.white,
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        floatingLabelBehavior: FloatingLabelBehavior.always,
                         labelText: 'Title/Honorific',
-                        suffix: _honorificHasError
-                            ? const Icon(Icons.error)
-                            : const Icon(Icons.check),
+                        hintText: 'Select Honorific',
+                        hintStyle: const TextStyle(
+                          fontSize: 12,
+                          fontFamily: 'Montserrat',
+                          fontWeight: FontWeight.bold,
+                          color: Color.fromARGB(255, 117, 113, 113),
+                        ),
+                        // suffix: _honorificHasError
+                        //     ? const Icon(Icons.error)
+                        //     : const Icon(Icons.check),
                       ),
-                      allowClear: true,
                       // hint: const Text('Select User'),
                       validator: FormBuilderValidators.compose(
                           [FormBuilderValidators.required()]),
@@ -408,9 +529,11 @@ class _RegChildState extends State<RegChild> {
                       onChanged: (val) {
                         setState(() {
                           _honorificHasError = !(_formKey
-                                  .currentState?.fields['honorific']
-                                  ?.validate() != null ? true:
-                              false);
+                                      .currentState?.fields['honorific']
+                                      ?.validate() !=
+                                  null
+                              ? true
+                              : false);
                         });
                       },
                       valueTransformer: (val) => val?.toString(),
@@ -420,14 +543,25 @@ class _RegChildState extends State<RegChild> {
                       // autovalidate: true,
                       name: 'usertype',
                       decoration: InputDecoration(
+                        contentPadding: EdgeInsets.only(bottom: 3, left: 10),
                         filled: true,
                         fillColor: Colors.white,
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        floatingLabelBehavior: FloatingLabelBehavior.always,
                         labelText: 'User Type',
-                        suffix: _userTypeHasError
-                            ? const Icon(Icons.error)
-                            : const Icon(Icons.check),
+                        hintText: 'Select User Type',
+                        hintStyle: const TextStyle(
+                          fontSize: 12,
+                          fontFamily: 'Montserrat',
+                          fontWeight: FontWeight.bold,
+                          color: Color.fromARGB(255, 117, 113, 113),
+                        ),
+                        // suffix: _userTypeHasError
+                        //     ? const Icon(Icons.error)
+                        //     : const Icon(Icons.check),
                       ),
-                      allowClear: true,
                       // hint: const Text('Select User'),
                       validator: FormBuilderValidators.compose(
                           [FormBuilderValidators.required()]),
@@ -441,10 +575,13 @@ class _RegChildState extends State<RegChild> {
                       onChanged: (val) {
                         setState(() {
                           _userTypeHasError = !(_formKey
-                                  .currentState?.fields['usertype']
-                                  ?.validate() != null ? true:
-                              false);
-                          idno = getIdNo(setIndicator(_formKey.currentState?.value['usertype']));
+                                      .currentState?.fields['usertype']
+                                      ?.validate() !=
+                                  null
+                              ? true
+                              : false);
+                          idno = getIdNo(setIndicator(
+                              _formKey.currentState?.value['usertype']));
                         });
                       },
                       valueTransformer: (val) => val?.toString(),
@@ -452,48 +589,72 @@ class _RegChildState extends State<RegChild> {
                   ],
                 ),
               ),
+              const SizedBox(height: 20),
               Row(
-                children: <Widget>[
-                  Expanded(
-                    child: ElevatedButton(
-                      style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Color.fromARGB(255, 9, 117, 8))),
-                      onPressed: () async {
-                        if (_formKey.currentState?.saveAndValidate() ?? false) {
-                          debugPrint(_formKey.currentState!.value.toString());
-                          newUser = _formKey.currentState!.value;
-                          Map<String, dynamic> cloneMap = {...newUser};
-                          cloneMap['idno'] = idno;
-                          cloneMap['image'] = '';
-                          cloneMap['about'] = '';
-                          if (idno.startsWith('S', 0)) cloneMap['products'] = <String>[];
-                          // print(cloneMap);
-                          await db.createUser(cloneMap).then((value) => Get.off(const LoginParent()));
-                        } else {
-                          debugPrint(_formKey.currentState?.value.toString());
-                          debugPrint('Validation failed');
-                        }
-                      },
-                      child: const Text(
-                        'SUBMIT',
-                        style: TextStyle(color: Colors.white),
-                      ),
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  ElevatedButton(
+                    style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all(
+                            Color.fromARGB(255, 9, 117, 8)),
+                        padding: MaterialStateProperty.all(
+                            EdgeInsets.symmetric(horizontal: 50)),
+                        shape:
+                            MaterialStateProperty.all<RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20),
+                        ))),
+                    onPressed: () async {
+                      if (_formKey.currentState?.saveAndValidate() ?? false) {
+                        debugPrint(_formKey.currentState!.value.toString());
+                        newUser = _formKey.currentState!.value;
+                        Map<String, dynamic> cloneMap = {...newUser};
+                        cloneMap['idno'] = idno;
+                        cloneMap['image'] = '';
+                        cloneMap['about'] = '';
+                        if (idno.startsWith('S', 0))
+                          cloneMap['products'] = <String>[];
+                        // print(cloneMap);
+                        await db
+                            .createUser(cloneMap)
+                            .then((value) => Get.off(const LoginParent()));
+                      } else {
+                        debugPrint(_formKey.currentState?.value.toString());
+                        debugPrint('Validation failed');
+                      }
+                    },
+                    child: const Text(
+                      'SUBMIT',
+                      style: TextStyle(
+                          fontSize: 14,
+                          fontFamily: 'Montserrat',
+                          letterSpacing: 2.2,
+                          color: Colors.white),
                     ),
                   ),
-                  const SizedBox(width: 20),
-                  Expanded(
-                    child: ElevatedButton(
-                      style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Color.fromARGB(255, 9, 117, 8))),
+                  OutlinedButton(
+                      style: ButtonStyle(
+                          backgroundColor:
+                              MaterialStateProperty.all(Colors.white),
+                          padding: MaterialStateProperty.all(
+                              EdgeInsets.symmetric(horizontal: 50)),
+                          elevation: MaterialStateProperty.all(2),
+                          shape:
+                              MaterialStateProperty.all<RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
+                          ))),
                       onPressed: () {
                         Get.off(const LoginParent());
                       },
-                      child: Text(
+                      child: const Text(
                         'CANCEL',
                         style: TextStyle(
-                            color: Colors.white,
-                        ),
-                      ),
-                    ),
-                  )
+                            fontSize: 14,
+                            fontFamily: 'Montserrat',
+                            letterSpacing: 2.2,
+                            color: Color.fromARGB(255, 111, 174, 23)),
+                      ))
                 ],
               ),
             ],

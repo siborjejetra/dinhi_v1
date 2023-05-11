@@ -12,31 +12,28 @@ String url = '';
 
 LocalStorage localStorage = LocalStorage('user');
 
-
 class Database {
-
   Future<void> createUser(Map<String, dynamic> newUser) async {
-
     try {
-      await FirebaseFirestore.instance
-          .collection("users").add(newUser); 
+      await FirebaseFirestore.instance.collection("users").add(newUser);
     } catch (e) {
       print(e);
     }
   }
 
-  Future<Map<String,dynamic>> createProduct(
-    String userIdno,
-    File? inputImage, 
-    String name, 
-    String price,
-    String unit,
-    String description,
-    Timestamp expiration,
-    Map<dynamic,dynamic> userDetails) async {
+  Future<Map<String, dynamic>> createProduct(
+      String userIdno,
+      File? inputImage,
+      String name,
+      String price,
+      String unit,
+      String description,
+      Timestamp expiration,
+      Map<dynamic, dynamic> userDetails) async {
     Map<String, dynamic> cloneMap = {};
     try {
-      final ref = FirebaseStorage.instance.ref()
+      final ref = FirebaseStorage.instance
+          .ref()
           .child('productImages')
           .child('${DateTime.now()}');
 
@@ -45,27 +42,27 @@ class Database {
 
       url = await ref.getDownloadURL();
 
-      final docProduct = FirebaseFirestore.instance
-          .collection("products").doc();
+      final docProduct =
+          FirebaseFirestore.instance.collection("products").doc();
 
       Map<String, dynamic> newProduct = {
-        'image' : url,
-        'productId' : docProduct.id,
-        'name' : name,
-        'price' : price,
-        'unit' : unit,
-        'description' : description,
-        'rating' : '0',
-        'expiration' : expiration
+        'image': url,
+        'productId': docProduct.id,
+        'name': name,
+        'price': price,
+        'unit': unit,
+        'description': description,
+        'rating': '0',
+        'expiration': expiration
       };
 
       addProductArray(userIdno, newProduct['productId']).then((value) {
         userDetails['products'] = value;
         cloneMap = {...userDetails};
         print(cloneMap);
-        });
+      });
       print(cloneMap);
-      await docProduct.set(newProduct); 
+      await docProduct.set(newProduct);
       return cloneMap;
     } catch (e) {
       print(e);
@@ -75,33 +72,35 @@ class Database {
 
   Future<List> addProductArray(String userId, String productIdno) async {
     List<String> products = [];
-    try{
+    try {
       var collectionRef = FirebaseFirestore.instance.collection('users');
       final doc = await collectionRef.doc(userId).get();
       var docUser = await collectionRef.doc(userId);
-      if(doc.data()!['usertype'] == 'Seller'){
+      if (doc.data()!['usertype'] == 'Seller') {
         // print(doc.data()!['products']);
         List<dynamic> newProducts = doc.data()!['products'];
-        for (var a in newProducts){
+        for (var a in newProducts) {
           products.add(a.toString());
         }
         products.add(productIdno);
         docUser.update({'products': products});
       }
       return products;
-    }
-    catch (e){
+    } catch (e) {
       print(e);
     }
     return products;
   }
 
-  Future<Map> editUser(Map<String,dynamic> newUserMap, File? inputImage) async {
+  Future<Map> editUser(
+      Map<String, dynamic> newUserMap, File? inputImage) async {
     String userID = localStorage.getItem('userID');
+    print(userID);
     // Map<String, dynamic> newUserMapDB = {};
-    try{
-      if(inputImage != null){
-        final ref = FirebaseStorage.instance.ref()
+    try {
+      if (inputImage != null) {
+        final ref = FirebaseStorage.instance
+            .ref()
             .child('userImages')
             .child('${DateTime.now()}');
 
@@ -109,9 +108,9 @@ class Database {
         await ref.putFile(File(inputImage.path));
 
         url = await ref.getDownloadURL();
+        print(url);
         newUserMap['image'] = url;
       }
-      
 
       var collectionRef = FirebaseFirestore.instance.collection('users');
       final doc = await collectionRef.doc(userID).get();
@@ -120,7 +119,8 @@ class Database {
       newUserMap['password'] = doc.data()!['password'];
       newUserMap['honorific'] = doc.data()!['honorific'];
       newUserMap['idno'] = doc.data()!['idno'];
-      if (doc.data()!['usertype'] == 'Seller'){
+      print(newUserMap['idno']);
+      if (doc.data()!['usertype'] == 'Seller') {
         newUserMap['products'] = doc.data()!['products'];
       }
 
@@ -128,9 +128,7 @@ class Database {
 
       print(newUserMap);
       return newUserMap;
-
-    }
-    catch (e){
+    } catch (e) {
       print(e);
     }
     // print(newUserMapDB);
@@ -139,18 +137,19 @@ class Database {
 
   Future<List> readUsers() async {
     QuerySnapshot querySnapshot;
-    List docs=[];
+    List docs = [];
     try {
-      querySnapshot = await FirebaseFirestore.instance.collection('users').get();
-      if(querySnapshot.docs.isNotEmpty) {
+      querySnapshot =
+          await FirebaseFirestore.instance.collection('users').get();
+      if (querySnapshot.docs.isNotEmpty) {
         for (var doc in querySnapshot.docs.toList()) {
           Map a = {
-            "id": doc.id, 
-            "email": doc['email'], 
+            "id": doc.id,
+            "email": doc['email'],
             "password": doc['password'],
             "firstname": doc['firstname'],
             "lastname": doc['lastname'],
-            "honorific" : doc['honorific'],
+            "honorific": doc['honorific'],
             "idno": doc['idno'],
             "usertype": doc['usertype'],
             "cellnumber": doc['cellnumber'],
@@ -158,20 +157,19 @@ class Database {
             "address": doc['address'],
             "image": doc['image'],
             "about": doc['about']
-            };
+          };
 
-            if (doc['usertype'] == 'Seller'){
-              a['products'] = doc['products'];
-            }else{
-              a['products'] = null;
-            }
-          
+          if (doc['usertype'] == 'Seller') {
+            a['products'] = doc['products'];
+          } else {
+            a['products'] = null;
+          }
+
           docs.add(a);
         }
         return docs;
       }
-    }
-    catch (e){
+    } catch (e) {
       print(e);
     }
     return docs;
@@ -179,49 +177,49 @@ class Database {
 
   Future<List> readProducts() async {
     QuerySnapshot querySnapshot;
-    List docs=[];
+    List docs = [];
     try {
-      querySnapshot = await FirebaseFirestore.instance.collection('products').get();
-      if(querySnapshot.docs.isNotEmpty) {
+      querySnapshot =
+          await FirebaseFirestore.instance.collection('products').get();
+      if (querySnapshot.docs.isNotEmpty) {
         for (var doc in querySnapshot.docs.toList()) {
           Map b = {
-            "id": doc.id, 
-            "name": doc['name'], 
+            "id": doc.id,
+            "name": doc['name'],
             "price": doc['price'],
             "unit": doc['unit'],
             "description": doc['description'],
             "image": doc['image'],
             "rating": doc['rating'],
             "expiration": doc['expiration']
-            };
+          };
           docs.add(b);
         }
         return docs;
       }
-    }
-    catch (e){
+    } catch (e) {
       print(e);
     }
     return docs;
   }
 
-
-  Future<Map> storeUser (String userId) async{
+  Future<Map> storeUser(String userId) async {
     // List<dynamic> userList = await readUsers();
     QuerySnapshot querySnapshot;
     Map userDeets = {};
-    try{
-      querySnapshot = await FirebaseFirestore.instance.collection('users').get();
-      if(querySnapshot.docs.isNotEmpty){
+    try {
+      querySnapshot =
+          await FirebaseFirestore.instance.collection('users').get();
+      if (querySnapshot.docs.isNotEmpty) {
         for (var doc in querySnapshot.docs.toList()) {
-          if (doc.id == userId){
+          if (doc.id == userId) {
             userDeets = {
-              "id": doc.id, 
-              "email": doc['email'], 
+              "id": doc.id,
+              "email": doc['email'],
               "password": doc['password'],
               "firstname": doc['firstname'],
               "lastname": doc['lastname'],
-              "honorific" : doc['honorific'],
+              "honorific": doc['honorific'],
               "idno": doc['idno'],
               "usertype": doc['usertype'],
               "cellnumber": doc['cellnumber'],
@@ -230,21 +228,19 @@ class Database {
               "image": doc['image'],
               "about": doc['about']
             };
-            if (doc['usertype'] == 'Seller'){
-                userDeets['products'] = List<String>.from(doc['products']);
-              }else{
-                userDeets['products'] = null;
+            if (doc['usertype'] == 'Seller') {
+              userDeets['products'] = List<String>.from(doc['products']);
+            } else {
+              userDeets['products'] = null;
             }
           }
         }
       }
       print(userDeets);
       return userDeets;
-    }catch(e){
+    } catch (e) {
       print(e);
     }
     return userDeets;
   }
-
-
 }

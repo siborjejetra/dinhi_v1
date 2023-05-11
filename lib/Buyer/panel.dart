@@ -12,12 +12,13 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:localstorage/localstorage.dart';
 
-
 LocalStorage localStorage = new LocalStorage('user');
 
-var buttonStyle = ButtonStyle(backgroundColor: MaterialStateProperty.all(Color.fromARGB(255, 111, 174, 23)));
+var buttonStyle = ButtonStyle(
+    backgroundColor:
+        MaterialStateProperty.all(Color.fromARGB(255, 111, 174, 23)));
 
-Widget topOpenWidget (User user) {
+Widget topOpenWidget(User user) {
   return Container(
     margin: const EdgeInsets.symmetric(vertical: 10),
     decoration: const BoxDecoration(
@@ -26,7 +27,7 @@ Widget topOpenWidget (User user) {
     ),
     child: Center(
       child: Text(
-        user.firstname[0]+user.lastname[0],
+        user.firstname[0] + user.lastname[0],
         style: TextStyle(
           fontSize: 40,
           color: Colors.white,
@@ -35,20 +36,21 @@ Widget topOpenWidget (User user) {
     ),
   );
 }
+
 var bottomOpenWidget = Padding(
   padding: const EdgeInsets.all(8.0),
   child: Row(
     children: const [
       Text('DINHI'),
       Spacer(),
-      Text('© 2022'),
+      Text('© 2023'),
       Spacer(),
     ],
   ),
 );
 
 var bottomSmallWidget = const Center(
-  child: Text('© 2022'),
+  child: Text('© 2023'),
 );
 
 var topSmallWidget = Container(
@@ -66,22 +68,17 @@ var topSmallWidget = Container(
 );
 
 final SideBarTile tile1 = SideBarTile(
-      title: const Text(
-        'Home',
-        style: TextStyle(
-          color: Colors.white,
-          fontSize: 20,
-          fontFamily: 'Montserrat'
-        ),
-      ),
-      icon: Icons.home,
-      body: ViewAllProdParent(),
-      name: 'Home',
-    );
+  title: const Text(
+    'Home',
+    style:
+        TextStyle(color: Colors.white, fontSize: 20, fontFamily: 'Montserrat'),
+  ),
+  icon: Icons.home,
+  body: ViewAllProdParent(),
+  name: 'Home',
+);
 
-
-
-List<SideTile> returnTiles(BuildContext context, User user){
+List<SideTile> returnTiles(BuildContext context, User user) {
   late final List<SideTile> tiles = [
     tile1,
     SideBarTile(
@@ -93,7 +90,9 @@ List<SideTile> returnTiles(BuildContext context, User user){
         ),
       ),
       icon: Icons.person,
-      body: ProfileParent(user: user,),
+      body: ProfileParent(
+        user: user,
+      ),
       name: 'Profile',
     ),
     SideBarTile(
@@ -134,56 +133,7 @@ List<SideTile> returnTiles(BuildContext context, User user){
         ),
       ),
       icon: IconData(0xf88b, fontFamily: 'MaterialIcons'),
-      body: Center(
-        child: AlertDialog(
-          backgroundColor: Colors.white,
-          title: const Text(
-            'Log-out', 
-            style: TextStyle(
-              fontFamily: "Montserrat",
-              fontWeight: FontWeight.bold,
-              color: Colors.black,
-              fontSize: 20
-            ),
-          ),
-          content: const Text(
-            'Are you sure you want to log-out?',
-            style: TextStyle(
-              fontFamily: "Montserrat",
-              color: Colors.black,
-              fontSize: 14
-            )
-          ),
-          actions: <Widget>[
-            ElevatedButton(
-              style: buttonStyle,
-              onPressed: () {
-                localStorage.clear();
-                Get.off(const LoginParent());
-              },
-              child: const Text('Yes',
-                style: TextStyle(
-                  fontFamily: "Montserrat",
-                  color: Colors.black,
-                  fontSize: 14
-                )
-              ),
-            ),
-            ElevatedButton(
-              style: buttonStyle,
-              onPressed: () {
-                Get.back();
-              },
-              child: const Text('No',
-                style: TextStyle(
-                  fontFamily: "Montserrat",
-                  color: Colors.black,
-                  fontSize: 14
-                )
-              )
-            ),
-          ]),
-      ),
+      body: Center(child: buildAlertDialog(buttonStyle, localStorage)),
       name: 'Logout',
     )
   ];
