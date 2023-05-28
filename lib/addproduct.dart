@@ -40,12 +40,13 @@ class ProductChild extends StatefulWidget {
 class _ProductChildState extends State<ProductChild> {
   String text = '';
   final title = 'Add Product';
-  TextEditingController nameController = new TextEditingController(); 
+  TextEditingController nameController = new TextEditingController();
   TextEditingController priceController = new TextEditingController();
+  TextEditingController quantityController = new TextEditingController();
   TextEditingController descriptionController = new TextEditingController();
   TextEditingController unitController = new TextEditingController();
   TextEditingController expDateController = new TextEditingController();
-  
+
   LocalStorage localStorage = LocalStorage('user');
 
   File? inputImage;
@@ -55,11 +56,10 @@ class _ProductChildState extends State<ProductChild> {
   Database db = Database();
 
   @override
-  void initState(){
+  void initState() {
     super.initState();
   }
 
-  
   @override
   Widget build(BuildContext context) {
     Map userDetails = widget.userMap;
@@ -69,7 +69,7 @@ class _ProductChildState extends State<ProductChild> {
       body: Container(
         padding: EdgeInsets.all(10),
         child: GestureDetector(
-          onTap: (){
+          onTap: () {
             FocusScope.of(context).unfocus();
           },
           child: Center(
@@ -81,22 +81,29 @@ class _ProductChildState extends State<ProductChild> {
                 Material(
                   color: Colors.transparent,
                   child: Ink(
-                    child: InkWell(
-                      child: inputImage != null ? Image.file(inputImage!, 
-                        width: 128,
-                        height:128,): Image.asset('assets/images/AddImage.png', 
-                        width: 128,
-                        height:128,),
-                      onTap: () {
-                        pickImage(ImageSource.gallery);
-                      },
-                    )
-                  ),
+                      child: InkWell(
+                    child: inputImage != null
+                        ? Image.file(
+                            inputImage!,
+                            width: 128,
+                            height: 128,
+                          )
+                        : Image.asset(
+                            'assets/images/AddImage.png',
+                            width: 128,
+                            height: 128,
+                          ),
+                    onTap: () {
+                      pickImage(ImageSource.gallery);
+                    },
+                  )),
                 ),
                 const SizedBox(height: 20),
                 buildTextField('Name', nameController),
                 const SizedBox(height: 20),
                 buildTextField('Price', priceController),
+                const SizedBox(height: 20),
+                buildTextField('Quantity', quantityController),
                 const SizedBox(height: 20),
                 buildTextField('Unit', unitController),
                 const SizedBox(height: 20),
@@ -124,68 +131,66 @@ class _ProductChildState extends State<ProductChild> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     ElevatedButton(
-                      style:ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all(Color.fromARGB(255, 111, 174, 23)),
-                        padding:MaterialStateProperty.all(EdgeInsets.symmetric(horizontal: 50)),
-                        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                          RoundedRectangleBorder(
+                      style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all(
+                              Color.fromARGB(255, 111, 174, 23)),
+                          padding: MaterialStateProperty.all(
+                              EdgeInsets.symmetric(horizontal: 50)),
+                          shape:
+                              MaterialStateProperty.all<RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(20),
-                          )
-                        )
-                      ),
+                          ))),
                       onPressed: () {
-                        db.createProduct(
-                          localStorage.getItem('userID'),
-                          inputImage,
-                          nameController.text,
-                          priceController.text,
-                          unitController.text,
-                          descriptionController.text,
-                          Timestamp.fromDate(DateTime.now()),
-                          userDetails).then(
-                            (cloneMap) {
-                              print('Here');
-                              print(cloneMap);
-                              Get.to(HomeSellerParent(userMap: cloneMap));}
-                          );
-                          // Timestamp.fromDate(DateTime.parse(expDateController.text))
-                        
-                        
-                      }, 
+                        db
+                            .createProduct(
+                                localStorage.getItem('userID'),
+                                inputImage,
+                                nameController.text,
+                                priceController.text,
+                                quantityController.text,
+                                unitController.text,
+                                descriptionController.text,
+                                Timestamp.fromDate(DateTime.now()),
+                                userDetails)
+                            .then((cloneMap) {
+                          print('Here');
+                          print(cloneMap);
+                          Get.to(HomeSellerParent(userMap: cloneMap));
+                        });
+                        // Timestamp.fromDate(DateTime.parse(expDateController.text))
+                      },
                       child: const Text(
                         'SAVE',
                         style: TextStyle(
-                          fontSize: 14,
-                          fontFamily: 'Montserrat',
-                          letterSpacing: 2.2,
-                          color: Colors.white
-                        ),
+                            fontSize: 14,
+                            fontFamily: 'Montserrat',
+                            letterSpacing: 2.2,
+                            color: Colors.white),
                       ),
                     ),
                     OutlinedButton(
-                      style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all(Colors.white),
-                        padding:MaterialStateProperty.all(EdgeInsets.symmetric(horizontal: 50)),
-                        elevation: MaterialStateProperty.all(2), 
-                        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                          RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20),
-                          )
-                        )
-                      ),
-                      onPressed: (){
-                        Get.back();
-                      }, 
-                      child: const Text(
-                        'CANCEL',
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontFamily: 'Montserrat',
-                          letterSpacing: 2.2,
-                          color: Color.fromARGB(255, 111, 174, 23)
-                        ),
-                      )
-                    )
+                        style: ButtonStyle(
+                            backgroundColor:
+                                MaterialStateProperty.all(Colors.white),
+                            padding: MaterialStateProperty.all(
+                                EdgeInsets.symmetric(horizontal: 50)),
+                            elevation: MaterialStateProperty.all(2),
+                            shape: MaterialStateProperty.all<
+                                RoundedRectangleBorder>(RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20),
+                            ))),
+                        onPressed: () {
+                          Get.back();
+                        },
+                        child: const Text(
+                          'CANCEL',
+                          style: TextStyle(
+                              fontSize: 14,
+                              fontFamily: 'Montserrat',
+                              letterSpacing: 2.2,
+                              color: Color.fromARGB(255, 111, 174, 23)),
+                        ))
                   ],
                 )
               ],
@@ -193,29 +198,29 @@ class _ProductChildState extends State<ProductChild> {
           ),
         ),
       ),
-    );;
+    );
+    ;
   }
 
-  Widget buildTextField(String label, TextEditingController controller){
+  Widget buildTextField(String label, TextEditingController controller) {
     return TextField(
-      controller: controller,
-      decoration: InputDecoration(
-        filled: true,
-        fillColor: Colors.white,
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-        ),
-        contentPadding: EdgeInsets.only(bottom: 3, left: 10),
-        floatingLabelBehavior: FloatingLabelBehavior.always,
-        labelText: label,
-        hintStyle: const TextStyle(
-          fontSize: 16,
-          fontFamily: 'Montserrat',
-          fontWeight: FontWeight.bold,
-          color: Colors.black,
-        ),
-      )
-    );
+        controller: controller,
+        decoration: InputDecoration(
+          filled: true,
+          fillColor: Colors.white,
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+          contentPadding: EdgeInsets.only(bottom: 3, left: 10),
+          floatingLabelBehavior: FloatingLabelBehavior.always,
+          labelText: label,
+          hintStyle: const TextStyle(
+            fontSize: 16,
+            fontFamily: 'Montserrat',
+            fontWeight: FontWeight.bold,
+            color: Colors.black,
+          ),
+        ));
   }
 
   Future pickImage(ImageSource source) async {

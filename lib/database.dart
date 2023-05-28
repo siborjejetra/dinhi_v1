@@ -26,6 +26,7 @@ class Database {
       File? inputImage,
       String name,
       String price,
+      String quantity,
       String unit,
       String description,
       Timestamp expiration,
@@ -50,6 +51,7 @@ class Database {
         'productId': docProduct.id,
         'name': name,
         'price': price,
+        "quantity": quantity,
         'unit': unit,
         'description': description,
         'rating': '0',
@@ -188,6 +190,7 @@ class Database {
             "name": doc['name'],
             "price": doc['price'],
             "unit": doc['unit'],
+            "quantity": doc['quantity'],
             "description": doc['description'],
             "image": doc['image'],
             "rating": doc['rating'],
@@ -242,5 +245,27 @@ class Database {
       print(e);
     }
     return userDeets;
+  }
+
+  Future<List> addToCart(String userId, String productIdno) async {
+    List<String> cart = [];
+    try {
+      var collectionRef = FirebaseFirestore.instance.collection('users');
+      final doc = await collectionRef.doc(userId).get();
+      var docUser = await collectionRef.doc(userId);
+      if (doc.data()!['usertype'] == 'Buyer') {
+        // print(doc.data()!['products']);
+        List<dynamic> newCart = doc.data()!['cart'];
+        for (var a in newCart) {
+          cart.add(a.toString());
+        }
+        cart.add(productIdno);
+        docUser.update({'cart': cart});
+      }
+      return cart;
+    } catch (e) {
+      print(e);
+    }
+    return cart;
   }
 }

@@ -13,19 +13,22 @@ class User {
   final String address;
   final String idno;
   final List<String>? products;
+  final List<String>? cart;
+  final List<String>? orderlist;
 
-  const User({
-    required this.imagePath,
-    required this.firstname,
-    required this.lastname,
-    required this.email,
-    required this.password,
-    required this.cellnumber,
-    required this.honorific,
-    required this.about,
-    required this.birthday,
-    required this.address,
-    required this.idno,
-    required this.products,
-  });
+  const User(
+      {required this.imagePath,
+      required this.firstname,
+      required this.lastname,
+      required this.email,
+      required this.password,
+      required this.cellnumber,
+      required this.honorific,
+      required this.about,
+      required this.birthday,
+      required this.address,
+      required this.idno,
+      this.products,
+      this.cart,
+      this.orderlist});
 }

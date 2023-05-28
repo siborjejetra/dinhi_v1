@@ -2,12 +2,13 @@ import 'package:Dinhi_v1/model/product.dart';
 
 class ProductPreferences {
   static const myProduct = Product(
-    imagePath:
-      'https://cdn-icons-png.flaticon.com/512/680/680965.png',
+    imagePath: 'https://cdn-icons-png.flaticon.com/512/680/680965.png',
     name: 'Buko',
     price: 35,
+    quantity: 50,
     unit: 'pc.(medium-size)',
-    description: 'Fruit that contains refreshing buko juice and rich meat perfect for your fruit salad.',
+    description:
+        'Fruit that contains refreshing buko juice and rich meat perfect for your fruit salad.',
     rating: '4.5',
   );
 }

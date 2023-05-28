@@ -6,6 +6,8 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 
+import '../database.dart';
+
 class ViewProductParent extends StatelessWidget {
   final Map productMap;
   ViewProductParent({required this.productMap});
@@ -31,6 +33,8 @@ class ViewProductChild extends StatefulWidget {
 }
 
 class _ViewProductChildState extends State<ViewProductChild> {
+  Database db = Database();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -87,6 +91,20 @@ class _ViewProductChildState extends State<ViewProductChild> {
                                 fontWeight: FontWeight.bold,
                                 color: Colors.black54,
                               ),
+                            ),
+                            Text(
+                              // Insert product price and unit
+                              widget.productDetails['quantity'] +
+                                  ' ' +
+                                  widget.productDetails['unit'] +
+                                  '/s available',
+
+                              style: const TextStyle(
+                                fontSize: 20,
+                                fontFamily: 'Montserrat',
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black54,
+                              ),
                             )
                           ])),
                   const SizedBox(height: 10),
@@ -115,9 +133,9 @@ class _ViewProductChildState extends State<ViewProductChild> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      buildButton('CHAT SELLER'),
-                      buildButton('ADD TO CART'),
-                      buildButton('BUY NOW')
+                      buildButton('CHAT SELLER', widget.productDetails),
+                      buildButton('ADD TO CART', widget.productDetails),
+                      buildButton('BUY NOW', widget.productDetails)
                     ],
                   )
                 ]))));
@@ -169,7 +187,7 @@ class _ViewProductChildState extends State<ViewProductChild> {
     );
   }
 
-  Widget buildButton(String text) {
+  Widget buildButton(String text, Map prodDetails) {
     // add void onPressed as parameter later
     return ElevatedButton(
       style: ButtonStyle(
@@ -184,7 +202,7 @@ class _ViewProductChildState extends State<ViewProductChild> {
         if (text == 'CHAT SELLER') {
           ///
         } else if (text == 'ADD TO CART') {
-          ///
+          // db.addToCart()
         } else if (text == 'BUY NOW') {
           ///
         } else {
@@ -196,7 +214,7 @@ class _ViewProductChildState extends State<ViewProductChild> {
         style: TextStyle(
             fontSize: 14,
             fontFamily: 'Montserrat',
-            // letterSpacing: 2.2,
+            letterSpacing: 2.2,
             color: Colors.white),
       ),
     );

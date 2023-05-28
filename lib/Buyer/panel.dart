@@ -67,20 +67,23 @@ var topSmallWidget = Container(
   ),
 );
 
-final SideBarTile tile1 = SideBarTile(
-  title: const Text(
-    'Home',
-    style:
-        TextStyle(color: Colors.white, fontSize: 20, fontFamily: 'Montserrat'),
-  ),
-  icon: Icons.home,
-  body: ViewAllProdParent(),
-  name: 'Home',
-);
+SideBarTile buildtile1(User user, Map userDetails) {
+  return SideBarTile(
+    title: const Text(
+      'Home',
+      style: TextStyle(
+          color: Colors.white, fontSize: 20, fontFamily: 'Montserrat'),
+    ),
+    icon: Icons.home,
+    body: ViewAllProdParent(
+        userProducts: user.products, userDetails: userDetails),
+    name: 'Home',
+  );
+}
 
-List<SideTile> returnTiles(BuildContext context, User user) {
+List<SideTile> returnTiles(BuildContext context, User user, Map userMap) {
   late final List<SideTile> tiles = [
-    tile1,
+    buildtile1(user, userMap),
     SideBarTile(
       title: const Text(
         'Profile',

@@ -10,59 +10,67 @@ import 'package:get/get.dart';
 
 class HomeSellerParent extends StatelessWidget {
   const HomeSellerParent({Key? key, required this.userMap}) : super(key: key);
-  final Map<dynamic,dynamic> userMap;
-
+  final Map<dynamic, dynamic> userMap;
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(home:HomeSellerChild(userDetails: userMap));
+    return MaterialApp(home: HomeSellerChild(userDetails: userMap));
   }
 }
 
 class HomeSellerChild extends StatefulWidget {
-  const HomeSellerChild({Key? key, required this.userDetails}) : super(key: key);
-  final Map<dynamic,dynamic> userDetails;
-   
+  const HomeSellerChild({Key? key, required this.userDetails})
+      : super(key: key);
+  final Map<dynamic, dynamic> userDetails;
+
   @override
   State<HomeSellerChild> createState() => _HomeSellerChildState();
 }
 
 class _HomeSellerChildState extends State<HomeSellerChild> {
   late final User user = User(
-    imagePath: (widget.userDetails['image'] as String).isEmpty ? 'https://cdn3.iconfinder.com/data/icons/flatastic-4-1/256/user_orange-512.png': widget.userDetails['image'], 
-    firstname: widget.userDetails['firstname'], 
-    lastname: widget.userDetails['lastname'], 
-    email: widget.userDetails['email'], 
-    password: widget.userDetails['password'], 
-    cellnumber: widget.userDetails['cellnumber'], 
-    honorific: widget.userDetails['honorific'], 
-    about: (widget.userDetails['about'] as String).isEmpty ? 'Set about': widget.userDetails['about'], 
-    birthday: widget.userDetails['birthday'], 
-    address: widget.userDetails['address'], 
-    idno: widget.userDetails['idno'],
-    products: widget.userDetails['products']
-  );
+      imagePath: (widget.userDetails['image'] as String).isEmpty
+          ? 'https://cdn3.iconfinder.com/data/icons/flatastic-4-1/256/user_orange-512.png'
+          : widget.userDetails['image'],
+      firstname: widget.userDetails['firstname'],
+      lastname: widget.userDetails['lastname'],
+      email: widget.userDetails['email'],
+      password: widget.userDetails['password'],
+      cellnumber: widget.userDetails['cellnumber'],
+      honorific: widget.userDetails['honorific'],
+      about: (widget.userDetails['about'] as String).isEmpty
+          ? 'Set about'
+          : widget.userDetails['about'],
+      birthday: widget.userDetails['birthday'],
+      address: widget.userDetails['address'],
+      idno: widget.userDetails['idno'],
+      products: widget.userDetails['products'],
+      orderlist: widget.userDetails['orderlist']);
   late final EasyAppController controller = EasyAppController(
-  intialBody: EasyBody(child: buildtile1(user, widget.userDetails).body, title: buildtile1(user, widget.userDetails).title),
+    intialBody: EasyBody(
+        child: buildtile1(user, widget.userDetails).body,
+        title: buildtile1(user, widget.userDetails).title),
   );
 
   @override
   Widget build(BuildContext context) {
     // print(user.products);
     final List<Widget> actions = [
-    IconButton(
-      icon: const Icon(Icons.search, color: Colors.white),
-      onPressed: () {
-        showSearch(
-          context: context,
-          // delegate to customize the search bar
-          delegate: CustomSearchDelegate()
-          );
+      IconButton(
+        icon: const Icon(Icons.search, color: Colors.white),
+        onPressed: () {
+          showSearch(
+              context: context,
+              // delegate to customize the search bar
+              delegate: CustomSearchDelegate());
         },
       ),
       IconButton(
-        icon: const Icon(IconData(0xe385, fontFamily: 'MaterialIcons'), color: Colors.white),
-        onPressed: () {Get.to(const OrderListParent());},
+        icon: const Icon(IconData(0xe385, fontFamily: 'MaterialIcons'),
+            color: Colors.white),
+        onPressed: () {
+          Get.to(const OrderListParent());
+        },
       ),
     ];
     return EasyDashboard(
@@ -75,11 +83,13 @@ class _HomeSellerChildState extends State<HomeSellerChild> {
       backgroundColor: Color.fromARGB(255, 236, 236, 163),
       tabletView: const TabletView(
         fullAppBar: false,
-        border: BorderSide(width: 0.5, color: Color.fromARGB(255, 236, 236, 163)),
+        border:
+            BorderSide(width: 0.5, color: Color.fromARGB(255, 236, 236, 163)),
       ),
       desktopView: const DesktopView(
         fullAppBar: true,
-        border: BorderSide(width: 0.5, color: Color.fromARGB(255, 236, 236, 163)),
+        border:
+            BorderSide(width: 0.5, color: Color.fromARGB(255, 236, 236, 163)),
       ),
       drawer: (Size size, Widget? child) {
         return EasyDrawer(
@@ -132,7 +142,7 @@ class CustomSearchDelegate extends SearchDelegate {
     "Pineapples",
     "Strawberries"
   ];
-     
+
   // first overwrite to
   // clear the search text
   @override
@@ -146,7 +156,7 @@ class CustomSearchDelegate extends SearchDelegate {
       ),
     ];
   }
- 
+
   // second overwrite to pop out of search menu
   @override
   Widget? buildLeading(BuildContext context) {
@@ -157,7 +167,7 @@ class CustomSearchDelegate extends SearchDelegate {
       icon: Icon(Icons.arrow_back),
     );
   }
- 
+
   // third overwrite to show query result
   @override
   Widget buildResults(BuildContext context) {
@@ -177,7 +187,7 @@ class CustomSearchDelegate extends SearchDelegate {
       },
     );
   }
- 
+
   // last overwrite to show the
   // querying process at the runtime
   @override

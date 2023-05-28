@@ -612,9 +612,13 @@ class _RegChildState extends State<RegChild> {
                         cloneMap['idno'] = idno;
                         cloneMap['image'] = '';
                         cloneMap['about'] = '';
-                        if (idno.startsWith('S', 0))
+                        if (idno.startsWith('S', 0)) {
                           cloneMap['products'] = <String>[];
-                        // print(cloneMap);
+                          cloneMap['orderlist'] = <String>[];
+                        } else if (idno.startsWith('B', 0)) {
+                          cloneMap['cart'] = <String>[];
+                          cloneMap['orderlist'] = <String>[];
+                        }
                         await db
                             .createUser(cloneMap)
                             .then((value) => Get.off(const LoginParent()));
