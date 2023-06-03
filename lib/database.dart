@@ -265,9 +265,8 @@ class Database {
     List docs = [];
     try {
       querySnapshot =
-          await FirebaseFirestore.instance.collection('users').get();
+          await FirebaseFirestore.instance.collection('products').get();
       if (querySnapshot.docs.isNotEmpty) {
-        List products = querySnapshot.docs.toList();
         for (var doc in querySnapshot.docs.toList()) {
           Map b = {
             "id": doc.id,
@@ -291,18 +290,16 @@ class Database {
   }
 
   Future<List> addToCart(
-      // fix this sht
-      String productIdno,
-      Map<dynamic, dynamic> userDetails) async {
+      String productIdno, Map<dynamic, dynamic> userDetails) async {
     List<String> cart = [];
     try {
-      print('yay');
       var collectionRef = FirebaseFirestore.instance.collection('users');
-      final doc = await collectionRef.doc(userDetails['idno']).get();
-      var docUser = await collectionRef.doc(userDetails['idno']);
+      final doc = await collectionRef.doc(userDetails['id']).get();
+      var docUser = await collectionRef.doc(userDetails['id']);
+      print(userDetails);
       if (doc.data()!['usertype'] == 'Buyer') {
-        // print(doc.data()!['products']);
         List<dynamic> newCart = doc.data()!['cart'];
+        // print(newCart);
         for (var a in newCart) {
           cart.add(a.toString());
         }

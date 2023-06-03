@@ -67,7 +67,7 @@ class _ViewAllProdChildState extends State<ViewAllProdChild> {
                         onTap: () {
                           Get.to(() => ViewProductParent(
                               productMap: products[i],
-                              userDetails: widget.userDetails['idno']));
+                              userDetails: widget.userDetails));
                         },
                         child: buildCard(
                             products[i]['image'],

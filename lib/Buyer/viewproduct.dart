@@ -218,6 +218,7 @@ class _ViewProductChildState extends State<ViewProductChild> {
           db.addToCart(prodDetails['id'], userDetails).then((value) {
             userDetails['cart'] = value;
             cloneMap = {...userDetails};
+            print(cloneMap);
             Get.to(CartParent(userMap: cloneMap));
           });
         } else if (text == 'BUY NOW') {

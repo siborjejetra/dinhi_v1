@@ -30,15 +30,17 @@ class CartChild extends StatefulWidget {
 }
 
 class _CartChildState extends State<CartChild> {
+  List<String>? productID = [];
+  List products = [];
   List cart = [];
   bool isChecked = false;
 
   @override
   void initState() {
     // TODO: implement initState
-    db.readCart().then((docs) {
+    db.readProducts().then((docs) {
       setState(() {
-        cart = docs;
+        products = docs;
       });
     });
     super.initState();
@@ -46,6 +48,9 @@ class _CartChildState extends State<CartChild> {
 
   @override
   Widget build(BuildContext context) {
+    Map userDetails = widget.userDetails;
+    productID = widget.userDetails['cart'];
+    cart = storeUserCart(products, productID);
     return Scaffold(
       backgroundColor: Color.fromARGB(255, 236, 236, 163),
       body: SafeArea(
@@ -87,5 +92,21 @@ class _CartChildState extends State<CartChild> {
                 ],
               )))),
     );
+  }
+
+  List<dynamic> storeUserCart(List products, List<String>? productID) {
+    List storage = [];
+    for (var i = 0; i < products.length; i++) {
+      if (productID != null) {
+        for (var j = 0; j < productID.length; j++) {
+          if (products[i]['id'] == productID[j]) {
+            storage.add(products[i]);
+          }
+        }
+      } else {
+        return storage;
+      }
+    }
+    return storage;
   }
 }
