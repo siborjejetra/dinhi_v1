@@ -1,3 +1,4 @@
+import 'package:Dinhi_v1/authservice.dart';
 import 'package:Dinhi_v1/login.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
@@ -605,6 +606,10 @@ class _RegChildState extends State<RegChild> {
                           borderRadius: BorderRadius.circular(20),
                         ))),
                     onPressed: () async {
+                      await AuthService().registration(
+                        email: _formKey.currentState?.value['email'],
+                        password: _formKey.currentState?.value['password'],
+                      );
                       if (_formKey.currentState?.saveAndValidate() ?? false) {
                         debugPrint(_formKey.currentState!.value.toString());
                         newUser = _formKey.currentState!.value;

@@ -1,3 +1,4 @@
+import 'package:Dinhi_v1/authservice.dart';
 import 'package:Dinhi_v1/registration.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
@@ -10,6 +11,8 @@ import 'package:Dinhi_v1/Courier/home.dart';
 import 'package:Dinhi_v1/Seller/home.dart';
 import 'package:localstorage/localstorage.dart';
 import 'database.dart';
+
+import 'package:firebase_auth/firebase_auth.dart';
 
 class LoginParent extends StatelessWidget {
   const LoginParent({Key? key}) : super(key: key);
@@ -62,6 +65,11 @@ class _LoginChildState extends State<LoginChild> {
           username = data.name;
           password = data.password;
         });
+
+        // Firebase Auth Login Handler
+        await FirebaseAuth.instance.signInWithEmailAndPassword(
+            email: data.name.trim(), password: data.password.trim());
+
         for (dynamic item in userList) {
           if (item['email'] == data.name) {
             localStorage.setItem('userID', item['id']);
@@ -104,27 +112,30 @@ class _LoginChildState extends State<LoginChild> {
 
   @override
   Widget build(BuildContext context) {
-    return FlutterLogin(
-      logo: const AssetImage('assets/images/Logo.PNG'),
-      onLogin: _authUser,
-      onSignup: _signupUser,
-      theme: LoginTheme(primaryColor: Color.fromARGB(255, 171, 195, 47)),
-      onSubmitAnimationCompleted: () async {
-        Map<dynamic, dynamic> userDeets =
-            await db.storeUser(localStorage.getItem('userID'));
-        // print(userDeets);
-        // print("This is userDeets");
-        if (flag == 'A') {
-          Get.to(HomeAdminParent(userMap: userDeets));
-        } else if (flag == 'B') {
-          Get.to(HomeBuyerParent(userMap: userDeets));
-        } else if (flag == 'C') {
-          Get.to(HomeCourierParent(userMap: userDeets));
-        } else {
-          Get.to(HomeSellerParent(userMap: userDeets));
-        }
-      },
-      onRecoverPassword: _recoverPassword,
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: FlutterLogin(
+        logo: const AssetImage('assets/images/Logo.PNG'),
+        onLogin: _authUser,
+        onSignup: _signupUser,
+        theme: LoginTheme(primaryColor: Color.fromARGB(255, 171, 195, 47)),
+        onSubmitAnimationCompleted: () async {
+          Map<dynamic, dynamic> userDeets =
+              await db.storeUser(localStorage.getItem('userID'));
+          // print(userDeets);
+          // print("This is userDeets");
+          if (flag == 'A') {
+            Get.to(HomeAdminParent(userMap: userDeets));
+          } else if (flag == 'B') {
+            Get.to(HomeBuyerParent(userMap: userDeets));
+          } else if (flag == 'C') {
+            Get.to(HomeCourierParent(userMap: userDeets));
+          } else {
+            Get.to(HomeSellerParent(userMap: userDeets));
+          }
+        },
+        onRecoverPassword: _recoverPassword,
+      ),
     );
   }
 }

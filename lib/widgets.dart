@@ -55,11 +55,11 @@ Widget buildCard(String imagePath, String name, String price, String unit) {
     child: Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
-        Image.network(
-          imagePath,
-          width: 140,
-          height: 140,
-        ),
+        // Image.network(
+        //   imagePath,
+        //   width: 140,
+        //   height: 140,
+        // ),
         Container(
             width: double.maxFinite,
             decoration: BoxDecoration(

@@ -1,10 +1,12 @@
 import 'dart:io';
-
+import 'package:Dinhi_v1/authservice.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:Dinhi_v1/Seller/home.dart';
 import 'package:Dinhi_v1/database.dart';
 import 'package:Dinhi_v1/widgets.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/src/foundation/key.dart';
@@ -60,6 +62,11 @@ class _ProductChildState extends State<ProductChild> {
     super.initState();
   }
 
+<<<<<<< Updated upstream
+=======
+  final productDatabaseReference = FirebaseDatabase.instance.ref();
+
+>>>>>>> Stashed changes
   @override
   Widget build(BuildContext context) {
     Map userDetails = widget.userMap;
@@ -141,22 +148,58 @@ class _ProductChildState extends State<ProductChild> {
                                   RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(20),
                           ))),
+<<<<<<< Updated upstream
                       onPressed: () {
+=======
+                      onPressed: () async {
+                        try {
+                          String newkey = productDatabaseReference.push().key ??
+                              "invalid-key";
+                          await productDatabaseReference
+                              .child('DinhiDatabase')
+                              .child("Products")
+                              .child(AuthService().getUID() ?? "null-user")
+                              .child(newkey)
+                              .set({
+                            "name": nameController.text,
+                            "price": priceController.text,
+                            "description": descriptionController.text,
+                            "unit": unitController.text,
+                            "expirationDate": expDateController.text,
+                          });
+                          if (kDebugMode) {
+                            print("Product Added");
+                          }
+                        } catch (e) {
+                          if (kDebugMode) {
+                            print(e);
+                          }
+                        }
+>>>>>>> Stashed changes
                         db
                             .createProduct(
                                 localStorage.getItem('userID'),
                                 inputImage,
                                 nameController.text,
                                 priceController.text,
+<<<<<<< Updated upstream
                                 quantityController.text,
+=======
+>>>>>>> Stashed changes
                                 unitController.text,
                                 descriptionController.text,
                                 Timestamp.fromDate(DateTime.now()),
                                 userDetails)
                             .then((cloneMap) {
+<<<<<<< Updated upstream
                           print('Here');
                           print(cloneMap);
                           Get.to(HomeSellerParent(userMap: cloneMap));
+=======
+                          // print('Here');
+                          // print(cloneMap);
+                          // Get.to(HomeSellerParent(userMap: cloneMap));
+>>>>>>> Stashed changes
                         });
                         // Timestamp.fromDate(DateTime.parse(expDateController.text))
                       },

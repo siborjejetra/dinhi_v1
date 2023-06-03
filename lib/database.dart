@@ -31,6 +31,7 @@ class Database {
       String description,
       Timestamp expiration,
       Map<dynamic, dynamic> userDetails) async {
+    print(name);
     Map<String, dynamic> cloneMap = {};
     try {
       final ref = FirebaseStorage.instance
