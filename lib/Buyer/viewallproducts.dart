@@ -1,5 +1,5 @@
 import 'package:Dinhi_v1/utils/user_preference.dart';
-import 'package:Dinhi_v1/buyer/viewproduct.dart';
+import 'package:Dinhi_v1/Buyer/viewproduct.dart';
 import 'package:Dinhi_v1/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
@@ -65,8 +65,9 @@ class _ViewAllProdChildState extends State<ViewAllProdChild> {
                   for (int i = 0; i < products.length; i++)
                     InkWell(
                         onTap: () {
-                          Get.to(
-                              () => ViewProductParent(productMap: products[i]));
+                          Get.to(() => ViewProductParent(
+                              productMap: products[i],
+                              userDetails: widget.userDetails['idno']));
                         },
                         child: buildCard(
                             products[i]['image'],

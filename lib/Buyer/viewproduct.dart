@@ -7,10 +7,14 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 
 import '../database.dart';
+import 'cart.dart';
 
 class ViewProductParent extends StatelessWidget {
   final Map productMap;
-  ViewProductParent({required this.productMap});
+  final Map userDetails;
+  const ViewProductParent(
+      {Key? key, required this.productMap, required this.userDetails})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -19,6 +23,7 @@ class ViewProductParent extends StatelessWidget {
       title: 'View Product',
       home: ViewProductChild(
         productDetails: productMap,
+        userDeets: userDetails,
       ),
     );
   }
@@ -26,7 +31,10 @@ class ViewProductParent extends StatelessWidget {
 
 class ViewProductChild extends StatefulWidget {
   final Map productDetails;
-  ViewProductChild({required this.productDetails});
+  final Map userDeets;
+  const ViewProductChild(
+      {Key? key, required this.productDetails, required this.userDeets})
+      : super(key: key);
 
   @override
   State<ViewProductChild> createState() => _ViewProductChildState();
@@ -100,10 +108,10 @@ class _ViewProductChildState extends State<ViewProductChild> {
                                   '/s available',
 
                               style: const TextStyle(
-                                fontSize: 20,
+                                fontSize: 12,
                                 fontFamily: 'Montserrat',
                                 fontWeight: FontWeight.bold,
-                                color: Colors.black54,
+                                color: Colors.black38,
                               ),
                             )
                           ])),
@@ -133,9 +141,12 @@ class _ViewProductChildState extends State<ViewProductChild> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      buildButton('CHAT SELLER', widget.productDetails),
-                      buildButton('ADD TO CART', widget.productDetails),
-                      buildButton('BUY NOW', widget.productDetails)
+                      buildButton('CHAT SELLER', widget.productDetails,
+                          widget.userDeets),
+                      buildButton('ADD TO CART', widget.productDetails,
+                          widget.userDeets),
+                      buildButton(
+                          'BUY NOW', widget.productDetails, widget.userDeets)
                     ],
                   )
                 ]))));
@@ -187,8 +198,10 @@ class _ViewProductChildState extends State<ViewProductChild> {
     );
   }
 
-  Widget buildButton(String text, Map prodDetails) {
+  Widget buildButton(
+      String text, Map prodDetails, Map<dynamic, dynamic> userDetails) {
     // add void onPressed as parameter later
+    Map<String, dynamic> cloneMap = {};
     return ElevatedButton(
       style: ButtonStyle(
           backgroundColor:
@@ -202,7 +215,11 @@ class _ViewProductChildState extends State<ViewProductChild> {
         if (text == 'CHAT SELLER') {
           ///
         } else if (text == 'ADD TO CART') {
-          // db.addToCart()
+          db.addToCart(prodDetails['id'], userDetails).then((value) {
+            userDetails['cart'] = value;
+            cloneMap = {...userDetails};
+            Get.to(CartParent(userMap: cloneMap));
+          });
         } else if (text == 'BUY NOW') {
           ///
         } else {
@@ -214,7 +231,7 @@ class _ViewProductChildState extends State<ViewProductChild> {
         style: TextStyle(
             fontSize: 14,
             fontFamily: 'Montserrat',
-            letterSpacing: 2.2,
+            // letterSpacing: 2.2,
             color: Colors.white),
       ),
     );

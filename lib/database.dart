@@ -163,8 +163,14 @@ class Database {
 
           if (doc['usertype'] == 'Seller') {
             a['products'] = doc['products'];
+            a['orderlist'] = doc['orderlist'];
+          } else if (doc['usertype'] == 'Buyer') {
+            a['cart'] = doc['cart'];
+            a['orderlist'] = doc['orderlist'];
           } else {
             a['products'] = null;
+            a['cart'] = null;
+            a['orerlist'] = null;
           }
 
           docs.add(a);
@@ -233,8 +239,14 @@ class Database {
             };
             if (doc['usertype'] == 'Seller') {
               userDeets['products'] = List<String>.from(doc['products']);
+              userDeets['orderlist'] = List<String>.from(doc['orderlist']);
+            } else if (doc['usertype'] == 'Buyer') {
+              userDeets['cart'] = List<String>.from(doc['cart']);
+              userDeets['orderlist'] = List<String>.from(doc['orderlist']);
             } else {
               userDeets['products'] = null;
+              userDeets['cart'] = null;
+              userDeets['orderlist'] = null;
             }
           }
         }
@@ -247,12 +259,47 @@ class Database {
     return userDeets;
   }
 
-  Future<List> addToCart(String userId, String productIdno) async {
+  Future<List> readCart() async {
+    // fix this sht
+    QuerySnapshot querySnapshot;
+    List docs = [];
+    try {
+      querySnapshot =
+          await FirebaseFirestore.instance.collection('users').get();
+      if (querySnapshot.docs.isNotEmpty) {
+        List products = querySnapshot.docs.toList();
+        for (var doc in querySnapshot.docs.toList()) {
+          Map b = {
+            "id": doc.id,
+            "name": doc['name'],
+            "price": doc['price'],
+            "unit": doc['unit'],
+            "quantity": doc['quantity'],
+            "description": doc['description'],
+            "image": doc['image'],
+            "rating": doc['rating'],
+            "expiration": doc['expiration']
+          };
+          docs.add(b);
+        }
+        return docs;
+      }
+    } catch (e) {
+      print(e);
+    }
+    return docs;
+  }
+
+  Future<List> addToCart(
+      // fix this sht
+      String productIdno,
+      Map<dynamic, dynamic> userDetails) async {
     List<String> cart = [];
     try {
+      print('yay');
       var collectionRef = FirebaseFirestore.instance.collection('users');
-      final doc = await collectionRef.doc(userId).get();
-      var docUser = await collectionRef.doc(userId);
+      final doc = await collectionRef.doc(userDetails['idno']).get();
+      var docUser = await collectionRef.doc(userDetails['idno']);
       if (doc.data()!['usertype'] == 'Buyer') {
         // print(doc.data()!['products']);
         List<dynamic> newCart = doc.data()!['cart'];
