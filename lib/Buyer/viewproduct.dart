@@ -266,11 +266,12 @@ class _ViewProductChildState extends State<ViewProductChild> {
                       child: ElevatedButton(
                         onPressed: () {
                           // print(quantityController.text);
-                          print(prodDetails);
+                          // print(prodDetails);
                           List<String> products = [];
                           products.add(prodDetails['id']);
                           var total = int.parse(quantityController.text) *
                               int.parse(prodDetails['price']);
+                          // create and add transaction
                           db.createTransaction(
                               userDetails['id'],
                               quantityController.text,
@@ -278,6 +279,15 @@ class _ViewProductChildState extends State<ViewProductChild> {
                               products,
                               "Pending",
                               total.toString());
+                          // add to user and buyer order list
+                          // print(prodDetails['seller_id'] + userDetails['id']);
+                          db.addTransaction(
+                              userDetails['id'],
+                              // palitan to ng legit transaction ID nung ginawang transaction kanina
+                              "di_ko_pa_makuha_transactionid_eto_muna",
+                              prodDetails['seller_id']);
+                          // exit modal
+                          Navigator.of(context).pop();
                         },
                         child: const Text("CONFIRM"),
                         style: ElevatedButton.styleFrom(
