@@ -73,6 +73,39 @@ class Database {
     return cloneMap;
   }
 
+  Future<Map<String, dynamic>> createTransaction(
+    String buyerId,
+    String count,
+    String courierId,
+    List<String> productId,
+    String status,
+    String total,
+  ) async {
+    Map<String, dynamic> cloneMap = {};
+    try {
+      final docTransaction =
+          FirebaseFirestore.instance.collection("transactions").doc();
+
+      Map<String, dynamic> newTransaction = {
+        'buyer_id': buyerId,
+        'count': count,
+        'courier_id': courierId,
+        'product_id': productId,
+        'status': status,
+        'total': total,
+        'date': DateTime.now(),
+      };
+      print(newTransaction);
+
+      print(cloneMap);
+      await docTransaction.set(newTransaction);
+      return cloneMap;
+    } catch (e) {
+      print(e);
+    }
+    return cloneMap;
+  }
+
   Future<List> addProductArray(String userId, String productIdno) async {
     List<String> products = [];
     try {

@@ -42,6 +42,7 @@ class ViewProductChild extends StatefulWidget {
 
 class _ViewProductChildState extends State<ViewProductChild> {
   Database db = Database();
+  TextEditingController quantityController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -201,6 +202,7 @@ class _ViewProductChildState extends State<ViewProductChild> {
   Widget buildButton(
       String text, Map prodDetails, Map<dynamic, dynamic> userDetails) {
     // add void onPressed as parameter later
+
     Map<String, dynamic> cloneMap = {};
     return ElevatedButton(
       style: ButtonStyle(
@@ -246,13 +248,57 @@ class _ViewProductChildState extends State<ViewProductChild> {
           }
         } else if (text == 'BUY NOW') {
           ///
+          showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return SimpleDialog(
+                  title: const Text(
+                    'Buy Now Dialog',
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  ),
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(15.0),
+                      child: buildTextField('Quantity', quantityController),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(20.0),
+                      child: ElevatedButton(
+                        onPressed: () {
+                          // print(quantityController.text);
+                          print(prodDetails);
+                          List<String> products = [];
+                          products.add(prodDetails['id']);
+                          var total = int.parse(quantityController.text) *
+                              int.parse(prodDetails['price']);
+                          db.createTransaction(
+                              userDetails['id'],
+                              quantityController.text,
+                              "",
+                              products,
+                              "Pending",
+                              total.toString());
+                        },
+                        child: const Text("CONFIRM"),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Color.fromARGB(255, 111, 174, 23),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20.0),
+                          ),
+                          elevation: 5.0,
+                        ),
+                      ),
+                    )
+                  ],
+                );
+              });
         } else {
           ///
         }
       },
       child: Text(
         text,
-        style: TextStyle(
+        style: const TextStyle(
             fontSize: 14,
             fontFamily: 'Montserrat',
             // letterSpacing: 2.2,
@@ -260,4 +306,25 @@ class _ViewProductChildState extends State<ViewProductChild> {
       ),
     );
   }
+}
+
+Widget buildTextField(String label, TextEditingController controller) {
+  return TextField(
+      controller: controller,
+      decoration: InputDecoration(
+        filled: true,
+        fillColor: Colors.white,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+        ),
+        contentPadding: EdgeInsets.only(bottom: 3, left: 10),
+        floatingLabelBehavior: FloatingLabelBehavior.always,
+        labelText: label,
+        hintStyle: const TextStyle(
+          fontSize: 16,
+          fontFamily: 'Montserrat',
+          fontWeight: FontWeight.bold,
+          color: Colors.black,
+        ),
+      ));
 }
