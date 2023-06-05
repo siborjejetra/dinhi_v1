@@ -46,6 +46,8 @@ class _ViewProductChildState extends State<ViewProductChild> {
 
   @override
   Widget build(BuildContext context) {
+    int count = 1;
+    var total = widget.productDetails['price'];
     return Scaffold(
         backgroundColor: Color.fromARGB(255, 236, 236, 163),
         appBar: buildAppbar(context, 'View Product', true),
@@ -202,7 +204,8 @@ class _ViewProductChildState extends State<ViewProductChild> {
   Widget buildButton(
       String text, Map prodDetails, Map<dynamic, dynamic> userDetails) {
     // add void onPressed as parameter later
-
+    int count = 1;
+    var total = prodDetails['price'];
     Map<String, dynamic> cloneMap = {};
     return ElevatedButton(
       style: ButtonStyle(
@@ -247,19 +250,64 @@ class _ViewProductChildState extends State<ViewProductChild> {
             );
           }
         } else if (text == 'BUY NOW') {
-          ///
           showDialog(
               context: context,
               builder: (BuildContext context) {
                 return SimpleDialog(
                   title: const Text(
-                    'Buy Now Dialog',
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    'Enter quantity',
+                    style: TextStyle(
+                        fontFamily: "Montserrat",
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                        fontSize: 20),
                   ),
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.all(15.0),
-                      child: buildTextField('Quantity', quantityController),
+                    Center(
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            '₱' + total,
+                            style: TextStyle(
+                                fontFamily: "Montserrat",
+                                color: Colors.black,
+                                fontSize: 14),
+                          ),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          IconButton(
+                            icon: Icon(Icons.remove),
+                            onPressed: () {
+                              setState(() {
+                                if (count > 0) {
+                                  count--;
+                                }
+                              });
+                            },
+                          ),
+                          Container(
+                            padding: EdgeInsets.symmetric(horizontal: 8.0),
+                            decoration: BoxDecoration(
+                              border: Border.all(color: Colors.grey),
+                              borderRadius: BorderRadius.circular(4.0),
+                            ),
+                            child: Text(
+                              count.toString(),
+                              style: TextStyle(fontSize: 16.0),
+                            ),
+                          ),
+                          IconButton(
+                            icon: Icon(Icons.add),
+                            onPressed: () {
+                              setState(() {
+                                count++;
+                              });
+                            },
+                          ),
+                        ],
+                      ),
                     ),
                     Padding(
                       padding: const EdgeInsets.all(20.0),
@@ -269,17 +317,24 @@ class _ViewProductChildState extends State<ViewProductChild> {
                           print(prodDetails);
                           List<String> products = [];
                           products.add(prodDetails['id']);
-                          var total = int.parse(quantityController.text) *
-                              int.parse(prodDetails['price']);
+                          total = count * int.parse(prodDetails['price']);
                           db.createTransaction(
                               userDetails['id'],
-                              quantityController.text,
+                              count.toString(),
                               "",
                               products,
                               "Pending",
                               total.toString());
                         },
-                        child: const Text("CONFIRM"),
+                        child: const Text(
+                          "CONFIRM",
+                          style: TextStyle(
+                              fontFamily: "Montserrat",
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                              letterSpacing: 2.2,
+                              fontSize: 14),
+                        ),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Color.fromARGB(255, 111, 174, 23),
                           shape: RoundedRectangleBorder(

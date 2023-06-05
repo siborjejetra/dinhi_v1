@@ -133,71 +133,88 @@ class _CartChildState extends State<CartChild> {
                             );
                           },
                         )
-                      : Padding(
-                          padding: EdgeInsets.symmetric(vertical: 200),
-                          child: Column(
-                            children: const [
-                              Text(
-                                'Empty Cart',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    fontFamily: "Montserrat",
-                                    color: Colors.black,
-                                    fontSize: 30),
-                              ),
-                              Text(
-                                'Please continue shopping',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    fontFamily: "Montserrat",
-                                    color: Colors.black54,
-                                    fontSize: 25),
-                              ),
-                            ],
+                      : Center(
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(vertical: 200),
+                            child: Column(
+                              children: const [
+                                Text(
+                                  'Empty Cart',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      fontFamily: "Montserrat",
+                                      color: Colors.black,
+                                      fontSize: 30),
+                                ),
+                                Text(
+                                  'Please continue shopping',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      fontFamily: "Montserrat",
+                                      color: Colors.black54,
+                                      fontSize: 25),
+                                ),
+                              ],
+                            ),
                           ),
                         )))),
       bottomNavigationBar: Container(
         padding: EdgeInsets.all(16.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            // Text('Total: \$${totalPrice.toStringAsFixed(2)}'), add here if
-            ElevatedButton(
-              onPressed: () {
-                // Perform checkout logic here
-                showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return AlertDialog(
-                      backgroundColor: Colors.white,
-                      title: const Text(
-                        'Checkout',
-                        style: TextStyle(
-                            fontFamily: "Montserrat",
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black,
-                            fontSize: 20),
-                      ),
-                      content: const Text('Order placed successfully.',
+        child: Container(
+          decoration: BoxDecoration(
+            color: Color.fromARGB(255, 111, 174, 23),
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              // Text('Total: \$${totalPrice.toStringAsFixed(2)}'), add here if
+              ElevatedButton(
+                style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all(
+                        Color.fromARGB(255, 9, 117, 8)),
+                    padding: MaterialStateProperty.all(
+                        EdgeInsets.symmetric(horizontal: 50)),
+                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                        RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20),
+                    ))),
+                onPressed: () {
+                  // Perform checkout logic here
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        backgroundColor: Colors.white,
+                        title: const Text(
+                          'CHECKOUT',
                           style: TextStyle(
                               fontFamily: "Montserrat",
-                              color: Colors.black,
-                              fontSize: 14)),
-                      actions: [
-                        TextButton(
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                          },
-                          child: Text('OK'),
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                              letterSpacing: 2.2,
+                              fontSize: 20),
                         ),
-                      ],
-                    );
-                  },
-                );
-              },
-              child: Text('Checkout'),
-            ),
-          ],
+                        content: const Text('Order placed successfully.',
+                            style: TextStyle(
+                                fontFamily: "Montserrat",
+                                color: Colors.black,
+                                fontSize: 14)),
+                        actions: [
+                          TextButton(
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                            child: Text('OK'),
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                },
+                child: Text('Checkout'),
+              ),
+            ],
+          ),
         ),
       ),
     );
