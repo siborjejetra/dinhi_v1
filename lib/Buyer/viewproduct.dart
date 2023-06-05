@@ -141,7 +141,7 @@ class _ViewProductChildState extends State<ViewProductChild> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      buildButton('CHAT SELLER', widget.productDetails,
+                      buildButton('ADD TO FAVES', widget.productDetails,
                           widget.userDeets),
                       buildButton('ADD TO CART', widget.productDetails,
                           widget.userDeets),
@@ -215,12 +215,35 @@ class _ViewProductChildState extends State<ViewProductChild> {
         if (text == 'CHAT SELLER') {
           ///
         } else if (text == 'ADD TO CART') {
-          db.addToCart(prodDetails['id'], userDetails).then((value) {
-            userDetails['cart'] = value;
-            cloneMap = {...userDetails};
-            print(cloneMap);
-            Get.to(CartParent(userMap: cloneMap));
-          });
+          print(userDetails['cart']);
+          print(prodDetails['id']);
+          if (!userDetails['cart'].contains(prodDetails['id'])) {
+            db.addToCart(prodDetails['id'], userDetails).then((value) {
+              userDetails['cart'] = value;
+              cloneMap = {...userDetails};
+              print(cloneMap);
+              Get.to(CartParent(
+                  userMap: cloneMap)); // CHANGE THIS TO ALERT DIALOGUE ONLY
+            });
+          } else {
+            showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  title: Text('Added to Cart'),
+                  content: Text('You already added this to your cart.'),
+                  actions: [
+                    TextButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                      child: Text('OK'),
+                    ),
+                  ],
+                );
+              },
+            );
+          }
         } else if (text == 'BUY NOW') {
           ///
         } else {

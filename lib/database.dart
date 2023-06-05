@@ -55,7 +55,8 @@ class Database {
         'unit': unit,
         'description': description,
         'rating': '0',
-        'expiration': expiration
+        'expiration': expiration,
+        'seller_id': userIdno,
       };
 
       addProductArray(userIdno, newProduct['productId']).then((value) {
@@ -200,7 +201,8 @@ class Database {
             "description": doc['description'],
             "image": doc['image'],
             "rating": doc['rating'],
-            "expiration": doc['expiration']
+            "expiration": doc['expiration'],
+            "seller_id": doc['seller_id']
           };
           docs.add(b);
         }

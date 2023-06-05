@@ -5,6 +5,9 @@ import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:Dinhi_v1/Buyer/panel.dart';
 import 'package:easy_dashboard/easy_dashboard.dart';
+import 'package:get/get.dart';
+
+import 'cart.dart';
 
 class HomeBuyerParent extends StatelessWidget {
   const HomeBuyerParent({Key? key, required this.userMap}) : super(key: key);
@@ -67,7 +70,9 @@ class _HomeBuyerChildState extends State<HomeBuyerChild> {
       ),
       IconButton(
         icon: const Icon(Icons.shopping_basket, color: Colors.white),
-        onPressed: () {},
+        onPressed: () {
+          Get.to(CartParent(userMap: widget.userDetails));
+        },
       ),
     ];
     return EasyDashboard(
