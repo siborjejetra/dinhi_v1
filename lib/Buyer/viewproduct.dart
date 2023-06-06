@@ -1,10 +1,8 @@
+import 'package:Dinhi_v1/Buyer/counter.dart';
 import 'package:Dinhi_v1/widgets.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 
 import '../database.dart';
 import 'cart.dart';
@@ -43,16 +41,29 @@ class ViewProductChild extends StatefulWidget {
 class _ViewProductChildState extends State<ViewProductChild> {
   Database db = Database();
   TextEditingController quantityController = TextEditingController();
+  int count = 0;
+  double total = 10.0;
+
+  void handleCountChanged(int newCount) {
+    setState(() {
+      count = newCount;
+    });
+  }
+
+  void handlePriceChanged(double newPrice) {
+    setState(() {
+      total = newPrice;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    int count = 1;
-    var total = widget.productDetails['price'];
+    // var total = widget.productDetails['price'];
     return Scaffold(
         backgroundColor: Color.fromARGB(255, 236, 236, 163),
         appBar: buildAppbar(context, 'View Product', true),
         body: Container(
-            padding: EdgeInsets.all(10),
+            padding: const EdgeInsets.all(10),
             child: GestureDetector(
                 onTap: () {
                   FocusScope.of(context).unfocus();
@@ -72,10 +83,10 @@ class _ViewProductChildState extends State<ViewProductChild> {
                       ),
                   const SizedBox(height: 10),
                   Container(
-                      padding: EdgeInsets.fromLTRB(10, 2, 10, 2),
+                      padding: const EdgeInsets.fromLTRB(10, 2, 10, 2),
                       width: double.maxFinite,
                       decoration: BoxDecoration(
-                          color: Color.fromRGBO(171, 195, 47, 1),
+                          color: const Color.fromRGBO(171, 195, 47, 1),
                           borderRadius: BorderRadius.circular(8)),
                       child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -120,7 +131,7 @@ class _ViewProductChildState extends State<ViewProductChild> {
                           ])),
                   const SizedBox(height: 10),
                   Container(
-                      padding: EdgeInsets.all(10),
+                      padding: const EdgeInsets.all(10),
                       width: double.maxFinite,
                       decoration: BoxDecoration(
                           color: Colors.white70,
@@ -183,7 +194,7 @@ class _ViewProductChildState extends State<ViewProductChild> {
           ),
         ),
         const SizedBox(width: 10),
-        Container(
+        const SizedBox(
             height: 24,
             child: VerticalDivider(
               color: Colors.black,
@@ -193,7 +204,7 @@ class _ViewProductChildState extends State<ViewProductChild> {
             onPressed: () {},
             child: const Text(
               'View Reviews',
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 18,
                 fontFamily: 'Montserrat',
                 fontWeight: FontWeight.bold,
@@ -207,13 +218,13 @@ class _ViewProductChildState extends State<ViewProductChild> {
   Widget buildButton(
       String text, Map prodDetails, Map<dynamic, dynamic> userDetails) {
     // add void onPressed as parameter later
-    int count = 1;
+
     var total = prodDetails['price'];
     Map<String, dynamic> cloneMap = {};
     return ElevatedButton(
       style: ButtonStyle(
-          backgroundColor:
-              MaterialStateProperty.all(Color.fromARGB(255, 111, 174, 23)),
+          backgroundColor: MaterialStateProperty.all(
+              const Color.fromARGB(255, 111, 174, 23)),
           // padding:MaterialStateProperty.all(EdgeInsets.symmetric(horizontal: 50)),
           shape: MaterialStateProperty.all<RoundedRectangleBorder>(
               RoundedRectangleBorder(
@@ -223,13 +234,11 @@ class _ViewProductChildState extends State<ViewProductChild> {
         if (text == 'CHAT SELLER') {
           ///
         } else if (text == 'ADD TO CART') {
-          print(userDetails['cart']);
-          print(prodDetails['id']);
           if (!userDetails['cart'].contains(prodDetails['id'])) {
             db.addToCart(prodDetails['id'], userDetails).then((value) {
               userDetails['cart'] = value;
               cloneMap = {...userDetails};
-              print(cloneMap);
+
               Get.to(CartParent(
                   userMap: cloneMap)); // CHANGE THIS TO ALERT DIALOGUE ONLY
             });
@@ -254,7 +263,7 @@ class _ViewProductChildState extends State<ViewProductChild> {
                         onPressed: () {
                           Navigator.of(context).pop();
                         },
-                        child: Text(
+                        child: const Text(
                           'OK',
                           style: TextStyle(
                             fontFamily: "Montserrat",
@@ -284,44 +293,9 @@ class _ViewProductChildState extends State<ViewProductChild> {
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          Text(
-                            '₱' + total,
-                            style: TextStyle(
-                                fontFamily: "Montserrat",
-                                color: Colors.black,
-                                fontSize: 14),
-                          ),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          IconButton(
-                            icon: Icon(Icons.remove),
-                            onPressed: () {
-                              setState(() {
-                                if (count > 0) {
-                                  count--;
-                                }
-                              });
-                            },
-                          ),
-                          Container(
-                            padding: EdgeInsets.symmetric(horizontal: 8.0),
-                            decoration: BoxDecoration(
-                              border: Border.all(color: Colors.grey),
-                              borderRadius: BorderRadius.circular(4.0),
-                            ),
-                            child: Text(
-                              count.toString(),
-                              style: TextStyle(fontSize: 16.0),
-                            ),
-                          ),
-                          IconButton(
-                            icon: Icon(Icons.add),
-                            onPressed: () {
-                              setState(() {
-                                count++;
-                              });
-                            },
+                          CounterWidget(
+                            onCountChanged: handleCountChanged,
+                            onPriceChanged: handlePriceChanged,
                           ),
                         ],
                       ),
@@ -345,11 +319,11 @@ class _ViewProductChildState extends State<ViewProductChild> {
                                   total.toString())
                               .then((value) {
                             // add to user and buyer order list
-                            print(prodDetails['seller_id'] +
-                                ' ' +
-                                userDetails['id'] +
-                                ' ' +
-                                value);
+                            // print(prodDetails['seller_id'] +
+                            //     ' ' +
+                            //     userDetails['id'] +
+                            //     ' ' +
+                            //     value);
                             db.addTransaction(userDetails['id'], value,
                                 prodDetails['seller_id']);
                           });
@@ -366,7 +340,8 @@ class _ViewProductChildState extends State<ViewProductChild> {
                               fontSize: 14),
                         ),
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Color.fromARGB(255, 111, 174, 23),
+                          backgroundColor:
+                              const Color.fromARGB(255, 111, 174, 23),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(20.0),
                           ),
@@ -402,7 +377,7 @@ Widget buildTextField(String label, TextEditingController controller) {
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
         ),
-        contentPadding: EdgeInsets.only(bottom: 3, left: 10),
+        contentPadding: const EdgeInsets.only(bottom: 3, left: 10),
         floatingLabelBehavior: FloatingLabelBehavior.always,
         labelText: label,
         hintStyle: const TextStyle(
