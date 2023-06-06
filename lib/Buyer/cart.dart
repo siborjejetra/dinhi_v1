@@ -1,3 +1,4 @@
+import 'package:Dinhi_v1/Buyer/listitem.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -6,78 +7,6 @@ import 'package:get/get.dart';
 
 import '../utils/user_preference.dart';
 import '../widgets.dart';
-
-class CustomListItem extends StatefulWidget {
-  final Map cart;
-  const CustomListItem({Key? key, required this.cart}) : super(key: key);
-  @override
-  _CustomListItemState createState() => _CustomListItemState();
-}
-
-class _CustomListItemState extends State<CustomListItem> {
-  int count = 0;
-
-  @override
-  Widget build(BuildContext context) {
-    Map cart = widget.cart;
-    return ListTile(
-      onTap: () {},
-      leading: Container(
-        width: 60,
-        height: 60,
-        decoration: BoxDecoration(
-          image: DecorationImage(
-              image: NetworkImage(cart['image']), fit: BoxFit.scaleDown),
-          borderRadius: BorderRadius.circular(20),
-        ), //BoxDecoration
-      ),
-      title: Text(cart['name']),
-      subtitle: Text(cart['price'] + '/' + cart['unit']),
-      trailing: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          IconButton(
-            icon: Icon(Icons.remove),
-            onPressed: () {
-              setState(() {
-                if (count > 0) {
-                  count--;
-                }
-              });
-            },
-          ),
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: 8.0),
-            decoration: BoxDecoration(
-              border: Border.all(color: Colors.grey),
-              borderRadius: BorderRadius.circular(4.0),
-            ),
-            child: Text(
-              count.toString(),
-              style: TextStyle(fontSize: 16.0),
-            ),
-          ),
-          IconButton(
-            icon: Icon(Icons.add),
-            onPressed: () {
-              setState(() {
-                count++;
-              });
-            },
-          ),
-          IconButton(
-            icon: Icon(Icons.delete),
-            onPressed: () {
-              setState(() {
-                // deleteItem(index);
-              });
-            },
-          ),
-        ],
-      ),
-    );
-  }
-}
 
 class CartParent extends StatelessWidget {
   final Map<dynamic, dynamic> userMap;
@@ -101,6 +30,14 @@ class CartChild extends StatefulWidget {
 }
 
 class _CartChildState extends State<CartChild> {
+  double total = 0.0; // Initialize total to 0.0
+
+  void updateTotal(double updatedTotalCart) {
+    setState(() {
+      total = updatedTotalCart; // Update the total value
+    });
+  }
+
   List<String>? productID = [];
   List products = [];
   List cart = [];
@@ -138,14 +75,19 @@ class _CartChildState extends State<CartChild> {
                             return Padding(
                               padding: const EdgeInsets.all(4.0),
                               child: Container(
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(20),
-                                    border: Border.all(color: Colors.grey),
-                                  ),
-                                  child: CustomListItem(
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(20),
+                                  border: Border.all(color: Colors.grey),
+                                ),
+                                child: CustomListItem(
                                     cart: cart[index],
-                                  )),
+                                    totalCart: total,
+                                    updateTotal: updateTotal),
+                                // CustomListItem(
+                                //   cart: cart[index],
+                                // )
+                              ),
                             );
                           },
                         )
@@ -184,7 +126,7 @@ class _CartChildState extends State<CartChild> {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               Text(
-                'Total: 12312312',
+                total.toString(),
                 style: TextStyle(
                     fontFamily: "Montserrat",
                     fontWeight: FontWeight.bold,
