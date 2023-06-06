@@ -7,6 +7,78 @@ import 'package:get/get.dart';
 import '../utils/user_preference.dart';
 import '../widgets.dart';
 
+class CustomListItem extends StatefulWidget {
+  final Map cart;
+  const CustomListItem({Key? key, required this.cart}) : super(key: key);
+  @override
+  _CustomListItemState createState() => _CustomListItemState();
+}
+
+class _CustomListItemState extends State<CustomListItem> {
+  int count = 0;
+
+  @override
+  Widget build(BuildContext context) {
+    Map cart = widget.cart;
+    return ListTile(
+      onTap: () {},
+      leading: Container(
+        width: 60,
+        height: 60,
+        decoration: BoxDecoration(
+          image: DecorationImage(
+              image: NetworkImage(cart['image']), fit: BoxFit.scaleDown),
+          borderRadius: BorderRadius.circular(20),
+        ), //BoxDecoration
+      ),
+      title: Text(cart['name']),
+      subtitle: Text(cart['price'] + '/' + cart['unit']),
+      trailing: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          IconButton(
+            icon: Icon(Icons.remove),
+            onPressed: () {
+              setState(() {
+                if (count > 0) {
+                  count--;
+                }
+              });
+            },
+          ),
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: 8.0),
+            decoration: BoxDecoration(
+              border: Border.all(color: Colors.grey),
+              borderRadius: BorderRadius.circular(4.0),
+            ),
+            child: Text(
+              count.toString(),
+              style: TextStyle(fontSize: 16.0),
+            ),
+          ),
+          IconButton(
+            icon: Icon(Icons.add),
+            onPressed: () {
+              setState(() {
+                count++;
+              });
+            },
+          ),
+          IconButton(
+            icon: Icon(Icons.delete),
+            onPressed: () {
+              setState(() {
+                // deleteItem(index);
+              });
+            },
+          ),
+        ],
+      ),
+    );
+  }
+}
+
 class CartParent extends StatelessWidget {
   final Map<dynamic, dynamic> userMap;
   const CartParent({
@@ -47,11 +119,10 @@ class _CartChildState extends State<CartChild> {
 
   @override
   Widget build(BuildContext context) {
-    double width = MediaQuery.of(context).size.width;
-    double height = MediaQuery.of(context).size.height;
     Map userDetails = widget.userDetails;
     productID = widget.userDetails['cart'];
     cart = storeUserCart(products, productID);
+    List countList = genList(cart.length);
     return Scaffold(
       backgroundColor: Color.fromARGB(255, 236, 236, 163),
       appBar: buildAppbar(context, 'My Cart', false),
@@ -67,77 +138,14 @@ class _CartChildState extends State<CartChild> {
                             return Padding(
                               padding: const EdgeInsets.all(4.0),
                               child: Container(
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(20),
-                                  border: Border.all(color: Colors.grey),
-                                ),
-                                child: ListTile(
-                                  onTap: () {
-                                    print(cart[index]['seller_id']);
-                                  },
-                                  title: Text(cart[index]['name']),
-                                  subtitle: Text(cart[index]['price'] +
-                                      '/' +
-                                      cart[index]['unit']),
-                                  leading: Container(
-                                    width: 60,
-                                    height: 60,
-                                    decoration: BoxDecoration(
-                                      image: DecorationImage(
-                                          image: NetworkImage(
-                                              cart[index]['image']),
-                                          fit: BoxFit.scaleDown),
-                                      borderRadius: BorderRadius.circular(20),
-                                    ), //BoxDecoration
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(20),
+                                    border: Border.all(color: Colors.grey),
                                   ),
-                                  trailing: Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      IconButton(
-                                        icon: Icon(Icons.remove),
-                                        onPressed: () {
-                                          setState(() {
-                                            if (cart[index]['count'] > 0) {
-                                              cart[index]['count']--;
-                                            }
-                                          });
-                                        },
-                                      ),
-                                      Container(
-                                        padding: EdgeInsets.symmetric(
-                                            horizontal: 8.0),
-                                        decoration: BoxDecoration(
-                                          border:
-                                              Border.all(color: Colors.grey),
-                                          borderRadius:
-                                              BorderRadius.circular(4.0),
-                                        ),
-                                        child: Text(
-                                          cart[index]['count'].toString(),
-                                          style: TextStyle(fontSize: 16.0),
-                                        ),
-                                      ),
-                                      IconButton(
-                                        icon: Icon(Icons.add),
-                                        onPressed: () {
-                                          setState(() {
-                                            cart[index]['count']++;
-                                          });
-                                        },
-                                      ),
-                                      IconButton(
-                                        icon: Icon(Icons.delete),
-                                        onPressed: () {
-                                          setState(() {
-                                            deleteItem(index);
-                                          });
-                                        },
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
+                                  child: CustomListItem(
+                                    cart: cart[index],
+                                  )),
                             );
                           },
                         )
@@ -247,12 +255,10 @@ class _CartChildState extends State<CartChild> {
 
   List<dynamic> storeUserCart(List products, List<String>? productID) {
     List storage = [];
-    int count = 1;
     for (var i = 0; i < products.length; i++) {
       if (productID != null) {
         for (var j = 0; j < productID.length; j++) {
           if (products[i]['id'] == productID[j]) {
-            products[i]['count'] = count;
             storage.add(products[i]);
           }
         }
@@ -261,6 +267,15 @@ class _CartChildState extends State<CartChild> {
       }
     }
     return storage;
+  }
+
+  List<dynamic> genList(int items) {
+    List countList = [];
+    var count = 1;
+    for (var i = 0; i < items; i++) {
+      countList.add(count);
+    }
+    return countList;
   }
 
   void deleteItem(int index) {
