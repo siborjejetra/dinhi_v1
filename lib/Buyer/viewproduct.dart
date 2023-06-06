@@ -229,15 +229,9 @@ class _ViewProductChildState extends State<ViewProductChild> {
             borderRadius: BorderRadius.circular(20),
           ))),
       onPressed: () {
-<<<<<<< HEAD
-        if (text == 'ADD TO CART') {
-          print(userDetails['cart']);
-          print(prodDetails['id']);
-=======
         if (text == 'CHAT SELLER') {
           ///
         } else if (text == 'ADD TO CART') {
->>>>>>> 5ee84b26db3916551c54e647a767071b006c09a2
           if (!userDetails['cart'].contains(prodDetails['id'])) {
             db.addToCart(prodDetails['id'], userDetails).then((value) {
               userDetails['cart'] = value;
@@ -297,55 +291,9 @@ class _ViewProductChildState extends State<ViewProductChild> {
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-<<<<<<< HEAD
-                          Text(
-                            '₱' + total,
-                            style: TextStyle(
-                                fontFamily: "Montserrat",
-                                color: Colors.black,
-                                fontSize: 14),
-                          ),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          IconButton(
-                            icon: Icon(
-                              Icons.remove,
-                              color: Color.fromARGB(255, 111, 174, 23),
-                            ),
-                            onPressed: () {
-                              setState(() {
-                                if (count > 0) {
-                                  count--;
-                                }
-                              });
-                            },
-                          ),
-                          Container(
-                            padding: EdgeInsets.symmetric(horizontal: 8.0),
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                  color: Color.fromARGB(255, 111, 174, 23)),
-                              borderRadius: BorderRadius.circular(4.0),
-                            ),
-                            child: Text(
-                              count.toString(),
-                              style: TextStyle(fontSize: 16.0),
-                            ),
-                          ),
-                          IconButton(
-                            icon: Icon(Icons.add,
-                                color: Color.fromARGB(255, 111, 174, 23)),
-                            onPressed: () {
-                              setState(() {
-                                count++;
-                              });
-                            },
-=======
                           CounterWidget(
                             onCountChanged: handleCountChanged,
                             onPriceChanged: handlePriceChanged,
->>>>>>> 5ee84b26db3916551c54e647a767071b006c09a2
                           ),
                         ],
                       ),
