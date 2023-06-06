@@ -32,12 +32,15 @@ class _CustomListItemState extends State<CustomListItem> {
         ), //BoxDecoration
       ),
       title: Text(cart['name']),
-      subtitle: Text(cart['price'] + '/' + cart['unit']),
+      subtitle: Text('₱' + cart['price'] + '/' + cart['unit']),
       trailing: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
           IconButton(
-            icon: Icon(Icons.remove),
+            icon: Icon(
+              Icons.remove,
+              color: Color.fromARGB(255, 111, 174, 23),
+            ),
             onPressed: () {
               setState(() {
                 if (count > 0) {
@@ -49,7 +52,7 @@ class _CustomListItemState extends State<CustomListItem> {
           Container(
             padding: EdgeInsets.symmetric(horizontal: 8.0),
             decoration: BoxDecoration(
-              border: Border.all(color: Colors.grey),
+              border: Border.all(color: Color.fromARGB(255, 111, 174, 23)),
               borderRadius: BorderRadius.circular(4.0),
             ),
             child: Text(
@@ -58,7 +61,10 @@ class _CustomListItemState extends State<CustomListItem> {
             ),
           ),
           IconButton(
-            icon: Icon(Icons.add),
+            icon: Icon(
+              Icons.add,
+              color: Color.fromARGB(255, 111, 174, 23),
+            ),
             onPressed: () {
               setState(() {
                 count++;
@@ -66,7 +72,10 @@ class _CustomListItemState extends State<CustomListItem> {
             },
           ),
           IconButton(
-            icon: Icon(Icons.delete),
+            icon: Icon(
+              Icons.delete,
+              color: Color.fromARGB(255, 111, 174, 23),
+            ),
             onPressed: () {
               setState(() {
                 // deleteItem(index);

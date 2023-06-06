@@ -146,8 +146,6 @@ class _ViewProductChildState extends State<ViewProductChild> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        buildButton('ADD TO FAVES', widget.productDetails,
-                            widget.userDeets),
                         buildButton('ADD TO CART', widget.productDetails,
                             widget.userDeets),
                         buildButton(
@@ -220,9 +218,7 @@ class _ViewProductChildState extends State<ViewProductChild> {
             borderRadius: BorderRadius.circular(20),
           ))),
       onPressed: () {
-        if (text == 'CHAT SELLER') {
-          ///
-        } else if (text == 'ADD TO CART') {
+        if (text == 'ADD TO CART') {
           print(userDetails['cart']);
           print(prodDetails['id']);
           if (!userDetails['cart'].contains(prodDetails['id'])) {
@@ -295,7 +291,10 @@ class _ViewProductChildState extends State<ViewProductChild> {
                             width: 10,
                           ),
                           IconButton(
-                            icon: Icon(Icons.remove),
+                            icon: Icon(
+                              Icons.remove,
+                              color: Color.fromARGB(255, 111, 174, 23),
+                            ),
                             onPressed: () {
                               setState(() {
                                 if (count > 0) {
@@ -307,7 +306,8 @@ class _ViewProductChildState extends State<ViewProductChild> {
                           Container(
                             padding: EdgeInsets.symmetric(horizontal: 8.0),
                             decoration: BoxDecoration(
-                              border: Border.all(color: Colors.grey),
+                              border: Border.all(
+                                  color: Color.fromARGB(255, 111, 174, 23)),
                               borderRadius: BorderRadius.circular(4.0),
                             ),
                             child: Text(
@@ -316,7 +316,8 @@ class _ViewProductChildState extends State<ViewProductChild> {
                             ),
                           ),
                           IconButton(
-                            icon: Icon(Icons.add),
+                            icon: Icon(Icons.add,
+                                color: Color.fromARGB(255, 111, 174, 23)),
                             onPressed: () {
                               setState(() {
                                 count++;

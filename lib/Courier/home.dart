@@ -11,7 +11,9 @@ class HomeCourierParent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(home: HomeCourierChild(userDetails: userMap));
+    return MaterialApp(
+        debugShowCheckedModeBanner: false,
+        home: HomeCourierChild(userDetails: userMap));
   }
 }
 

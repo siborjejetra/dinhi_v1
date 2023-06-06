@@ -16,9 +16,10 @@ class HomeBuyerParent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+        debugShowCheckedModeBanner: false,
         home: HomeBuyerChild(
-      userDetails: userMap,
-    ));
+          userDetails: userMap,
+        ));
   }
 }
 
