@@ -48,7 +48,6 @@ class Database {
 
       Map<String, dynamic> newProduct = {
         'image': url,
-        'productId': docProduct.id,
         'name': name,
         'price': price,
         "quantity": quantity,
@@ -59,7 +58,7 @@ class Database {
         'seller_id': userIdno,
       };
 
-      addProductArray(userIdno, newProduct['productId']).then((value) {
+      addProductArray(userIdno, docProduct.id).then((value) {
         userDetails['products'] = value;
         cloneMap = {...userDetails};
         print(cloneMap);
@@ -73,7 +72,7 @@ class Database {
     return cloneMap;
   }
 
-  void createTransaction(
+  Future<String> createTransaction(
     String buyerId,
     String count,
     String courierId,
@@ -81,6 +80,7 @@ class Database {
     String status,
     String total,
   ) async {
+    String transaction_id = '';
     try {
       final docTransaction =
           FirebaseFirestore.instance.collection("transactions").doc();
@@ -94,11 +94,14 @@ class Database {
         'total': total,
         'date': DateTime.now(),
       };
+      transaction_id = docTransaction.id;
 
       await docTransaction.set(newTransaction);
+      return transaction_id;
     } catch (e) {
       print(e);
     }
+    return transaction_id;
   }
 
   void addTransaction(

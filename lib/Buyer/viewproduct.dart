@@ -141,16 +141,19 @@ class _ViewProductChildState extends State<ViewProductChild> {
                   buildRatingAndReview(widget.productDetails[
                       'rating']), // Insert product rating and list of reviews
                   const SizedBox(height: 30),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      buildButton('ADD TO FAVES', widget.productDetails,
-                          widget.userDeets),
-                      buildButton('ADD TO CART', widget.productDetails,
-                          widget.userDeets),
-                      buildButton(
-                          'BUY NOW', widget.productDetails, widget.userDeets)
-                    ],
+                  Flexible(
+                    flex: 1,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        buildButton('ADD TO FAVES', widget.productDetails,
+                            widget.userDeets),
+                        buildButton('ADD TO CART', widget.productDetails,
+                            widget.userDeets),
+                        buildButton(
+                            'BUY NOW', widget.productDetails, widget.userDeets)
+                      ],
+                    ),
                   )
                 ]))));
   }
@@ -235,15 +238,29 @@ class _ViewProductChildState extends State<ViewProductChild> {
               context: context,
               builder: (BuildContext context) {
                 return AlertDialog(
-                  title: Text('Added to Cart'),
-                  content: Text('You already added this to your cart.'),
+                  title: const Text('Added to Cart',
+                      style: TextStyle(
+                          fontFamily: "Montserrat",
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black,
+                          fontSize: 20)),
+                  content: const Text('You already added this to your cart.',
+                      style: TextStyle(
+                          fontFamily: "Montserrat",
+                          color: Colors.black,
+                          fontSize: 14)),
                   actions: [
                     TextButton(
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                      child: Text('OK'),
-                    ),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                        child: Text(
+                          'OK',
+                          style: TextStyle(
+                            fontFamily: "Montserrat",
+                            color: Color.fromARGB(255, 111, 174, 23),
+                          ),
+                        )),
                   ],
                 );
               },
@@ -318,20 +335,24 @@ class _ViewProductChildState extends State<ViewProductChild> {
                           List<String> products = [];
                           products.add(prodDetails['id']);
                           total = count * int.parse(prodDetails['price']);
-                          db.createTransaction(
-                              userDetails['id'],
-                              count.toString(),
-                              "",
-                              products,
-                              "Pending",
-                              total.toString());
-                          // add to user and buyer order list
-                          // print(prodDetails['seller_id'] + userDetails['id']);
-                          db.addTransaction(
-                              userDetails['id'],
-                              // palitan to ng legit transaction ID nung ginawang transaction kanina
-                              "di_ko_pa_makuha_transactionid_eto_muna",
-                              prodDetails['seller_id']);
+                          db
+                              .createTransaction(
+                                  userDetails['id'],
+                                  count.toString(),
+                                  "",
+                                  products,
+                                  "Pending",
+                                  total.toString())
+                              .then((value) {
+                            // add to user and buyer order list
+                            print(prodDetails['seller_id'] +
+                                ' ' +
+                                userDetails['id'] +
+                                ' ' +
+                                value);
+                            db.addTransaction(userDetails['id'], value,
+                                prodDetails['seller_id']);
+                          });
                           // exit modal
                           Navigator.of(context).pop();
                         },

@@ -98,8 +98,8 @@ class _CartChildState extends State<CartChild> {
                                         icon: Icon(Icons.remove),
                                         onPressed: () {
                                           setState(() {
-                                            if (count > 0) {
-                                              count--;
+                                            if (cart[index]['count'] > 0) {
+                                              cart[index]['count']--;
                                             }
                                           });
                                         },
@@ -114,7 +114,7 @@ class _CartChildState extends State<CartChild> {
                                               BorderRadius.circular(4.0),
                                         ),
                                         child: Text(
-                                          count.toString(),
+                                          cart[index]['count'].toString(),
                                           style: TextStyle(fontSize: 16.0),
                                         ),
                                       ),
@@ -122,7 +122,15 @@ class _CartChildState extends State<CartChild> {
                                         icon: Icon(Icons.add),
                                         onPressed: () {
                                           setState(() {
-                                            count++;
+                                            cart[index]['count']++;
+                                          });
+                                        },
+                                      ),
+                                      IconButton(
+                                        icon: Icon(Icons.delete),
+                                        onPressed: () {
+                                          setState(() {
+                                            deleteItem(index);
                                           });
                                         },
                                       ),
@@ -159,19 +167,25 @@ class _CartChildState extends State<CartChild> {
                           ),
                         )))),
       bottomNavigationBar: Container(
-        padding: EdgeInsets.all(16.0),
+        // padding: EdgeInsets.all(16.0),
         child: Container(
           decoration: BoxDecoration(
             color: Color.fromARGB(255, 111, 174, 23),
           ),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              // Text('Total: \$${totalPrice.toStringAsFixed(2)}'), add here if
+              Text(
+                'Total: 12312312',
+                style: TextStyle(
+                    fontFamily: "Montserrat",
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                    fontSize: 14),
+              ),
               ElevatedButton(
                 style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(
-                        Color.fromARGB(255, 9, 117, 8)),
+                    backgroundColor: MaterialStateProperty.all(Colors.white),
                     padding: MaterialStateProperty.all(
                         EdgeInsets.symmetric(horizontal: 50)),
                     shape: MaterialStateProperty.all<RoundedRectangleBorder>(
@@ -186,12 +200,11 @@ class _CartChildState extends State<CartChild> {
                       return AlertDialog(
                         backgroundColor: Colors.white,
                         title: const Text(
-                          'CHECKOUT',
+                          'Checkout',
                           style: TextStyle(
                               fontFamily: "Montserrat",
                               fontWeight: FontWeight.bold,
-                              color: Colors.white,
-                              letterSpacing: 2.2,
+                              color: Colors.black,
                               fontSize: 20),
                         ),
                         content: const Text('Order placed successfully.',
@@ -204,14 +217,26 @@ class _CartChildState extends State<CartChild> {
                             onPressed: () {
                               Navigator.of(context).pop();
                             },
-                            child: Text('OK'),
+                            child: Text(
+                              'OK',
+                              style: TextStyle(
+                                fontFamily: "Montserrat",
+                                color: Color.fromARGB(255, 111, 174, 23),
+                              ),
+                            ),
                           ),
                         ],
                       );
                     },
                   );
                 },
-                child: Text('Checkout'),
+                child: const Text('CHECKOUT',
+                    style: TextStyle(
+                        fontFamily: "Montserrat",
+                        fontWeight: FontWeight.bold,
+                        color: Color.fromARGB(255, 9, 117, 8),
+                        letterSpacing: 2.2,
+                        fontSize: 12)),
               ),
             ],
           ),
@@ -238,7 +263,12 @@ class _CartChildState extends State<CartChild> {
     return storage;
   }
 
-  // ADD REMOVE BUTTON ON LIST TILE
+  void deleteItem(int index) {
+    setState(() {
+      cart.removeAt(index);
+    });
+  }
+
   // Make list of counts for calculation
   // Make map in calculation of total
 

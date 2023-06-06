@@ -100,7 +100,7 @@ List<SideTile> returnTiles(BuildContext context, User user, Map userMap) {
     ),
     SideBarTile(
       title: const Text(
-        'Order History',
+        'Order Log',
         style: TextStyle(
           color: Colors.white,
           fontSize: 20,
@@ -113,7 +113,7 @@ List<SideTile> returnTiles(BuildContext context, User user, Map userMap) {
           size: 280,
         ),
       ),
-      name: 'Order History',
+      name: 'Order Log',
     ),
     SideBarTile(
       title: const Text(
