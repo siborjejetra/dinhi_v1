@@ -1,3 +1,4 @@
+import 'package:Dinhi_v1/Buyer/checkout.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -97,7 +98,9 @@ class CartParent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(home: CartChild(userDetails: userMap));
+    return MaterialApp(
+        debugShowCheckedModeBanner: false,
+        home: CartChild(userDetails: userMap));
   }
 }
 
@@ -193,7 +196,7 @@ class _CartChildState extends State<CartChild> {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               Text(
-                'Total: 12312312',
+                'Total: ₱ 12312312',
                 style: TextStyle(
                     fontFamily: "Montserrat",
                     fontWeight: FontWeight.bold,
@@ -246,6 +249,8 @@ class _CartChildState extends State<CartChild> {
                       );
                     },
                   );
+                  Navigator.of(context).pop();
+                  Get.to(CheckoutParent(userMap: userDetails));
                 },
                 child: const Text('CHECKOUT',
                     style: TextStyle(
