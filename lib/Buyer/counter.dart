@@ -4,7 +4,9 @@ class CounterWidget extends StatefulWidget {
   final ValueChanged<int> onCountChanged;
   final ValueChanged<double> onPriceChanged;
 
-  CounterWidget({required this.onCountChanged, required this.onPriceChanged});
+  const CounterWidget(
+      {Key? key, required this.onCountChanged, required this.onPriceChanged})
+      : super(key: key);
 
   @override
   _CounterWidgetState createState() => _CounterWidgetState();
