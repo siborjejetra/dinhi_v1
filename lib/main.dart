@@ -5,12 +5,11 @@ import 'package:get/get_navigation/get_navigation.dart';
 import 'package:get/get.dart';
 import 'login.dart';
 
-
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await Firebase.initializeApp();
-  runApp(const GetMaterialApp(home:LoginParent()));
+  runApp(const GetMaterialApp(
+      debugShowCheckedModeBanner: false, home: LoginParent()));
   // runApp(const GetMaterialApp(home:ProductParent()));
 }
