@@ -76,7 +76,7 @@ class Database {
     String buyerId,
     String count,
     String courierId,
-    List<String> productId,
+    List<Map> products,
     String status,
     String total,
   ) async {
@@ -89,7 +89,7 @@ class Database {
         'buyer_id': buyerId,
         'count': count,
         'courier_id': courierId,
-        'product_id': productId,
+        'products': products,
         'status': status,
         'total': total,
         'date': DateTime.now(),
