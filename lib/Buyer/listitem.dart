@@ -128,7 +128,7 @@ class _CustomListItemState extends State<CustomListItem> {
   @override
   void initState() {
     super.initState();
-    count = int.parse(widget.cart['quantity']) ?? 0;
+    count = int.parse(widget.cart['count']) ?? 0;
     totalCart = widget.totalCart;
   }
 

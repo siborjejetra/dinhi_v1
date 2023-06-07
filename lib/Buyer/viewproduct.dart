@@ -61,7 +61,35 @@ class _ViewProductChildState extends State<ViewProductChild> {
     // var total = widget.productDetails['price'];
     return Scaffold(
         backgroundColor: Color.fromARGB(255, 236, 236, 163),
-        appBar: buildAppbar(context, 'View Product', true),
+        appBar: AppBar(
+          centerTitle: true,
+          title: Text(
+            'View Product',
+            style: TextStyle(
+              color: Colors.white,
+              fontFamily: 'Montserrat',
+            ),
+          ),
+          backgroundColor: Color.fromARGB(255, 111, 174, 23),
+          leading: IconButton(
+              onPressed: () {
+                Get.back();
+              },
+              icon: Icon(
+                Icons.arrow_back,
+                color: Colors.white,
+              )),
+          actions: [
+            IconButton(
+                onPressed: () {
+                  Get.to(CartParent(userMap: widget.userDeets));
+                },
+                icon: Icon(
+                  Icons.shopping_basket,
+                  color: Colors.white,
+                ))
+          ],
+        ),
         body: Container(
             padding: const EdgeInsets.all(10),
             child: GestureDetector(

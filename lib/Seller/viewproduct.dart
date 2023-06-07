@@ -8,7 +8,8 @@ import 'package:get/get_core/src/get_main.dart';
 
 class ViewProductParent extends StatelessWidget {
   final Map productMap;
-  ViewProductParent({required this.productMap});
+  final Map userMap;
+  ViewProductParent({required this.productMap, required this.userMap});
 
   @override
   Widget build(BuildContext context) {
@@ -17,6 +18,7 @@ class ViewProductParent extends StatelessWidget {
       title: 'View Product',
       home: ViewProductChild(
         productDetails: productMap,
+        userDetails: userMap,
       ),
     );
   }
@@ -24,7 +26,8 @@ class ViewProductParent extends StatelessWidget {
 
 class ViewProductChild extends StatefulWidget {
   final Map productDetails;
-  ViewProductChild({required this.productDetails});
+  final Map userDetails;
+  ViewProductChild({required this.productDetails, required this.userDetails});
 
   @override
   State<ViewProductChild> createState() => _ViewProductChildState();
