@@ -128,7 +128,7 @@ class _CustomListItemState extends State<CustomListItem> {
   @override
   void initState() {
     super.initState();
-    count = widget.cart['quantity'] ?? 0;
+    count = int.parse(widget.cart['quantity']) ?? 0;
     totalCart = widget.totalCart;
   }
 
@@ -138,18 +138,17 @@ class _CustomListItemState extends State<CustomListItem> {
 
     return ListTile(
       onTap: () {},
-      //kinoment ko lang muna since ayaw mag load ng images
-      // leading: Container(
-      //   width: 60,
-      //   height: 60,
-      //   decoration: BoxDecoration(
-      //     image: DecorationImage(
-      //       image: NetworkImage(cart['image']),
-      //       fit: BoxFit.scaleDown,
-      //     ),
-      //     borderRadius: BorderRadius.circular(20),
-      //   ),
-      // ),
+      leading: Container(
+        width: 60,
+        height: 60,
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: NetworkImage(cart['image']),
+            fit: BoxFit.scaleDown,
+          ),
+          borderRadius: BorderRadius.circular(20),
+        ),
+      ),
       title: Text(cart['name']),
       subtitle: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
