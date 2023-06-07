@@ -35,7 +35,7 @@ class _ViewProductChildState extends State<ViewProductChild> {
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Color.fromARGB(255, 236, 236, 163),
-        appBar: buildAppbar(context, 'View Product', true),
+        appBar: buildAppbar(context, 'View Product', false),
         body: Container(
             padding: EdgeInsets.all(10),
             child: GestureDetector(
@@ -115,9 +115,8 @@ class _ViewProductChildState extends State<ViewProductChild> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      buildButton('CHAT SELLER'),
-                      buildButton('ADD TO CART'),
-                      buildButton('BUY NOW')
+                      buildButton('EDIT PRODUCT'),
+                      buildButton('DELETE PRODUCT')
                     ],
                   )
                 ]))));
@@ -181,9 +180,7 @@ class _ViewProductChildState extends State<ViewProductChild> {
             borderRadius: BorderRadius.circular(20),
           ))),
       onPressed: () {
-        if (text == 'CHAT SELLER') {
-          ///
-        } else if (text == 'ADD TO CART') {
+        if (text == 'EDIT PRODUCT') {
           ///
         } else if (text == 'BUY NOW') {
           ///
