@@ -108,8 +108,10 @@ class _ViewAllProdChildState extends State<ViewAllProdChild> {
                                   for (int i = 0; i < storage.length; i++)
                                     InkWell(
                                         onTap: () {
+                                          print(storage[i]);
                                           Get.to(() => ViewProductParent(
-                                              productMap: storage[i]));
+                                              productMap: storage[i],
+                                              userMap: userDetails));
                                         },
                                         child: buildCard(
                                             storage[i]['image'],

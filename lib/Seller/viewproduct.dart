@@ -1,14 +1,14 @@
 import 'package:Dinhi_v1/widgets.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 
 class ViewProductParent extends StatelessWidget {
   final Map productMap;
-  ViewProductParent({required this.productMap});
+  final Map userMap;
+  const ViewProductParent(
+      {Key? key, required this.productMap, required this.userMap})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -17,6 +17,7 @@ class ViewProductParent extends StatelessWidget {
       title: 'View Product',
       home: ViewProductChild(
         productDetails: productMap,
+        userDetails: userMap,
       ),
     );
   }
@@ -24,7 +25,10 @@ class ViewProductParent extends StatelessWidget {
 
 class ViewProductChild extends StatefulWidget {
   final Map productDetails;
-  ViewProductChild({required this.productDetails});
+  final Map userDetails;
+  const ViewProductChild(
+      {Key? key, required this.productDetails, required this.userDetails})
+      : super(key: key);
 
   @override
   State<ViewProductChild> createState() => _ViewProductChildState();
@@ -179,13 +183,24 @@ class _ViewProductChildState extends State<ViewProductChild> {
               RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20),
           ))),
-      onPressed: () {
+      onPressed: () async {
         if (text == 'EDIT PRODUCT') {
           ///
-        } else if (text == 'BUY NOW') {
-          ///
+          print("edit");
+        } else if (text == 'DELETE PRODUCT') {
+          removeProductFromSeller(
+              widget.userDetails['id'], widget.productDetails['id']);
+          // Navigator.pop(context);
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ViewProductParent(
+                  userMap: widget.userDetails,
+                  productMap: widget.productDetails),
+            ),
+          );
         } else {
-          ///
+          //
         }
       },
       child: Text(
@@ -198,4 +213,23 @@ class _ViewProductChildState extends State<ViewProductChild> {
       ),
     );
   }
+}
+
+Future<void> removeProductFromSeller(String sellerId, String productId) async {
+  final sellerRef =
+      FirebaseFirestore.instance.collection("users").doc(sellerId);
+
+  await FirebaseFirestore.instance.runTransaction((transaction) async {
+    final sellerSnapshot = await transaction.get(sellerRef);
+
+    if (sellerSnapshot.exists) {
+      final List<dynamic> productsList = sellerSnapshot.data()!['products'];
+
+      // Remove the productId from the productsList
+      productsList.remove(productId);
+
+      // Update the seller document with the modified productsList
+      transaction.update(sellerRef, {'products': productsList});
+    }
+  });
 }
