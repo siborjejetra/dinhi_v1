@@ -332,8 +332,8 @@ class _ViewProductChildState extends State<ViewProductChild> {
                         onPressed: () {
                           // print(quantityController.text);
                           // print(prodDetails);
-                          List<String> products = [];
-                          products.add(prodDetails['id']);
+                          List<Map> products = [];
+                          products.add(prodDetails);
                           total = count * int.parse(prodDetails['price']);
                           db
                               .createTransaction(
