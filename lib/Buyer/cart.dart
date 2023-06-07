@@ -1,9 +1,93 @@
 import 'package:Dinhi_v1/Buyer/checkout.dart';
-import 'package:Dinhi_v1/Buyer/listitem.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/src/foundation/key.dart';
+import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:get/get.dart';
+
 import '../utils/user_preference.dart';
 import '../widgets.dart';
+
+class CustomListItem extends StatefulWidget {
+  final Map cart;
+  const CustomListItem({Key? key, required this.cart}) : super(key: key);
+  @override
+  _CustomListItemState createState() => _CustomListItemState();
+}
+
+class _CustomListItemState extends State<CustomListItem> {
+  int count = 0;
+
+  @override
+  Widget build(BuildContext context) {
+    Map cart = widget.cart;
+    return ListTile(
+      onTap: () {},
+      leading: Container(
+        width: 60,
+        height: 60,
+        decoration: BoxDecoration(
+          image: DecorationImage(
+              image: NetworkImage(cart['image']), fit: BoxFit.scaleDown),
+          borderRadius: BorderRadius.circular(20),
+        ), //BoxDecoration
+      ),
+      title: Text(cart['name']),
+      subtitle: Text('₱' + cart['price'] + '/' + cart['unit']),
+      trailing: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          IconButton(
+            icon: Icon(
+              Icons.remove,
+              color: Color.fromARGB(255, 111, 174, 23),
+            ),
+            onPressed: () {
+              setState(() {
+                if (count > 0) {
+                  count--;
+                }
+              });
+            },
+          ),
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: 8.0),
+            decoration: BoxDecoration(
+              border: Border.all(color: Color.fromARGB(255, 111, 174, 23)),
+              borderRadius: BorderRadius.circular(4.0),
+            ),
+            child: Text(
+              count.toString(),
+              style: TextStyle(fontSize: 16.0),
+            ),
+          ),
+          IconButton(
+            icon: Icon(
+              Icons.add,
+              color: Color.fromARGB(255, 111, 174, 23),
+            ),
+            onPressed: () {
+              setState(() {
+                count++;
+              });
+            },
+          ),
+          IconButton(
+            icon: Icon(
+              Icons.delete,
+              color: Color.fromARGB(255, 111, 174, 23),
+            ),
+            onPressed: () {
+              setState(() {
+                // deleteItem(index);
+              });
+            },
+          ),
+        ],
+      ),
+    );
+  }
+}
 
 class CartParent extends StatelessWidget {
   final Map<dynamic, dynamic> userMap;
@@ -29,18 +113,10 @@ class CartChild extends StatefulWidget {
 }
 
 class _CartChildState extends State<CartChild> {
-  List<dynamic> cart = [];
-  int count = 1;
-  double total = 0.0; // Initialize total to 0.0
-
-  void updateTotal(double updatedTotalCart) {
-    setState(() {
-      total = updatedTotalCart; // Update the total value
-    });
-  }
-
   List<String>? productID = [];
   List products = [];
+  List cart = [];
+  int count = 1;
 
   @override
   void initState() {
@@ -48,22 +124,9 @@ class _CartChildState extends State<CartChild> {
     db.readProducts().then((docs) {
       setState(() {
         products = docs;
-        total = calculateTotalCart();
       });
     });
     super.initState();
-  }
-
-  double calculateTotalCart() {
-    double total = 0.0;
-    productID = widget.userDetails['cart'];
-    cart = storeUserCart(products, productID);
-    for (var item in cart) {
-      double price = double.parse(item['price']);
-      int quantity = int.parse(item['quantity']);
-      total += price * quantity;
-    }
-    return total;
   }
 
   @override
@@ -71,12 +134,13 @@ class _CartChildState extends State<CartChild> {
     Map userDetails = widget.userDetails;
     productID = widget.userDetails['cart'];
     cart = storeUserCart(products, productID);
+    List countList = genList(cart.length);
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 236, 236, 163),
+      backgroundColor: Color.fromARGB(255, 236, 236, 163),
       appBar: buildAppbar(context, 'My Cart', false),
       body: SafeArea(
           child: Padding(
-              padding: const EdgeInsets.only(bottom: 16, left: 16, right: 16),
+              padding: EdgeInsets.only(bottom: 16, left: 16, right: 16),
               child: Container(
                   child: cart.isNotEmpty
                       ? ListView.builder(
@@ -86,22 +150,20 @@ class _CartChildState extends State<CartChild> {
                             return Padding(
                               padding: const EdgeInsets.all(4.0),
                               child: Container(
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(20),
-                                  border: Border.all(color: Colors.grey),
-                                ),
-                                child: CustomListItem(
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(20),
+                                    border: Border.all(color: Colors.grey),
+                                  ),
+                                  child: CustomListItem(
                                     cart: cart[index],
-                                    totalCart: total,
-                                    updateTotal: updateTotal),
-                              ),
+                                  )),
                             );
                           },
                         )
                       : Center(
                           child: Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 200),
+                            padding: EdgeInsets.symmetric(vertical: 200),
                             child: Column(
                               children: const [
                                 Text(
@@ -125,97 +187,80 @@ class _CartChildState extends State<CartChild> {
                           ),
                         )))),
       bottomNavigationBar: Container(
-        decoration: const BoxDecoration(
-          color: Color.fromARGB(255, 111, 174, 23),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            Text(
-              total.toString(),
-              style: const TextStyle(
-                  fontFamily: "Montserrat",
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                  fontSize: 14),
-            ),
-            ElevatedButton(
-              style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all(Colors.white),
-                  padding: MaterialStateProperty.all(
-                      const EdgeInsets.symmetric(horizontal: 50)),
-                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                      RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20),
-                  ))),
-              onPressed: () {
-                // Perform checkout logic here
-                List<String> products = [];
-                products = (widget.userDetails['cart']);
-                db
-                    .createTransaction(
-                        userDetails['id'],
-                        count.toString(),
-                        "",
-                        products,
-                        "Pending",
-                        total.toString())
-                    .then((value) {
-                  // add to user and buyer order list
-                  // print(prodDetails['seller_id'] +
-                  //     ' ' +
-                  //     userDetails['id'] +
-                  //     ' ' +
-                  //     value);
-                  db.addTransaction(userDetails['id'], value,
-                      prodDetails['seller_id']);
-                Get.to(CheckoutParent(userMap: userDetails, transactionMap: ,));
-              //   showDialog(
-              //     context: context,
-              //     builder: (BuildContext context) {
-              //       return AlertDialog(
-              //         backgroundColor: Colors.white,
-              //         title: const Text(
-              //           'Checkout',
-              //           style: TextStyle(
-              //               fontFamily: "Montserrat",
-              //               fontWeight: FontWeight.bold,
-              //               color: Colors.black,
-              //               fontSize: 20),
-              //         ),
-              //         content: const Text('Order placed successfully.',
-              //             style: TextStyle(
-              //                 fontFamily: "Montserrat",
-              //                 color: Colors.black,
-              //                 fontSize: 14)),
-              //         actions: [
-              //           TextButton(
-              //             onPressed: () {
-              //               Navigator.of(context).pop();
-              //             },
-              //             child: const Text(
-              //               'OK',
-              //               style: TextStyle(
-              //                 fontFamily: "Montserrat",
-              //                 color: Color.fromARGB(255, 111, 174, 23),
-              //               ),
-              //             ),
-              //           ),
-              //         ],
-              //       );
-              //     },
-              //   );
-              //   Navigator.of(context).pop();
-              },
-              child: const Text('CHECKOUT',
-                  style: TextStyle(
-                      fontFamily: "Montserrat",
-                      fontWeight: FontWeight.bold,
-                      color: Color.fromARGB(255, 9, 117, 8),
-                      letterSpacing: 2.2,
-                      fontSize: 12)),
-            ),
-          ],
+        // padding: EdgeInsets.all(16.0),
+        child: Container(
+          decoration: BoxDecoration(
+            color: Color.fromARGB(255, 111, 174, 23),
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              Text(
+                'Total: 12312312',
+                style: TextStyle(
+                    fontFamily: "Montserrat",
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                    fontSize: 14),
+              ),
+              ElevatedButton(
+                style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all(Colors.white),
+                    padding: MaterialStateProperty.all(
+                        EdgeInsets.symmetric(horizontal: 50)),
+                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                        RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20),
+                    ))),
+                onPressed: () {
+                  // Perform checkout logic here
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        backgroundColor: Colors.white,
+                        title: const Text(
+                          'Checkout',
+                          style: TextStyle(
+                              fontFamily: "Montserrat",
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black,
+                              fontSize: 20),
+                        ),
+                        content: const Text('Order placed successfully.',
+                            style: TextStyle(
+                                fontFamily: "Montserrat",
+                                color: Colors.black,
+                                fontSize: 14)),
+                        actions: [
+                          TextButton(
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                            child: Text(
+                              'OK',
+                              style: TextStyle(
+                                fontFamily: "Montserrat",
+                                color: Color.fromARGB(255, 111, 174, 23),
+                              ),
+                            ),
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                  Get.to(CheckoutParent(userMap: userDetails));
+                },
+                child: const Text('CHECKOUT',
+                    style: TextStyle(
+                        fontFamily: "Montserrat",
+                        fontWeight: FontWeight.bold,
+                        color: Color.fromARGB(255, 9, 117, 8),
+                        letterSpacing: 2.2,
+                        fontSize: 12)),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -223,20 +268,11 @@ class _CartChildState extends State<CartChild> {
 
   List<dynamic> storeUserCart(List products, List<String>? productID) {
     List storage = [];
-    Map item = {};
     for (var i = 0; i < products.length; i++) {
       if (productID != null) {
         for (var j = 0; j < productID.length; j++) {
           if (products[i]['id'] == productID[j]) {
-            item['image'] = products[i]['image'];
-            item['name'] = products[i]['name'];
-            item['price'] = products[i]['price'];
-            item['quantity'] = products[i]['quantity'];
-            item['seller_id'] = products[i]['seller_id'];
-            item['unit'] = products[i]['unit'];
-            item['count'] = 1;
-            item['id'] = products[i]['id'];
-            storage.add(item);
+            storage.add(products[i]);
           }
         }
       } else {

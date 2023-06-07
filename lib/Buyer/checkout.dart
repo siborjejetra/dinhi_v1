@@ -7,10 +7,8 @@ import '../widgets.dart';
 
 class CheckoutParent extends StatelessWidget {
   final Map<dynamic, dynamic> userMap;
-  final Map<dynamic, dynamic> transactionMap;
-  const CheckoutParent(
-      {Key? key, required this.userMap, required this.transactionMap})
-      : super(key: key);
+  // final Map<dynamic, dynamic> transactionMap;
+  const CheckoutParent({Key? key, required this.userMap}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -18,17 +16,15 @@ class CheckoutParent extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         home: CheckoutChild(
           userDetails: userMap,
-          transDetails: transactionMap,
+          // transDetails: transactionMap,
         ));
   }
 }
 
 class CheckoutChild extends StatefulWidget {
   final Map<dynamic, dynamic> userDetails;
-  final Map<dynamic, dynamic> transDetails;
-  const CheckoutChild(
-      {Key? key, required this.userDetails, required this.transDetails})
-      : super(key: key);
+  // final Map<dynamic, dynamic> transDetails;
+  const CheckoutChild({Key? key, required this.userDetails}) : super(key: key);
 
   @override
   State<CheckoutChild> createState() => _CheckoutChildState();
