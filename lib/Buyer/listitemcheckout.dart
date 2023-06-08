@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class ListItemCheckout extends StatefulWidget {
   final Map cart;
-  final double totalCart;
+  final String totalCart;
   const ListItemCheckout({
     Key? key,
     required this.cart,
@@ -15,7 +15,7 @@ class ListItemCheckout extends StatefulWidget {
 
 class _ListItemCheckoutState extends State<ListItemCheckout> {
   int count = 0;
-  double totalCart = 0.0;
+  String totalCart = '0.0';
 
   @override
   void initState() {

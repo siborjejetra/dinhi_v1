@@ -38,7 +38,7 @@ class CheckoutChild extends StatefulWidget {
 
 class _CheckoutChildState extends State<CheckoutChild> {
   List products = [];
-  List<String> productMap = [];
+  List productMap = [];
   List<dynamic> cart = [];
   @override
   void initState() {
@@ -53,13 +53,14 @@ class _CheckoutChildState extends State<CheckoutChild> {
 
   @override
   Widget build(BuildContext context) {
-    productMap = widget.userDetails['cart'];
-    cart = storeUserCart(products, productMap);
+    productMap = widget.transDetails['products'];
+    print(productMap);
+    // cart = storeUserCart(products, productMap);
 
     return Scaffold(
         backgroundColor: Color.fromARGB(255, 236, 236, 163),
         appBar: buildAppbar(context, 'Checkout', false),
-        body: SingleChildScrollView(
+        body: SafeArea(
           child: Column(
             children: <Widget>[
               SizedBox(height: 10),
@@ -97,7 +98,28 @@ class _CheckoutChildState extends State<CheckoutChild> {
                 ),
               ),
               //List ng products
-
+              Expanded(
+                child: ListView.builder(
+                  primary: false,
+                  itemCount: productMap.length,
+                  itemBuilder: (context, index) {
+                    return Padding(
+                      padding: const EdgeInsets.all(4.0),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(20),
+                          border: Border.all(color: Colors.grey),
+                        ),
+                        child: ListItemCheckout(
+                          cart: productMap[index],
+                          totalCart: widget.transDetails['total'],
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ),
               SizedBox(height: 20),
               //insert all products that will be bought
               Container(
@@ -133,7 +155,7 @@ class _CheckoutChildState extends State<CheckoutChild> {
                   ),
                 ),
               ),
-              SizedBox(height: 10),
+              SizedBox(height: 5),
               Container(
                 decoration: BoxDecoration(
                   color: Color.fromARGB(255, 9, 117, 8),
@@ -168,7 +190,7 @@ class _CheckoutChildState extends State<CheckoutChild> {
                   ),
                 ),
               ),
-              SizedBox(height: 10),
+              SizedBox(height: 5),
               Container(
                 decoration: BoxDecoration(
                   color: Color.fromARGB(255, 9, 117, 8),
@@ -194,42 +216,15 @@ class _CheckoutChildState extends State<CheckoutChild> {
                               color: Colors.white,
                               fontSize: 18)),
                       //edit to computer price
-                      Text(widget.transDetails['total'],
+                      Text('₱ ' + widget.transDetails['total'] + '.00',
                           style: TextStyle(
                               fontFamily: "Montserrat",
                               color: Colors.white,
                               fontSize: 18)),
-                      ElevatedButton(
-                          onPressed: () {
-                            print(widget.userDetails['lastname'] as String);
-                          },
-                          child: Text('asd')),
                     ],
                   ),
                 ),
               ),
-              // Expanded(
-              //   child: ListView.builder(
-              //     primary: false,
-              //     itemCount: cart.length,
-              //     itemBuilder: (context, index) {
-              //       return Padding(
-              //         padding: const EdgeInsets.all(4.0),
-              //         child: Container(
-              //           decoration: BoxDecoration(
-              //             color: Colors.white,
-              //             borderRadius: BorderRadius.circular(20),
-              //             border: Border.all(color: Colors.grey),
-              //           ),
-              //           child: ListItemCheckout(
-              //             cart: cart[index],
-              //             totalCart: widget.transDetails['total'],
-              //           ),
-              //         ),
-              //       );
-              //     },
-              //   ),
-              // ),
             ],
           ),
         ));
