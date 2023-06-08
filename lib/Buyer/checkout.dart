@@ -128,66 +128,62 @@ class _CheckoutChildState extends State<CheckoutChild> {
                   borderRadius: BorderRadius.circular(20),
                   border: Border.all(color: Color.fromARGB(255, 236, 236, 163)),
                 ),
-                child: ListTile(
-                  leading: Container(
-                    width: 60,
-                    height: 60,
-                    child: Icon(
-                      IconData(0xe40a, fontFamily: 'MaterialIcons'),
-                      color: Colors.white,
-                    ), //BoxDecoration
-                  ),
-                  title: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text('Shipping Fee',
-                          style: TextStyle(
-                              fontFamily: "Montserrat",
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
-                              fontSize: 18)),
-                      Text('₱ 90.00',
-                          style: TextStyle(
-                              fontFamily: "Montserrat",
-                              color: Colors.white,
-                              fontSize: 18))
-                    ],
-                  ),
-                ),
-              ),
-              SizedBox(height: 5),
-              Container(
-                decoration: BoxDecoration(
-                  color: Color.fromARGB(255, 9, 117, 8),
-                  borderRadius: BorderRadius.circular(20),
-                  border: Border.all(color: Color.fromARGB(255, 236, 236, 163)),
-                ),
-                child: ListTile(
-                  leading: Container(
-                    width: 60,
-                    height: 60,
-                    child: Icon(
-                      IconData(0xe481, fontFamily: 'MaterialIcons'),
-                      color: Colors.white,
-                    ), //BoxDecoration
-                  ),
-                  title: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text('Mode of Payment',
-                          style: TextStyle(
-                              fontFamily: "Montserrat",
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
-                              fontSize: 18)),
-                      //edit to dropdown
-                      Text('GCash',
-                          style: TextStyle(
-                              fontFamily: "Montserrat",
-                              color: Colors.white,
-                              fontSize: 18))
-                    ],
-                  ),
+                child: Column(
+                  children: [
+                    ListTile(
+                      leading: Container(
+                        width: 60,
+                        height: 60,
+                        child: Icon(
+                          IconData(0xe40a, fontFamily: 'MaterialIcons'),
+                          color: Colors.white,
+                        ), //BoxDecoration
+                      ),
+                      title: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text('Shipping Fee',
+                              style: TextStyle(
+                                  fontFamily: "Montserrat",
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                  fontSize: 14)),
+                          Text('₱ 90.00',
+                              style: TextStyle(
+                                  fontFamily: "Montserrat",
+                                  color: Colors.white,
+                                  fontSize: 14))
+                        ],
+                      ),
+                    ),
+                    ListTile(
+                      leading: Container(
+                        width: 60,
+                        height: 60,
+                        child: Icon(
+                          IconData(0xe481, fontFamily: 'MaterialIcons'),
+                          color: Colors.white,
+                        ), //BoxDecoration
+                      ),
+                      title: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text('Mode of Payment',
+                              style: TextStyle(
+                                  fontFamily: "Montserrat",
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                  fontSize: 14)),
+                          //edit to dropdown
+                          Text('GCash',
+                              style: TextStyle(
+                                  fontFamily: "Montserrat",
+                                  color: Colors.white,
+                                  fontSize: 14))
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
               ),
               SizedBox(height: 5),
