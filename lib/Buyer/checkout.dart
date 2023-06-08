@@ -224,7 +224,22 @@ class _CheckoutChildState extends State<CheckoutChild> {
                           color: Colors.white,
                           fontSize: 18)),
                   trailing: OutlinedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      db
+                          .createTransaction(
+                              widget.userDetails['id'],
+                              widget.transDetails['count'].toString(),
+                              "",
+                              widget.transDetails['products'],
+                              "Pending",
+                              widget.transDetails['total'].toString())
+                          .then((value) {
+                        print(widget.userDetails['id'] +
+                            widget.transDetails['seller_id']);
+                        db.addTransaction(widget.userDetails['id'], value,
+                            widget.transDetails['seller_id']);
+                      });
+                    },
                     child: const Text('CHECKOUT',
                         style: TextStyle(
                             fontFamily: "Montserrat",
