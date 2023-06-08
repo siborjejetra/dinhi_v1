@@ -194,7 +194,7 @@ class _CheckoutChildState extends State<CheckoutChild> {
                               color: Colors.white,
                               fontSize: 18)),
                       //edit to computer price
-                      Text('₱ 10 Million',
+                      Text(widget.transDetails['total'],
                           style: TextStyle(
                               fontFamily: "Montserrat",
                               color: Colors.white,
@@ -208,28 +208,28 @@ class _CheckoutChildState extends State<CheckoutChild> {
                   ),
                 ),
               ),
-              Expanded(
-                child: ListView.builder(
-                  primary: false,
-                  itemCount: cart.length,
-                  itemBuilder: (context, index) {
-                    return Padding(
-                      padding: const EdgeInsets.all(4.0),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(20),
-                          border: Border.all(color: Colors.grey),
-                        ),
-                        child: ListItemCheckout(
-                          cart: cart[index],
-                          totalCart: widget.transDetails['total'],
-                        ),
-                      ),
-                    );
-                  },
-                ),
-              ),
+              // Expanded(
+              //   child: ListView.builder(
+              //     primary: false,
+              //     itemCount: cart.length,
+              //     itemBuilder: (context, index) {
+              //       return Padding(
+              //         padding: const EdgeInsets.all(4.0),
+              //         child: Container(
+              //           decoration: BoxDecoration(
+              //             color: Colors.white,
+              //             borderRadius: BorderRadius.circular(20),
+              //             border: Border.all(color: Colors.grey),
+              //           ),
+              //           child: ListItemCheckout(
+              //             cart: cart[index],
+              //             totalCart: widget.transDetails['total'],
+              //           ),
+              //         ),
+              //       );
+              //     },
+              //   ),
+              // ),
             ],
           ),
         ));
