@@ -25,14 +25,12 @@ class _CounterWidgetState extends State<CounterWidget> {
   void initState() {
     super.initState();
     price = widget.price;
-    print('total');
   }
 
   void incrementCount() {
     setState(() {
       count++;
       total = price * count;
-      print('total');
       widget.onCountChanged(count);
     });
   }
@@ -42,7 +40,6 @@ class _CounterWidgetState extends State<CounterWidget> {
       if (count > 0) {
         count--;
         total = price * count;
-        print('total');
         widget.onCountChanged(count);
       }
     });
