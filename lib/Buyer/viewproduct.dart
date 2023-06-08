@@ -342,7 +342,7 @@ class _ViewProductChildState extends State<ViewProductChild> {
                             'courier_proof': "",
                             'status': "Pending",
                             'products': products,
-                            'total': total,
+                            'total': total.toString(),
                           };
                           print("maasdasd");
                           Get.to(CheckoutParent(
