@@ -209,24 +209,38 @@ class _CheckoutChildState extends State<CheckoutChild> {
                   title: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text('Total Payment',
+                      Text('Total Payment:',
                           style: TextStyle(
                               fontFamily: "Montserrat",
                               fontWeight: FontWeight.bold,
                               color: Colors.white,
                               fontSize: 18)),
                       //edit to computer price
-                      Text(
-                          '₱ ' +
-                              (double.parse(widget.transDetails['total']) +
-                                      90.00)
-                                  .toString() +
-                              '.00',
-                          style: TextStyle(
-                              fontFamily: "Montserrat",
-                              color: Colors.white,
-                              fontSize: 18)),
                     ],
+                  ),
+                  subtitle: Text(
+                      '₱ ' +
+                          (double.parse(widget.transDetails['total']) + 90.00)
+                              .toString() +
+                          '.00',
+                      style: TextStyle(
+                          fontFamily: "Montserrat",
+                          color: Colors.white,
+                          fontSize: 18)),
+                  trailing: OutlinedButton(
+                    onPressed: () {},
+                    child: const Text('CHECKOUT',
+                        style: TextStyle(
+                            fontFamily: "Montserrat",
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                            letterSpacing: 2.2,
+                            fontSize: 12)),
+                    style: ButtonStyle(
+                      side: MaterialStateProperty.all<BorderSide>(
+                        BorderSide(color: Colors.white, width: 2.0),
+                      ),
+                    ),
                   ),
                 ),
               ),
