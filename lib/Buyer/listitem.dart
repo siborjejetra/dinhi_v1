@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class CustomListItem extends StatefulWidget {
@@ -23,7 +22,7 @@ class _CustomListItemState extends State<CustomListItem> {
   @override
   void initState() {
     super.initState();
-    count = int.parse(widget.cart['quantity']) ?? 0;
+    count = int.parse(widget.cart['quantity']);
     totalCart = widget.totalCart;
   }
 
@@ -54,7 +53,7 @@ class _CustomListItemState extends State<CustomListItem> {
             mainAxisSize: MainAxisSize.min,
             children: [
               IconButton(
-                icon: Icon(Icons.remove),
+                icon: const Icon(Icons.remove),
                 onPressed: () {
                   setState(() {
                     // Update count and totalCart
@@ -74,18 +73,18 @@ class _CustomListItemState extends State<CustomListItem> {
                 },
               ),
               Container(
-                padding: EdgeInsets.symmetric(horizontal: 8.0),
+                padding: const EdgeInsets.symmetric(horizontal: 8.0),
                 decoration: BoxDecoration(
                   border: Border.all(color: Colors.grey),
                   borderRadius: BorderRadius.circular(4.0),
                 ),
                 child: Text(
                   count.toString(),
-                  style: TextStyle(fontSize: 16.0),
+                  style: const TextStyle(fontSize: 16.0),
                 ),
               ),
               IconButton(
-                icon: Icon(Icons.add),
+                icon: const Icon(Icons.add),
                 onPressed: () {
                   setState(() {
                     // Update count and totalCart
@@ -102,7 +101,7 @@ class _CustomListItemState extends State<CustomListItem> {
         ],
       ),
       trailing: IconButton(
-        icon: Icon(Icons.delete),
+        icon: const Icon(Icons.delete),
         onPressed: () {
           setState(() {
             // deleteItem(index);

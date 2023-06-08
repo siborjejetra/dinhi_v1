@@ -1,105 +1,9 @@
 import 'package:Dinhi_v1/Buyer/checkout.dart';
+import 'package:Dinhi_v1/Buyer/listitem.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:get/get.dart';
-
 import '../utils/user_preference.dart';
 import '../widgets.dart';
-
-class CustomListItem extends StatefulWidget {
-  final Map cart;
-  const CustomListItem({Key? key, required this.cart}) : super(key: key);
-  @override
-  _CustomListItemState createState() => _CustomListItemState();
-}
-
-class _CustomListItemState extends State<CustomListItem> {
-  int count = 0;
-
-  @override
-  Widget build(BuildContext context) {
-    Map cart = widget.cart;
-    return ListTile(
-      onTap: () {},
-      leading: Container(
-        width: 60,
-        height: 60,
-        decoration: BoxDecoration(
-          image: DecorationImage(
-              image: NetworkImage(cart['image']), fit: BoxFit.scaleDown),
-          borderRadius: BorderRadius.circular(20),
-        ), //BoxDecoration
-      ),
-      title: Text(
-        cart['name'],
-        style: TextStyle(
-            fontFamily: "Montserrat",
-            fontWeight: FontWeight.bold,
-            color: Colors.black54,
-            fontSize: 14),
-      ),
-      subtitle: Text('₱' + cart['price'] + '/' + cart['unit'],
-          style: TextStyle(
-              fontFamily: "Montserrat", color: Colors.black54, fontSize: 12)),
-      trailing: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          IconButton(
-            icon: Icon(
-              Icons.remove,
-              color: Color.fromARGB(255, 111, 174, 23),
-            ),
-            onPressed: () {
-              setState(() {
-                if (count > 0) {
-                  count--;
-                }
-              });
-            },
-          ),
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: 8.0),
-            decoration: BoxDecoration(
-              border: Border.all(color: Color.fromARGB(255, 111, 174, 23)),
-              borderRadius: BorderRadius.circular(4.0),
-            ),
-            child: Text(
-              count.toString(),
-              style: TextStyle(
-                  fontFamily: "Montserrat",
-                  color: Colors.black54,
-                  fontSize: 16),
-            ),
-          ),
-          IconButton(
-            icon: Icon(
-              Icons.add,
-              color: Color.fromARGB(255, 111, 174, 23),
-            ),
-            onPressed: () {
-              setState(() {
-                count++;
-              });
-            },
-          ),
-          IconButton(
-            icon: Icon(
-              Icons.delete,
-              color: Color.fromARGB(255, 111, 174, 23),
-            ),
-            onPressed: () {
-              setState(() {
-                // deleteItem(index);
-              });
-            },
-          ),
-        ],
-      ),
-    );
-  }
-}
 
 class CartParent extends StatelessWidget {
   final Map<dynamic, dynamic> userMap;
@@ -127,8 +31,15 @@ class CartChild extends StatefulWidget {
 class _CartChildState extends State<CartChild> {
   List<String>? productID = [];
   List products = [];
-  List cart = [];
+
+  List<dynamic> cart = [];
   int count = 1;
+  double total = 0.0; // Initialize total to 0.0
+  void updateTotal(double updatedTotalCart) {
+    setState(() {
+      total = updatedTotalCart; // Update the total value
+    });
+  }
 
   @override
   void initState() {
@@ -136,9 +47,22 @@ class _CartChildState extends State<CartChild> {
     db.readProducts().then((docs) {
       setState(() {
         products = docs;
+        total = calculateTotalCart();
       });
     });
     super.initState();
+  }
+
+  double calculateTotalCart() {
+    double total = 0.0;
+    productID = widget.userDetails['cart'];
+    cart = storeUserCart(products, productID);
+    for (var item in cart) {
+      double price = double.parse(item['price']);
+      int quantity = int.parse(item['quantity']);
+      total += price * quantity;
+    }
+    return total;
   }
 
   @override
@@ -146,7 +70,7 @@ class _CartChildState extends State<CartChild> {
     Map userDetails = widget.userDetails;
     productID = widget.userDetails['cart'];
     cart = storeUserCart(products, productID);
-    List countList = genList(cart.length);
+
     return Scaffold(
       backgroundColor: Color.fromARGB(255, 236, 236, 163),
       appBar: buildAppbar(context, 'My Cart', false),
@@ -162,14 +86,16 @@ class _CartChildState extends State<CartChild> {
                             return Padding(
                               padding: const EdgeInsets.all(4.0),
                               child: Container(
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(20),
-                                    border: Border.all(color: Colors.grey),
-                                  ),
-                                  child: CustomListItem(
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(20),
+                                  border: Border.all(color: Colors.grey),
+                                ),
+                                child: CustomListItem(
                                     cart: cart[index],
-                                  )),
+                                    totalCart: total,
+                                    updateTotal: updateTotal),
+                              ),
                             );
                           },
                         )
@@ -208,7 +134,7 @@ class _CartChildState extends State<CartChild> {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               Text(
-                'Total: 12312312',
+                total.toString(),
                 style: TextStyle(
                     fontFamily: "Montserrat",
                     fontWeight: FontWeight.bold,
