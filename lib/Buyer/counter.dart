@@ -3,10 +3,14 @@ import 'package:flutter/material.dart';
 class CounterWidget extends StatefulWidget {
   final ValueChanged<int> onCountChanged;
   final ValueChanged<double> onPriceChanged;
+  final double price;
 
-  const CounterWidget(
-      {Key? key, required this.onCountChanged, required this.onPriceChanged})
-      : super(key: key);
+  const CounterWidget({
+    Key? key,
+    required this.onCountChanged,
+    required this.onPriceChanged,
+    required this.price,
+  }) : super(key: key);
 
   @override
   _CounterWidgetState createState() => _CounterWidgetState();
@@ -14,13 +18,21 @@ class CounterWidget extends StatefulWidget {
 
 class _CounterWidgetState extends State<CounterWidget> {
   int count = 0;
-  double price = 10.0;
+  double price = 0.0;
   double total = 0.0;
+
+  @override
+  void initState() {
+    super.initState();
+    price = widget.price;
+    print('total');
+  }
 
   void incrementCount() {
     setState(() {
       count++;
       total = price * count;
+      print('total');
       widget.onCountChanged(count);
     });
   }
@@ -30,6 +42,7 @@ class _CounterWidgetState extends State<CounterWidget> {
       if (count > 0) {
         count--;
         total = price * count;
+        print('total');
         widget.onCountChanged(count);
       }
     });

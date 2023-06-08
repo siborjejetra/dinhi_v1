@@ -321,9 +321,9 @@ class _ViewProductChildState extends State<ViewProductChild> {
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           CounterWidget(
-                            onCountChanged: handleCountChanged,
-                            onPriceChanged: handlePriceChanged,
-                          ),
+                              onCountChanged: handleCountChanged,
+                              onPriceChanged: handlePriceChanged,
+                              price: double.parse(prodDetails['price'])),
                         ],
                       ),
                     ),
