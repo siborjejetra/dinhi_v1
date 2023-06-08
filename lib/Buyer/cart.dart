@@ -32,8 +32,17 @@ class _CustomListItemState extends State<CustomListItem> {
           borderRadius: BorderRadius.circular(20),
         ), //BoxDecoration
       ),
-      title: Text(cart['name']),
-      subtitle: Text('₱' + cart['price'] + '/' + cart['unit']),
+      title: Text(
+        cart['name'],
+        style: TextStyle(
+            fontFamily: "Montserrat",
+            fontWeight: FontWeight.bold,
+            color: Colors.black54,
+            fontSize: 14),
+      ),
+      subtitle: Text('₱' + cart['price'] + '/' + cart['unit'],
+          style: TextStyle(
+              fontFamily: "Montserrat", color: Colors.black54, fontSize: 12)),
       trailing: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -58,7 +67,10 @@ class _CustomListItemState extends State<CustomListItem> {
             ),
             child: Text(
               count.toString(),
-              style: TextStyle(fontSize: 16.0),
+              style: TextStyle(
+                  fontFamily: "Montserrat",
+                  color: Colors.black54,
+                  fontSize: 16),
             ),
           ),
           IconButton(

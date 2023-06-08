@@ -272,6 +272,35 @@ class Database {
     return docs;
   }
 
+  Future<List> readTransactions() async {
+    QuerySnapshot querySnapshot;
+    List docs = [];
+    try {
+      querySnapshot =
+          await FirebaseFirestore.instance.collection('transactions').get();
+      if (querySnapshot.docs.isNotEmpty) {
+        for (var doc in querySnapshot.docs.toList()) {
+          Map b = {
+            "id": doc.id,
+            "buyer_id": doc['buyer_id'],
+            "buyer_proof": doc['buyer_proof'],
+            "courier_id": doc['courier_id'],
+            "courier_proof": doc['courier_proof'],
+            "date": doc['date'],
+            "itemList": doc['products'],
+            "seller_proof": doc['seller_proof'],
+            "status": doc['status']
+          };
+          docs.add(b);
+        }
+        return docs;
+      }
+    } catch (e) {
+      print(e);
+    }
+    return docs;
+  }
+
   Future<Map> storeUser(String userId) async {
     // List<dynamic> userList = await readUsers();
     QuerySnapshot querySnapshot;

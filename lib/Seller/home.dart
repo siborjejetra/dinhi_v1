@@ -71,7 +71,9 @@ class _HomeSellerChildState extends State<HomeSellerChild> {
         icon: const Icon(IconData(0xe385, fontFamily: 'MaterialIcons'),
             color: Colors.white),
         onPressed: () {
-          Get.to(const OrderListParent());
+          Get.to(OrderListParent(
+            orderlist: widget.userDetails['orderlist'],
+          ));
         },
       ),
     ];

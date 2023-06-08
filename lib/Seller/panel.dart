@@ -100,23 +100,6 @@ List<SideTile> returnTiles(BuildContext context, User user, Map userMap) {
     ),
     SideBarTile(
       title: const Text(
-        'Order List',
-        style: TextStyle(
-          color: Colors.white,
-          fontSize: 20,
-        ),
-      ),
-      icon: Icons.chrome_reader_mode_outlined,
-      body: const Center(
-        child: Icon(
-          Icons.chrome_reader_mode_outlined,
-          size: 280,
-        ),
-      ),
-      name: 'Order List',
-    ),
-    SideBarTile(
-      title: const Text(
         'Settings',
         style: TextStyle(
           color: Colors.white,

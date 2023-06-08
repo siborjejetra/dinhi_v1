@@ -58,7 +58,7 @@ class _ViewAllProdChildState extends State<ViewAllProdChild> {
     productID = widget.userProds;
     storage = storeUserProd(products, productID);
     // print(productID);
-    print(products);
+    // print(products);
     return Scaffold(
         backgroundColor: Color.fromARGB(255, 236, 236, 163),
         body: SafeArea(
