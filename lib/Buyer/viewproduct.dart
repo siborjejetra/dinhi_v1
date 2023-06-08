@@ -1,3 +1,4 @@
+import 'package:Dinhi_v1/Buyer/checkout.dart';
 import 'package:Dinhi_v1/Buyer/counter.dart';
 import 'package:Dinhi_v1/widgets.dart';
 import 'package:flutter/material.dart';
@@ -330,31 +331,47 @@ class _ViewProductChildState extends State<ViewProductChild> {
                       padding: const EdgeInsets.all(20.0),
                       child: ElevatedButton(
                         onPressed: () {
-                          // print(quantityController.text);
-                          // print(prodDetails);
                           List<Map> products = [];
                           products.add(prodDetails);
-                          total = count * int.parse(prodDetails['price']);
-                          db
-                              .createTransaction(
-                                  userDetails['id'],
-                                  count.toString(),
-                                  "",
-                                  products,
-                                  "Pending",
-                                  total.toString())
-                              .then((value) {
-                            // add to user and buyer order list
-                            // print(prodDetails['seller_id'] +
-                            //     ' ' +
-                            //     userDetails['id'] +
-                            //     ' ' +
-                            //     value);
-                            db.addTransaction(userDetails['id'], value,
-                                prodDetails['seller_id']);
-                          });
+                          final Map transactionData = {
+                            'count': count,
+                            'buyer_id': userDetails['id'],
+                            'buyer_proof': "",
+                            'courier_id': "",
+                            'courier_proof': "",
+                            'status': "Pending",
+                            'products': products,
+                            'total': total,
+                          };
+                          print("maasdasd");
+                          Get.to(CheckoutParent(
+                            userMap: userDetails,
+                            transaction: transactionData,
+                          ));
+                          // print(quantityController.text);
+                          // print(prodDetails);
+                          // List<Map> products = [];
+                          // products.add(prodDetails);
+                          // total = count * int.parse(prodDetails['price']);
+                          // db
+                          //     .createTransaction(
+                          //         userDetails['id'],
+                          //         count.toString(),
+                          //         "",
+                          //         products,
+                          //         "Pending",
+                          //         total.toString())
+                          //     .then((value) {
+                          //   // add to user and buyer order list
+                          //   // print(prodDetails['seller_id'] +
+                          //   //     ' ' +
+                          //   //     userDetails['id'] +
+                          //   //     ' ' +
+                          //   //     value);
+                          //   db.addTransaction(userDetails['id'], value,
+                          //       prodDetails['seller_id']);
+                          // });
                           // exit modal
-                          Navigator.of(context).pop();
                         },
                         child: const Text(
                           "CONFIRM",

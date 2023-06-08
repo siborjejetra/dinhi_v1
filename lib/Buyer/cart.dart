@@ -187,7 +187,7 @@ class _CartChildState extends State<CartChild> {
                       );
                     },
                   );
-                  Get.to(CheckoutParent(userMap: userDetails));
+                  // Get.to(CheckoutParent(userMap: userDetails));
                 },
                 child: const Text('CHECKOUT',
                     style: TextStyle(

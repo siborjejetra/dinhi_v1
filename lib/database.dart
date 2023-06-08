@@ -4,6 +4,7 @@ import 'package:Dinhi_v1/model/user.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/get_core.dart';
 import 'package:localstorage/localstorage.dart';
@@ -80,28 +81,33 @@ class Database {
     String status,
     String total,
   ) async {
-    String transaction_id = '';
+    String transactionId = '';
     try {
       final docTransaction =
           FirebaseFirestore.instance.collection("transactions").doc();
 
       Map<String, dynamic> newTransaction = {
         'buyer_id': buyerId,
-        'count': count,
-        'courier_id': courierId,
+        // 'count': count,
         'products': products,
         'status': status,
         'total': total,
         'date': DateTime.now(),
+        'buyer_proof': "",
+        'seller_proof': "",
+        'courier_id': courierId,
+        'courier_proof': "",
       };
-      transaction_id = docTransaction.id;
+      transactionId = docTransaction.id;
 
       await docTransaction.set(newTransaction);
-      return transaction_id;
+      return transactionId;
     } catch (e) {
-      print(e);
+      if (kDebugMode) {
+        print(e);
+      }
     }
-    return transaction_id;
+    return transactionId;
   }
 
   void addTransaction(
