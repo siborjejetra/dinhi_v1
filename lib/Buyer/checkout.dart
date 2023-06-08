@@ -216,7 +216,12 @@ class _CheckoutChildState extends State<CheckoutChild> {
                               color: Colors.white,
                               fontSize: 18)),
                       //edit to computer price
-                      Text('₱ ' + widget.transDetails['total'] + '.00',
+                      Text(
+                          '₱ ' +
+                              (double.parse(widget.transDetails['total']) +
+                                      90.00)
+                                  .toString() +
+                              '.00',
                           style: TextStyle(
                               fontFamily: "Montserrat",
                               color: Colors.white,
