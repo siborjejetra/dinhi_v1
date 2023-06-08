@@ -333,6 +333,7 @@ class _ViewProductChildState extends State<ViewProductChild> {
                         onPressed: () {
                           List<Map> products = [];
                           products.add(prodDetails);
+                          total = count * int.parse(prodDetails['price']);
                           final Map transactionData = {
                             'count': count,
                             'buyer_id': userDetails['id'],
