@@ -188,12 +188,22 @@ class _CheckoutChildState extends State<CheckoutChild> {
                                   fontFamily: "Montserrat",
                                   color: Colors.white,
                                   fontSize: 14)),
-                          IconButton(
-                              onPressed: () {
-                                pickImage(ImageSource.gallery);
-                              },
-                              icon: Icon(IconData(0xe048,
-                                  fontFamily: 'MaterialIcons')))
+                          InkWell(
+                            child: inputImage != null
+                                ? Image.file(
+                                    inputImage!,
+                                    width: 60,
+                                    height: 60,
+                                  )
+                                : Icon(
+                                    IconData(0xe048,
+                                        fontFamily: 'MaterialIcons'),
+                                    color: Colors.white,
+                                  ),
+                            onTap: () {
+                              pickImage(ImageSource.gallery);
+                            },
+                          ),
                         ],
                       ),
                     ),
