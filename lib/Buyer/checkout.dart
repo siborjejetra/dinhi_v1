@@ -1,11 +1,10 @@
 import 'dart:io';
-
 import 'package:Dinhi_v1/Buyer/listitemcheckout.dart';
 import 'package:Dinhi_v1/utils/user_preference.dart';
 import 'package:flutter/material.dart';
+import '../widgets.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
-import '../widgets.dart';
 
 class CheckoutParent extends StatelessWidget {
   final Map<dynamic, dynamic> userMap;
@@ -44,11 +43,9 @@ class _CheckoutChildState extends State<CheckoutChild> {
   List products = [];
   List productMap = [];
   List<dynamic> cart = [];
-
   File? inputImage;
   String path = '';
   bool hasUploaded = false;
-
   @override
   void initState() {
     // TODO: implement initState
@@ -249,9 +246,6 @@ class _CheckoutChildState extends State<CheckoutChild> {
                               "Pending",
                               widget.transDetails['total'].toString())
                           .then((value) {
-                        print("HELLLOOOO" +
-                            widget.userDetails['id'].toString() +
-                            widget.transDetails['seller_id'].toString());
                         db.addTransactiontoBuyer(
                           value,
                           widget.userDetails['id'].toString(),
