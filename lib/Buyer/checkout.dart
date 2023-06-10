@@ -239,6 +239,7 @@ class _CheckoutChildState extends State<CheckoutChild> {
                     onPressed: () {
                       db
                           .createTransaction(
+                              inputImage,
                               widget.userDetails['id'],
                               widget.transDetails['count'].toString(),
                               "",

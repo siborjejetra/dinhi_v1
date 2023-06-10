@@ -74,6 +74,7 @@ class Database {
   }
 
   Future<String> createTransaction(
+    File? inputImage,
     String buyerId,
     String count,
     String courierId,
@@ -82,7 +83,21 @@ class Database {
     String total,
   ) async {
     String transactionId = '';
+    String url = '';
     try {
+      if (inputImage != null) {
+        final ref = FirebaseStorage.instance
+            .ref()
+            .child('transactionImages')
+            .child('${DateTime.now()}');
+
+        // var inputImage;
+        await ref.putFile(File(inputImage.path));
+
+        url = await ref.getDownloadURL();
+        print(url);
+      }
+
       final docTransaction =
           FirebaseFirestore.instance.collection("transactions").doc();
 
@@ -93,7 +108,7 @@ class Database {
         'status': status,
         'total': total,
         'date': DateTime.now(),
-        'buyer_proof': "",
+        'buyer_proof': url,
         'seller_proof': "",
         'courier_id': courierId,
         'courier_proof': "",
