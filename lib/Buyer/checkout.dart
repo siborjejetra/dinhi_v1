@@ -1,8 +1,10 @@
 import 'dart:io';
+import 'package:Dinhi_v1/Buyer/home.dart';
 import 'package:Dinhi_v1/Buyer/listitemcheckout.dart';
 import 'package:Dinhi_v1/utils/user_preference.dart';
 import 'package:flutter/material.dart';
 import '../widgets.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -253,6 +255,18 @@ class _CheckoutChildState extends State<CheckoutChild> {
                         );
                         db.addTransactiontoSeller(
                             value, widget.transDetails['seller_id'].toString());
+                        Fluttertoast.showToast(
+                          msg: "Checkout Successful",
+                          toastLength: Toast.LENGTH_LONG,
+                          backgroundColor: const Color.fromARGB(255, 9, 117, 8),
+                          webBgColor: Colors.white,
+                          timeInSecForIosWeb: 2,
+                          textColor: Colors.black87,
+                          fontSize: 15.0,
+                          gravity: ToastGravity.BOTTOM,
+                        );
+                        Get.to(
+                            () => HomeBuyerParent(userMap: widget.userDetails));
                       });
                     },
                     child: const Text('CHECKOUT',
