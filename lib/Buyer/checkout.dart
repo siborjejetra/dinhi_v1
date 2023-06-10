@@ -234,10 +234,15 @@ class _CheckoutChildState extends State<CheckoutChild> {
                               "Pending",
                               widget.transDetails['total'].toString())
                           .then((value) {
-                        print(widget.userDetails['id'] +
-                            widget.transDetails['seller_id']);
-                        db.addTransaction(widget.userDetails['id'], value,
-                            widget.transDetails['seller_id']);
+                        print("HELLLOOOO" +
+                            widget.userDetails['id'].toString() +
+                            widget.transDetails['seller_id'].toString());
+                        db.addTransactiontoBuyer(
+                          value,
+                          widget.userDetails['id'].toString(),
+                        );
+                        db.addTransactiontoSeller(
+                            value, widget.transDetails['seller_id'].toString());
                       });
                     },
                     child: const Text('CHECKOUT',
@@ -249,7 +254,7 @@ class _CheckoutChildState extends State<CheckoutChild> {
                             fontSize: 12)),
                     style: ButtonStyle(
                       side: MaterialStateProperty.all<BorderSide>(
-                        BorderSide(color: Colors.white, width: 2.0),
+                        const BorderSide(color: Colors.white, width: 2.0),
                       ),
                     ),
                   ),

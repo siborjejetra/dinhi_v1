@@ -110,28 +110,31 @@ class Database {
     return transactionId;
   }
 
-  void addTransaction(
-    String buyerId,
+  void addTransactiontoBuyer(
     String transactionId,
-    String sellerId,
+    String buyerId,
   ) async {
     try {
       final docBuyer =
           FirebaseFirestore.instance.collection("users").doc(buyerId);
-
-      final docSeller =
-          FirebaseFirestore.instance.collection("users").doc(sellerId);
-
-      // print(newTransaction);
       docBuyer.update({
         "orderlist": FieldValue.arrayUnion([transactionId]),
       });
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  void addTransactiontoSeller(
+    String transactionId,
+    String sellerId,
+  ) async {
+    try {
+      final docSeller =
+          FirebaseFirestore.instance.collection("users").doc(sellerId);
       docSeller.update({
         "orderlist": FieldValue.arrayUnion([transactionId]),
       });
-
-      // print(cloneMap);
-      // await docTransaction.set(newTransaction);
     } catch (e) {
       print(e);
     }
