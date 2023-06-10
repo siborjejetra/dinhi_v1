@@ -1,6 +1,10 @@
+import 'dart:io';
+
 import 'package:Dinhi_v1/Buyer/listitemcheckout.dart';
 import 'package:Dinhi_v1/utils/user_preference.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import '../widgets.dart';
 
 class CheckoutParent extends StatelessWidget {
@@ -40,6 +44,11 @@ class _CheckoutChildState extends State<CheckoutChild> {
   List products = [];
   List productMap = [];
   List<dynamic> cart = [];
+
+  File? inputImage;
+  String path = '';
+  bool hasUploaded = false;
+
   @override
   void initState() {
     // TODO: implement initState
@@ -179,7 +188,13 @@ class _CheckoutChildState extends State<CheckoutChild> {
                               style: TextStyle(
                                   fontFamily: "Montserrat",
                                   color: Colors.white,
-                                  fontSize: 14))
+                                  fontSize: 14)),
+                          IconButton(
+                              onPressed: () {
+                                pickImage(ImageSource.gallery);
+                              },
+                              icon: Icon(IconData(0xe048,
+                                  fontFamily: 'MaterialIcons')))
                         ],
                       ),
                     ),
@@ -225,20 +240,7 @@ class _CheckoutChildState extends State<CheckoutChild> {
                           fontSize: 18)),
                   trailing: OutlinedButton(
                     onPressed: () {
-                      db
-                          .createTransaction(
-                              widget.userDetails['id'],
-                              widget.transDetails['count'].toString(),
-                              "",
-                              widget.transDetails['products'],
-                              "Pending",
-                              widget.transDetails['total'].toString())
-                          .then((value) {
-                        print(widget.userDetails['id'] +
-                            widget.transDetails['seller_id']);
-                        db.addTransaction(widget.userDetails['id'], value,
-                            widget.transDetails['seller_id']);
-                      });
+                      db.editTransaction(widget.transDetails, inputImage);
                     },
                     child: const Text('CHECKOUT',
                         style: TextStyle(
@@ -258,6 +260,20 @@ class _CheckoutChildState extends State<CheckoutChild> {
             ],
           ),
         ));
+  }
+
+  Future pickImage(ImageSource source) async {
+    try {
+      XFile? pickedImage = await ImagePicker().pickImage(source: source);
+      if (pickedImage != null) {
+        setState(() {
+          inputImage = File(pickedImage.path);
+        });
+      } else
+        return;
+    } catch (e) {
+      // showFailedToChooseDialog(context);
+    }
   }
 }
 

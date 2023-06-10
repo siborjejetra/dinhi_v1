@@ -100,6 +100,8 @@ class Database {
       };
       transactionId = docTransaction.id;
 
+      newTransaction['transaction_id'] = transactionId;
+
       await docTransaction.set(newTransaction);
       return transactionId;
     } catch (e) {
@@ -200,6 +202,48 @@ class Database {
     }
     // print(newUserMapDB);
     return newUserMap;
+  }
+
+  Future<void> editTransaction(
+      Map<dynamic, dynamic> transaction, File? inputImage) async {
+    // String userID = localStorage.getItem('userID');
+    // print(userID);
+    Map<String, dynamic> newTransMap = {};
+    try {
+      if (inputImage != null) {
+        final ref = FirebaseStorage.instance
+            .ref()
+            .child('transactionImages')
+            .child('${DateTime.now()}');
+
+        // var inputImage;
+        await ref.putFile(File(inputImage.path));
+
+        url = await ref.getDownloadURL();
+        print(url);
+        newTransMap['buyer_proof'] = url;
+      }
+      var collectionRef = FirebaseFirestore.instance.collection('transactions');
+      final doc = await collectionRef.doc(transaction['transaction_id']).get();
+      var docUser = collectionRef.doc(transaction['transaction_id']);
+
+      // newTransMap['password'] = doc.data()!['password'];
+      // newTransMap['honorific'] = doc.data()!['honorific'];
+      // newTransMap['idno'] = doc.data()!['idno'];
+      // print(newTransMap['idno']);
+      // if (doc.data()!['usertype'] == 'Seller') {
+      //   newTransMap['products'] = doc.data()!['products'];
+      // }
+
+      docUser.update(newTransMap);
+
+      print(newTransMap);
+      // return newUserMap;
+    } catch (e) {
+      print(e);
+    }
+    // print(newUserMapDB);
+    // return newUserMap;
   }
 
   Future<List> readUsers() async {

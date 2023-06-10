@@ -1,5 +1,6 @@
 import 'package:Dinhi_v1/Buyer/profile.dart';
 import 'package:Dinhi_v1/Buyer/home.dart';
+import 'package:Dinhi_v1/Seller/orderlist.dart';
 import 'package:Dinhi_v1/model/user.dart';
 import 'package:Dinhi_v1/settings.dart';
 import 'package:Dinhi_v1/login.dart';
@@ -107,12 +108,7 @@ List<SideTile> returnTiles(BuildContext context, User user, Map userMap) {
         ),
       ),
       icon: Icons.chrome_reader_mode_outlined,
-      body: const Center(
-        child: Icon(
-          Icons.chrome_reader_mode_outlined,
-          size: 280,
-        ),
-      ),
+      body: OrderListParent(orderlist: userMap['orderlist']),
       name: 'Order Log',
     ),
     SideBarTile(
