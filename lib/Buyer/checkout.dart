@@ -240,7 +240,25 @@ class _CheckoutChildState extends State<CheckoutChild> {
                           fontSize: 18)),
                   trailing: OutlinedButton(
                     onPressed: () {
-                      db.editTransaction(widget.transDetails, inputImage);
+                      db
+                          .createTransaction(
+                              widget.userDetails['id'],
+                              widget.transDetails['count'].toString(),
+                              "",
+                              widget.transDetails['products'],
+                              "Pending",
+                              widget.transDetails['total'].toString())
+                          .then((value) {
+                        print("HELLLOOOO" +
+                            widget.userDetails['id'].toString() +
+                            widget.transDetails['seller_id'].toString());
+                        db.addTransactiontoBuyer(
+                          value,
+                          widget.userDetails['id'].toString(),
+                        );
+                        db.addTransactiontoSeller(
+                            value, widget.transDetails['seller_id'].toString());
+                      });
                     },
                     child: const Text('CHECKOUT',
                         style: TextStyle(
@@ -251,7 +269,7 @@ class _CheckoutChildState extends State<CheckoutChild> {
                             fontSize: 12)),
                     style: ButtonStyle(
                       side: MaterialStateProperty.all<BorderSide>(
-                        BorderSide(color: Colors.white, width: 2.0),
+                        const BorderSide(color: Colors.white, width: 2.0),
                       ),
                     ),
                   ),
