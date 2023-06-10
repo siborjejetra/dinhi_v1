@@ -147,6 +147,7 @@ class Database {
     String sellerId,
   ) async {
     try {
+      print(sellerId);
       final docSeller =
           FirebaseFirestore.instance.collection("users").doc(sellerId);
       docSeller.update({
