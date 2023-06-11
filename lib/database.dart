@@ -358,7 +358,8 @@ class Database {
             "date": doc['date'],
             "itemList": doc['products'],
             "seller_proof": doc['seller_proof'],
-            "status": doc['status']
+            "status": doc['status'],
+            "total": doc['total']
           };
           docs.add(b);
         }

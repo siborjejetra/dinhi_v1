@@ -249,35 +249,40 @@ class _CheckoutChildState extends State<CheckoutChild> {
                           fontSize: 18)),
                   trailing: OutlinedButton(
                     onPressed: () {
-                      db
-                          .createTransaction(
-                              inputImage,
-                              widget.userDetails['id'],
-                              widget.transDetails['count'].toString(),
-                              "",
-                              widget.transDetails['products'],
-                              "Pending",
-                              widget.transDetails['total'].toString())
-                          .then((value) {
-                        db.addTransactiontoBuyer(
-                          value,
-                          widget.userDetails['id'].toString(),
-                        );
-                        db.addTransactiontoSeller(
-                            value, widget.transDetails['seller_id'].toString());
-                        Fluttertoast.showToast(
-                          msg: "Checkout Successful",
-                          toastLength: Toast.LENGTH_LONG,
-                          backgroundColor: const Color.fromARGB(255, 9, 117, 8),
-                          webBgColor: Colors.white,
-                          timeInSecForIosWeb: 2,
-                          textColor: Colors.black87,
-                          fontSize: 15.0,
-                          gravity: ToastGravity.BOTTOM,
-                        );
-                        Get.to(
-                            () => HomeBuyerParent(userMap: widget.userDetails));
-                      });
+                      if (inputImage != null) {
+                        db
+                            .createTransaction(
+                                inputImage,
+                                widget.userDetails['id'],
+                                widget.transDetails['count'].toString(),
+                                "",
+                                widget.transDetails['products'],
+                                "Pending",
+                                widget.transDetails['total'].toString())
+                            .then((value) {
+                          db.addTransactiontoBuyer(
+                            value,
+                            widget.userDetails['id'].toString(),
+                          );
+                          db.addTransactiontoSeller(value,
+                              widget.transDetails['seller_id'].toString());
+                          Fluttertoast.showToast(
+                            msg: "Checkout Successful",
+                            toastLength: Toast.LENGTH_LONG,
+                            backgroundColor:
+                                const Color.fromARGB(255, 9, 117, 8),
+                            webBgColor: Colors.white,
+                            timeInSecForIosWeb: 2,
+                            textColor: Colors.black87,
+                            fontSize: 15.0,
+                            gravity: ToastGravity.BOTTOM,
+                          );
+                          Get.to(() =>
+                              HomeBuyerParent(userMap: widget.userDetails));
+                        });
+                      } else {
+                        // AlertDialog()
+                      }
                     },
                     child: const Text('CHECKOUT',
                         style: TextStyle(

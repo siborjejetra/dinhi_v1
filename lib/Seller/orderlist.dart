@@ -1,3 +1,4 @@
+import 'package:Dinhi_v1/Seller/order.dart';
 import 'package:Dinhi_v1/widgets.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -12,7 +13,9 @@ class OrderListParent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(home: OrderListChild(orderlist: orderlist));
+    return MaterialApp(
+        debugShowCheckedModeBanner: false,
+        home: OrderListChild(orderlist: orderlist));
   }
 }
 
@@ -122,7 +125,9 @@ class _OrderListChildState extends State<OrderListChild> {
       trailing: IconButton(
         icon: Icon(Icons.arrow_forward_ios,
             color: Color.fromARGB(255, 111, 174, 23)),
-        onPressed: () {},
+        onPressed: () {
+          Get.to(OrderParent(transaction: transaction));
+        },
       ),
     );
   }
