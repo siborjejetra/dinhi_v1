@@ -28,23 +28,24 @@ class HomeCourierChild extends StatefulWidget {
 
 class _HomeCourierChildState extends State<HomeCourierChild> {
   late final User user = User(
-    imagePath: (widget.userDetails['image'] as String).isEmpty
-        ? 'https://cdn3.iconfinder.com/data/icons/flatastic-4-1/256/user_orange-512.png'
-        : widget.userDetails['image'],
-    firstname: widget.userDetails['firstname'],
-    lastname: widget.userDetails['lastname'],
-    email: widget.userDetails['email'],
-    password: widget.userDetails['password'],
-    cellnumber: widget.userDetails['cellnumber'],
-    honorific: widget.userDetails['honorific'],
-    about: (widget.userDetails['about'] as String).isEmpty
-        ? 'Set about'
-        : widget.userDetails['about'],
-    birthday: widget.userDetails['birthday'],
-    address: widget.userDetails['address'],
-    idno: widget.userDetails['idno'],
-    products: widget.userDetails['products'],
-  );
+      imagePath: (widget.userDetails['image'] as String).isEmpty
+          ? 'https://cdn3.iconfinder.com/data/icons/flatastic-4-1/256/user_orange-512.png'
+          : widget.userDetails['image'],
+      firstname: widget.userDetails['firstname'],
+      lastname: widget.userDetails['lastname'],
+      email: widget.userDetails['email'],
+      password: widget.userDetails['password'],
+      cellnumber: widget.userDetails['cellnumber'],
+      honorific: widget.userDetails['honorific'],
+      about: (widget.userDetails['about'] as String).isEmpty
+          ? 'Set about'
+          : widget.userDetails['about'],
+      birthday: widget.userDetails['birthday'],
+      address: widget.userDetails['address'],
+      idno: widget.userDetails['idno'],
+      status: widget.userDetails['status'],
+      plateNumber: widget.userDetails['plate_no'],
+      deliverylist: widget.userDetails['deliverylist']);
   late final EasyAppController controller = EasyAppController(
     intialBody: EasyBody(
         child: buildSideBarTile(user).body,

@@ -1,7 +1,9 @@
+import 'package:Dinhi_v1/Seller/riderlist.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:get/get.dart';
 
 import '../Buyer/listitemcheckout.dart';
 import '../utils/user_preference.dart';
@@ -214,7 +216,22 @@ class _OrderChildState extends State<OrderChild> {
                     RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20),
                 ))),
-            onPressed: () {},
+            onPressed: () {
+              Map<String, dynamic> newTransaction = {};
+              if (transDeets['status'] == 'Pending') {
+                newTransaction['status'] = 'Ongoing';
+              } else if (transDeets['status'] == 'Ongoing') {
+                newTransaction['status'] = 'Completed';
+              }
+              newTransaction['notes'] = textController.text;
+              print(newTransaction);
+              db
+                  .editTransaction(transDeets, newTransaction)
+                  .then((newTransMap) {
+                print(newTransMap);
+                Get.to(RiderListParent(transaction: newTransMap));
+              });
+            },
             child: const Text(
               'CONFIRM',
               style: TextStyle(
@@ -234,7 +251,10 @@ class _OrderChildState extends State<OrderChild> {
                       RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(20),
                   ))),
-              onPressed: () {},
+              onPressed: () {
+                //Update transaction notes and show it to buyer side
+                //Make transaction['status'] = 'Cancelled'
+              },
               child: const Text(
                 'CANCEL',
                 style: TextStyle(

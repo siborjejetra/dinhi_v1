@@ -15,6 +15,9 @@ class User {
   final List<String>? products;
   final List<String>? cart;
   final List<String>? orderlist;
+  final String? status;
+  final String? plateNumber;
+  final List<String>? deliverylist;
 
   const User(
       {required this.imagePath,
@@ -30,5 +33,8 @@ class User {
       required this.idno,
       this.products,
       this.cart,
-      this.orderlist});
+      this.orderlist,
+      this.status,
+      this.plateNumber,
+      this.deliverylist});
 }

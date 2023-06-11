@@ -610,7 +610,8 @@ class _RegChildState extends State<RegChild> {
                         newUser = _formKey.currentState!.value;
                         Map<String, dynamic> cloneMap = {...newUser};
                         cloneMap['idno'] = idno;
-                        cloneMap['image'] = '';
+                        cloneMap['image'] =
+                            'https://cdn3.iconfinder.com/data/icons/flatastic-4-1/256/user_orange-512.png';
                         cloneMap['about'] = '';
                         if (idno.startsWith('S', 0)) {
                           cloneMap['products'] = <String>[];
@@ -618,6 +619,10 @@ class _RegChildState extends State<RegChild> {
                         } else if (idno.startsWith('B', 0)) {
                           cloneMap['cart'] = <String>[];
                           cloneMap['orderlist'] = <String>[];
+                        } else if (idno.startsWith('C', 0)) {
+                          cloneMap['status'] = 'Available';
+                          cloneMap['plate_no'] = '';
+                          cloneMap['deliverylist'] = <String>[];
                         }
                         await db
                             .createUser(cloneMap)

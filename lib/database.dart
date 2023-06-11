@@ -104,6 +104,7 @@ class Database {
       Map<String, dynamic> newTransaction = {
         'buyer_id': buyerId,
         // 'count': count,
+        'notes': "",
         'products': products,
         'status': status,
         'total': total,
@@ -223,46 +224,28 @@ class Database {
     return newUserMap;
   }
 
-  Future<void> editTransaction(
-      Map<dynamic, dynamic> transaction, File? inputImage) async {
-    // String userID = localStorage.getItem('userID');
-    // print(userID);
-    Map<String, dynamic> newTransMap = {};
+  Future<Map> editTransaction(Map<dynamic, dynamic> transaction,
+      Map<String, dynamic> newTransaction) async {
+    Map newTransMap = {};
     try {
-      if (inputImage != null) {
-        final ref = FirebaseStorage.instance
-            .ref()
-            .child('transactionImages')
-            .child('${DateTime.now()}');
-
-        // var inputImage;
-        await ref.putFile(File(inputImage.path));
-
-        url = await ref.getDownloadURL();
-        print(url);
-        newTransMap['buyer_proof'] = url;
-      }
       var collectionRef = FirebaseFirestore.instance.collection('transactions');
-      final doc = await collectionRef.doc(transaction['transaction_id']).get();
-      var docUser = collectionRef.doc(transaction['transaction_id']);
+      var docUser = collectionRef.doc(transaction['id']);
 
-      // newTransMap['password'] = doc.data()!['password'];
-      // newTransMap['honorific'] = doc.data()!['honorific'];
-      // newTransMap['idno'] = doc.data()!['idno'];
-      // print(newTransMap['idno']);
-      // if (doc.data()!['usertype'] == 'Seller') {
-      //   newTransMap['products'] = doc.data()!['products'];
-      // }
+      docUser.update(newTransaction);
 
-      docUser.update(newTransMap);
+      final doc = await collectionRef.doc(transaction['id']).get();
 
-      print(newTransMap);
-      // return newUserMap;
+      newTransMap = {...transaction};
+
+      newTransMap['status'] = newTransaction['status'];
+      newTransMap['notes'] = newTransaction['notes'];
+      // print(newTransMap);
+      return newTransMap;
     } catch (e) {
       print(e);
     }
     // print(newUserMapDB);
-    // return newUserMap;
+    return newTransMap;
   }
 
   Future<List> readUsers() async {
@@ -295,7 +278,14 @@ class Database {
           } else if (doc['usertype'] == 'Buyer') {
             a['cart'] = doc['cart'];
             a['orderlist'] = doc['orderlist'];
+          } else if (doc['usertype'] == 'Courier') {
+            a['status'] = doc['status'];
+            a['deliverylist'] = doc['deliverylist'];
+            a['plate_no'] = doc['plate_no'];
           } else {
+            a['plate_no'] = null;
+            a['status'] = null;
+            a['deliverylist'] = null;
             a['products'] = null;
             a['cart'] = null;
             a['orerlist'] = null;
@@ -359,7 +349,8 @@ class Database {
             "itemList": doc['products'],
             "seller_proof": doc['seller_proof'],
             "status": doc['status'],
-            "total": doc['total']
+            "total": doc['total'],
+            "notes": doc['notes']
           };
           docs.add(b);
         }

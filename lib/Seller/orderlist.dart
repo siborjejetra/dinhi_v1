@@ -111,7 +111,6 @@ class _OrderListChildState extends State<OrderListChild> {
             color: Colors.black54,
             fontSize: 14),
       ),
-      // title: Text('Order ID: ' + 'UPlMVaYxwHNmuV0JyTAb'),
       subtitle: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         Text('Items: ' + transaction['itemList'].length.toString(),
             style: TextStyle(
@@ -119,8 +118,6 @@ class _OrderListChildState extends State<OrderListChild> {
         Text('Date: ' + transaction['date'].toDate().toLocal().toString(),
             style: TextStyle(
                 fontFamily: "Montserrat", color: Colors.black54, fontSize: 12)),
-        // Text('Items: ' + '2'),
-        // Text('Date: ' + 'Jun 6, 2023 10:22:01 PM'),
       ]),
       trailing: IconButton(
         icon: Icon(Icons.arrow_forward_ios,
