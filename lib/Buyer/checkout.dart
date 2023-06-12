@@ -72,7 +72,6 @@ class _CheckoutChildState extends State<CheckoutChild> {
     }
     print("asdasdsad");
     print(productMap);
-    var count = 0;
     // cart = storeUserCart(products, productMap);
 
     return Scaffold(
@@ -244,7 +243,7 @@ class _CheckoutChildState extends State<CheckoutChild> {
                               fontFamily: "Montserrat",
                               fontWeight: FontWeight.bold,
                               color: Colors.white,
-                              fontSize: 18)),
+                              fontSize: 14)),
                       //edit to computer price
                     ],
                   ),
@@ -252,7 +251,7 @@ class _CheckoutChildState extends State<CheckoutChild> {
                       style: TextStyle(
                           fontFamily: "Montserrat",
                           color: Colors.white,
-                          fontSize: 18)),
+                          fontSize: 12)),
                   trailing: OutlinedButton(
                     onPressed: () {
                       if (inputImage != null) {
@@ -281,7 +280,7 @@ class _CheckoutChildState extends State<CheckoutChild> {
                         // AlertDialog()
                       }
                     },
-                    child: const Text('CHECKOUT',
+                    child: const Text('PLACE ORDER',
                         style: TextStyle(
                             fontFamily: "Montserrat",
                             fontWeight: FontWeight.bold,

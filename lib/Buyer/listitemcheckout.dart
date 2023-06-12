@@ -45,9 +45,13 @@ class _ListItemCheckoutState extends State<ListItemCheckout> {
       subtitle: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('${cart['price']}/${cart['unit']}'),
+          Text('₱${cart['price']}/${cart['unit']}'),
+          Text('Quantity: ' + cart['buyQuantity'])
         ],
       ),
+      trailing: Text('₱' +
+          (num.parse(cart['buyQuantity']) * num.parse(cart['price']))
+              .toString()),
     );
   }
 }

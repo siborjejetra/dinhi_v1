@@ -1,5 +1,6 @@
 import 'package:Dinhi_v1/Buyer/checkout.dart';
 import 'package:Dinhi_v1/Buyer/counter.dart';
+import 'package:Dinhi_v1/Buyer/placeorder.dart';
 import 'package:Dinhi_v1/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -335,7 +336,6 @@ class _ViewProductChildState extends State<ViewProductChild> {
                           prodDetails['buyQuantity'] = count.toString();
                           products.add(prodDetails);
                           total = count * int.parse(prodDetails['price']);
-                          List<Map> data = [];
                           final Map transactionData = {
                             'buyer_id': userDetails['id'],
                             'buyer_proof': "",
@@ -346,10 +346,9 @@ class _ViewProductChildState extends State<ViewProductChild> {
                             'products': products,
                             'total': total.toString(),
                           };
-                          data.add(transactionData);
-                          Get.to(CheckoutParent(
+                          Get.to(PlaceOrderParent(
                             userMap: userDetails,
-                            transaction: data,
+                            transaction: transactionData,
                           ));
                           // print(quantityController.text);
                           // print(prodDetails);
