@@ -150,6 +150,7 @@ class _ProductChildState extends State<ProductChild> {
                                 priceController.text,
                                 quantityController.text,
                                 unitController.text,
+                                "0",
                                 descriptionController.text,
                                 Timestamp.fromDate(DateTime.now()),
                                 userDetails)

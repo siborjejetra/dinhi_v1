@@ -29,6 +29,7 @@ class Database {
       String price,
       String quantity,
       String unit,
+      String buyQuantity,
       String description,
       Timestamp expiration,
       Map<dynamic, dynamic> userDetails) async {
@@ -53,6 +54,7 @@ class Database {
         'price': price,
         "quantity": quantity,
         'unit': unit,
+        'buyQuantity': buyQuantity,
         'description': description,
         'rating': '0',
         'expiration': expiration,

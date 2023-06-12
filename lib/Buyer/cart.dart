@@ -33,7 +33,7 @@ class _CartChildState extends State<CartChild> {
   List products = [];
 
   List<dynamic> cart = [];
-  int count = 1;
+  // int count = 1;
   double total = 0.0; // Initialize total to 0.0
   void updateTotal(double updatedTotalCart) {
     setState(() {
