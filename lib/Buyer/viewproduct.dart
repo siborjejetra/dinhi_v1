@@ -332,11 +332,10 @@ class _ViewProductChildState extends State<ViewProductChild> {
                       child: ElevatedButton(
                         onPressed: () {
                           List<Map> products = [];
+                          prodDetails['buyQuantity'] = count.toString();
                           products.add(prodDetails);
                           total = count * int.parse(prodDetails['price']);
-
                           final Map transactionData = {
-                            'count': count,
                             'buyer_id': userDetails['id'],
                             'buyer_proof': "",
                             'courier_id': "",
