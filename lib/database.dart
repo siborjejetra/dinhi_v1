@@ -325,7 +325,8 @@ class Database {
             "image": doc['image'],
             "rating": doc['rating'],
             "expiration": doc['expiration'],
-            "seller_id": doc['seller_id']
+            "seller_id": doc['seller_id'],
+            "buyQuantity": doc['buyQuantity']
           };
           docs.add(b);
         }
