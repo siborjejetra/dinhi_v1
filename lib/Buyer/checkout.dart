@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:Dinhi_v1/Buyer/home.dart';
 import 'package:Dinhi_v1/Buyer/listitemcheckout.dart';
 import 'package:Dinhi_v1/utils/user_preference.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import '../widgets.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -10,7 +11,7 @@ import 'package:image_picker/image_picker.dart';
 
 class CheckoutParent extends StatelessWidget {
   final Map<dynamic, dynamic> userMap;
-  final Map transaction;
+  final List<Map> transaction;
 
   // final Map<dynamic, dynamic> transactionMap;
   const CheckoutParent(
@@ -30,7 +31,7 @@ class CheckoutParent extends StatelessWidget {
 
 class CheckoutChild extends StatefulWidget {
   final Map<dynamic, dynamic> userDetails;
-  final Map transDetails;
+  final List<Map> transDetails;
 
   // final Map<dynamic, dynamic> transDetails;
   CheckoutChild(
@@ -43,7 +44,8 @@ class CheckoutChild extends StatefulWidget {
 
 class _CheckoutChildState extends State<CheckoutChild> {
   List products = [];
-  List productMap = [];
+  List transactionData = [];
+  List<List> productMap = [];
   List<dynamic> cart = [];
   File? inputImage;
   String path = '';
@@ -61,8 +63,16 @@ class _CheckoutChildState extends State<CheckoutChild> {
 
   @override
   Widget build(BuildContext context) {
-    productMap = widget.transDetails['products'];
+    transactionData = widget.transDetails;
+    print(transactionData);
+    for (var transaction in transactionData) {
+      var prod = transaction['products'];
+      print(prod);
+      productMap.add(prod);
+    }
+    print("asdasdsad");
     print(productMap);
+    var count = 0;
     // cart = storeUserCart(products, productMap);
 
     return Scaffold(
@@ -120,8 +130,8 @@ class _CheckoutChildState extends State<CheckoutChild> {
                           border: Border.all(color: Colors.grey),
                         ),
                         child: ListItemCheckout(
-                          cart: productMap[index],
-                          totalCart: widget.transDetails['total'],
+                          cart: productMap[0][index],
+                          totalCart: '0',
                         ),
                       ),
                     );
@@ -238,11 +248,7 @@ class _CheckoutChildState extends State<CheckoutChild> {
                       //edit to computer price
                     ],
                   ),
-                  subtitle: Text(
-                      '₱ ' +
-                          (double.parse(widget.transDetails['total']) + 90.00)
-                              .toString() +
-                          '.00',
+                  subtitle: Text('₱ ' + (0 + 90.00).toString() + '.00',
                       style: TextStyle(
                           fontFamily: "Montserrat",
                           color: Colors.white,
@@ -250,36 +256,27 @@ class _CheckoutChildState extends State<CheckoutChild> {
                   trailing: OutlinedButton(
                     onPressed: () {
                       if (inputImage != null) {
-                        db
-                            .createTransaction(
-                                inputImage,
-                                widget.userDetails['id'],
-                                widget.transDetails['count'].toString(),
-                                "",
-                                widget.transDetails['products'],
-                                "Pending",
-                                widget.transDetails['total'].toString())
-                            .then((value) {
-                          db.addTransactiontoBuyer(
-                            value,
-                            widget.userDetails['id'].toString(),
-                          );
-                          db.addTransactiontoSeller(value,
-                              widget.transDetails['seller_id'].toString());
-                          Fluttertoast.showToast(
-                            msg: "Checkout Successful",
-                            toastLength: Toast.LENGTH_LONG,
-                            backgroundColor:
-                                const Color.fromARGB(255, 9, 117, 8),
-                            webBgColor: Colors.white,
-                            timeInSecForIosWeb: 2,
-                            textColor: Colors.black87,
-                            fontSize: 15.0,
-                            gravity: ToastGravity.BOTTOM,
-                          );
+                        for (var item in transactionData) {
+                          db
+                              .createTransaction(
+                                  inputImage,
+                                  widget.userDetails['id'],
+                                  item['count'].toString(),
+                                  "",
+                                  item['products'],
+                                  "Pending",
+                                  item['total'].toString())
+                              .then((value) {
+                            db.addTransactiontoBuyer(
+                              value,
+                              widget.userDetails['id'].toString(),
+                            );
+                            db.addTransactiontoSeller(
+                                value, item['seller_id'].toString());
+                          });
                           Get.to(() =>
                               HomeBuyerParent(userMap: widget.userDetails));
-                        });
+                        }
                       } else {
                         // AlertDialog()
                       }

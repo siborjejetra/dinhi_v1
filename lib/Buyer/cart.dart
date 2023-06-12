@@ -59,7 +59,7 @@ class _CartChildState extends State<CartChild> {
     cart = storeUserCart(products, productID);
     for (var item in cart) {
       double price = double.parse(item['price']);
-      int quantity = int.parse(item['quantity']);
+      int quantity = int.parse(item['buyQuantity']);
       total += price * quantity;
     }
     return total;
@@ -93,7 +93,7 @@ class _CartChildState extends State<CartChild> {
                                 ),
                                 child: CustomListItem(
                                     cart: cart[index],
-                                    totalCart: total,
+                                    totalCart: 0,
                                     updateTotal: updateTotal),
                               ),
                             );
@@ -152,41 +152,41 @@ class _CartChildState extends State<CartChild> {
                     ))),
                 onPressed: () {
                   // Perform checkout logic here
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return AlertDialog(
-                        backgroundColor: Colors.white,
-                        title: const Text(
-                          'Checkout',
-                          style: TextStyle(
-                              fontFamily: "Montserrat",
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black,
-                              fontSize: 20),
-                        ),
-                        content: const Text('Order placed successfully.',
-                            style: TextStyle(
-                                fontFamily: "Montserrat",
-                                color: Colors.black,
-                                fontSize: 14)),
-                        actions: [
-                          TextButton(
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                            },
-                            child: Text(
-                              'OK',
-                              style: TextStyle(
-                                fontFamily: "Montserrat",
-                                color: Color.fromARGB(255, 111, 174, 23),
-                              ),
-                            ),
-                          ),
-                        ],
-                      );
-                    },
-                  );
+                  // Get.to(() => CheckoutParent(userMap: userDetails, transaction: ,)); // showDialog(
+                  //   context: context,
+                  //   builder: (BuildContext context) {
+                  //     return AlertDialog(
+                  //       backgroundColor: Colors.white,
+                  //       title: const Text(
+                  //         'Checkout',
+                  //         style: TextStyle(
+                  //             fontFamily: "Montserrat",
+                  //             fontWeight: FontWeight.bold,
+                  //             color: Colors.black,
+                  //             fontSize: 20),
+                  //       ),
+                  //       content: const Text('Order placed successfully.',
+                  //           style: TextStyle(
+                  //               fontFamily: "Montserrat",
+                  //               color: Colors.black,
+                  //               fontSize: 14)),
+                  //       actions: [
+                  //         TextButton(
+                  //           onPressed: () {
+                  //             Navigator.of(context).pop();
+                  //           },
+                  //           child: Text(
+                  //             'OK',
+                  //             style: TextStyle(
+                  //               fontFamily: "Montserrat",
+                  //               color: Color.fromARGB(255, 111, 174, 23),
+                  //             ),
+                  //           ),
+                  //         ),
+                  //       ],
+                  //     );
+                  //   },
+                  // );
                   // Get.to(CheckoutParent(userMap: userDetails));
                 },
                 child: const Text('CHECKOUT',

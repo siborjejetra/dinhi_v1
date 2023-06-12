@@ -335,6 +335,7 @@ class _ViewProductChildState extends State<ViewProductChild> {
                           prodDetails['buyQuantity'] = count.toString();
                           products.add(prodDetails);
                           total = count * int.parse(prodDetails['price']);
+                          List<Map> data = [];
                           final Map transactionData = {
                             'buyer_id': userDetails['id'],
                             'buyer_proof': "",
@@ -345,9 +346,10 @@ class _ViewProductChildState extends State<ViewProductChild> {
                             'products': products,
                             'total': total.toString(),
                           };
+                          data.add(transactionData);
                           Get.to(CheckoutParent(
                             userMap: userDetails,
-                            transaction: transactionData,
+                            transaction: data,
                           ));
                           // print(quantityController.text);
                           // print(prodDetails);
