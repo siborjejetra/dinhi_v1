@@ -1,3 +1,4 @@
+import 'package:Dinhi_v1/Seller/test.dart';
 import 'package:Dinhi_v1/addproduct.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -12,4 +13,5 @@ void main() async {
   runApp(const GetMaterialApp(
       debugShowCheckedModeBanner: false, home: LoginParent()));
   // runApp(const GetMaterialApp(home:ProductParent()));
+  // runApp(GetMaterialApp(home: MyRadioListWidget()));
 }

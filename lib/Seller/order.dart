@@ -217,6 +217,7 @@ class _OrderChildState extends State<OrderChild> {
                   borderRadius: BorderRadius.circular(20),
                 ))),
             onPressed: () {
+              // Add the calculation of quantity deducted by count or deletion of product if out of stock
               Map<String, dynamic> newTransaction = {};
               if (transDeets['status'] == 'Pending') {
                 newTransaction['status'] = 'Ongoing';

@@ -238,9 +238,13 @@ class Database {
       final doc = await collectionRef.doc(transaction['id']).get();
 
       newTransMap = {...transaction};
+      if (newTransaction['status'] == 'Pending') {
+        newTransMap['status'] = newTransaction['status'];
+        newTransMap['notes'] = newTransaction['notes'];
+      } else if (newTransaction['status'] == 'Ongoing') {
+        newTransMap['courier_id'] = newTransaction['courier_id'];
+      }
 
-      newTransMap['status'] = newTransaction['status'];
-      newTransMap['notes'] = newTransaction['notes'];
       // print(newTransMap);
       return newTransMap;
     } catch (e) {

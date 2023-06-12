@@ -6,7 +6,6 @@ import 'package:get/get.dart';
 
 import '../utils/user_preference.dart';
 import '../widgets.dart';
-import 'listitem.dart';
 
 class RiderListParent extends StatelessWidget {
   final Map transaction;
@@ -16,6 +15,7 @@ class RiderListParent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+        theme: ThemeData(primarySwatch: Colors.green),
         debugShowCheckedModeBanner: false,
         home: RiderListChild(transaction: transaction));
   }
@@ -32,6 +32,7 @@ class RiderListChild extends StatefulWidget {
 class _RiderListChildState extends State<RiderListChild> {
   List users = [];
   List riders = [];
+  Map transaction = {};
 
   @override
   void initState() {
@@ -46,8 +47,10 @@ class _RiderListChildState extends State<RiderListChild> {
 
   @override
   Widget build(BuildContext context) {
+    transaction = widget.transaction;
     riders = storeUserDeets(users);
-    print(riders);
+    int _selectedOption = -1;
+    // print(riders);
 
     return Scaffold(
         backgroundColor: Color.fromARGB(255, 236, 236, 163),
@@ -58,21 +61,76 @@ class _RiderListChildState extends State<RiderListChild> {
                 child: Container(
                     child: riders.isNotEmpty
                         ? ListView.builder(
-                            primary: false,
+                            shrinkWrap: true,
+                            // primary: true,
                             itemCount: riders.length,
                             itemBuilder: (context, index) {
-                              return Padding(
-                                padding: const EdgeInsets.all(4.0),
-                                child: Container(
-                                    decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.circular(20),
-                                      border: Border.all(color: Colors.grey),
+                              return
+                                  // return Padding(
+                                  //     padding: const EdgeInsets.all(4.0),
+                                  //     child: Container(
+                                  //       decoration: BoxDecoration(
+                                  //         color: Colors.white,
+                                  //         borderRadius: BorderRadius.circular(20),
+                                  //         border: Border.all(color: Colors.grey),
+                                  //       ),
+                                  RadioListTile(
+                                selectedTileColor:
+                                    Color.fromARGB(255, 111, 174, 23),
+                                value: index,
+                                groupValue: _selectedOption,
+                                onChanged: (value) {
+                                  setState(() {
+                                    _selectedOption = value as int;
+                                    print(_selectedOption);
+                                  });
+                                },
+                                activeColor: Color.fromARGB(255, 111, 174,
+                                    23), // Move the radio button to the right side
+                                title: Row(
+                                  children: [
+                                    Container(
+                                      width: 60,
+                                      height: 60,
+                                      decoration: BoxDecoration(
+                                        image: DecorationImage(
+                                          image: NetworkImage(
+                                              riders[index]['image']),
+                                          fit: BoxFit.scaleDown,
+                                        ),
+                                        borderRadius: BorderRadius.circular(20),
+                                      ),
                                     ),
-                                    child: CustomListItem(
-                                        transaction: widget.transaction,
-                                        user: riders[index])),
+                                    SizedBox(
+                                      width: 2,
+                                    ),
+                                    Column(
+                                      children: [
+                                        Text(
+                                            riders[index]['firstname'] +
+                                                ' ' +
+                                                riders[index]['lastname'] +
+                                                ' | ' +
+                                                riders[index]['cellnumber'],
+                                            style: TextStyle(
+                                                fontFamily: "Montserrat",
+                                                fontWeight: FontWeight.bold,
+                                                color: Color.fromARGB(
+                                                    255, 111, 174, 23),
+                                                fontSize: 14)),
+                                        Text(
+                                            'Plate Number: ' +
+                                                riders[index]['plate_no'],
+                                            style: TextStyle(
+                                                fontFamily: "Montserrat",
+                                                color: Color.fromARGB(
+                                                    255, 111, 174, 23))),
+                                      ],
+                                    ),
+                                  ],
+                                ),
                               );
+                              // ));
                             },
                           )
                         : Center(
@@ -112,7 +170,14 @@ class _RiderListChildState extends State<RiderListChild> {
                     RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20),
                 ))),
-            onPressed: () {},
+            onPressed: () {
+              Map<String, dynamic> newTransaction = {};
+              print(riders[_selectedOption]['id']);
+              newTransaction['courier_id'] = riders[_selectedOption]['id'];
+              db.editTransaction(transaction, newTransaction).then((value) {
+                print(value);
+              });
+            },
             child: const Text(
               'SELECT',
               style: TextStyle(
