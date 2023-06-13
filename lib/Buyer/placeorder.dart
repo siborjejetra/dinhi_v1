@@ -1,8 +1,11 @@
+import 'package:Dinhi_v1/Buyer/trackorder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:get/get.dart';
 
+import '../utils/user_preference.dart';
 import '../widgets.dart';
 import 'listitemcheckout.dart';
 
@@ -116,21 +119,38 @@ class _PlaceOrderChildState extends State<PlaceOrderChild> {
                 ),
               ),
               SizedBox(height: 20),
-              Padding(
-                padding: const EdgeInsets.all(4.0),
-                child: TextField(
-                    maxLines: 3,
-                    controller: textController,
-                    decoration: InputDecoration(
-                      filled: true,
-                      fillColor: Colors.white,
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      contentPadding: EdgeInsets.only(bottom: 3, left: 10),
-                      floatingLabelBehavior: FloatingLabelBehavior.always,
-                      labelText: 'Addtional Notes:',
-                    )),
+              Container(
+                decoration: BoxDecoration(
+                  color: Color.fromARGB(255, 9, 117, 8),
+                  borderRadius: BorderRadius.circular(20),
+                  border: Border.all(color: Color.fromARGB(255, 236, 236, 163)),
+                ),
+                child: ListTile(
+                  leading: Container(
+                    width: 60,
+                    height: 60,
+                    child: Icon(
+                      IconData(0xe40a, fontFamily: 'MaterialIcons'),
+                      color: Colors.white,
+                    ), //BoxDecoration
+                  ),
+                  title: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text('Shipping Fee',
+                          style: TextStyle(
+                              fontFamily: "Montserrat",
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                              fontSize: 14)),
+                      Text('₱ 90.00',
+                          style: TextStyle(
+                              fontFamily: "Montserrat",
+                              color: Colors.white,
+                              fontSize: 14))
+                    ],
+                  ),
+                ),
               ),
               SizedBox(height: 5),
               Container(
@@ -180,9 +200,15 @@ class _PlaceOrderChildState extends State<PlaceOrderChild> {
                           'products': seller_products,
                           'total': transactionData['total'],
                         };
-
-                        print(trans);
+                        db.createTransaction(trans).then((value) {
+                          db.addTransactiontoBuyer(
+                            value,
+                            user['id'],
+                          );
+                          db.addTransactiontoSeller(value, seller);
+                        });
                       }
+                      Get.to(const TrackOrder());
                     },
                     child: const Text('PLACE ORDER',
                         style: TextStyle(

@@ -75,45 +75,23 @@ class Database {
     return cloneMap;
   }
 
-  Future<String> createTransaction(
-    File? inputImage,
-    String buyerId,
-    String count,
-    String courierId,
-    List<Map> products,
-    String status,
-    String total,
-  ) async {
+  Future<String> createTransaction(Map transaction) async {
     String transactionId = '';
     String url = '';
     try {
-      if (inputImage != null) {
-        final ref = FirebaseStorage.instance
-            .ref()
-            .child('transactionImages')
-            .child('${DateTime.now()}');
-
-        // var inputImage;
-        await ref.putFile(File(inputImage.path));
-
-        url = await ref.getDownloadURL();
-        print(url);
-      }
-
       final docTransaction =
           FirebaseFirestore.instance.collection("transactions").doc();
 
       Map<String, dynamic> newTransaction = {
-        'buyer_id': buyerId,
-        // 'count': count,
-        'notes': "",
-        'products': products,
-        'status': status,
-        'total': total,
+        'buyer_id': transaction['buyer_id'],
+        'notes': "Is this available?",
+        'products': transaction['products'],
+        'status': transaction['status'],
+        'total': transaction['total'],
         'date': DateTime.now(),
         'buyer_proof': url,
         'seller_proof': "",
-        'courier_id': courierId,
+        'courier_id': transaction['courier_id'],
         'courier_proof': "",
       };
       transactionId = docTransaction.id;
@@ -227,9 +205,22 @@ class Database {
   }
 
   Future<Map> editTransaction(Map<dynamic, dynamic> transaction,
-      Map<String, dynamic> newTransaction) async {
+      Map<String, dynamic> newTransaction, File? inputImage) async {
     Map newTransMap = {};
     try {
+      if (inputImage != null) {
+        final ref = FirebaseStorage.instance
+            .ref()
+            .child('transactionImages')
+            .child('${DateTime.now()}');
+
+        // var inputImage;
+        await ref.putFile(File(inputImage.path));
+
+        url = await ref.getDownloadURL();
+        print(url);
+      }
+
       var collectionRef = FirebaseFirestore.instance.collection('transactions');
       var docUser = collectionRef.doc(transaction['id']);
 

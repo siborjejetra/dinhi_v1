@@ -254,31 +254,31 @@ class _CheckoutChildState extends State<CheckoutChild> {
                           fontSize: 12)),
                   trailing: OutlinedButton(
                     onPressed: () {
-                      if (inputImage != null) {
-                        for (var item in transactionData) {
-                          db
-                              .createTransaction(
-                                  inputImage,
-                                  widget.userDetails['id'],
-                                  item['count'].toString(),
-                                  "",
-                                  item['products'],
-                                  "Pending",
-                                  item['total'].toString())
-                              .then((value) {
-                            db.addTransactiontoBuyer(
-                              value,
-                              widget.userDetails['id'].toString(),
-                            );
-                            db.addTransactiontoSeller(
-                                value, item['seller_id'].toString());
-                          });
-                          Get.to(() =>
-                              HomeBuyerParent(userMap: widget.userDetails));
-                        }
-                      } else {
-                        // AlertDialog()
-                      }
+                      // if (inputImage != null) {
+                      //   for (var item in transactionData) {
+                      //     db
+                      //         .createTransaction(
+                      //             inputImage,
+                      //             widget.userDetails['id'],
+                      //             item['count'].toString(),
+                      //             "",
+                      //             item['products'],
+                      //             "Pending",
+                      //             item['total'].toString())
+                      //         .then((value) {
+                      //       db.addTransactiontoBuyer(
+                      //         value,
+                      //         widget.userDetails['id'].toString(),
+                      //       );
+                      //       db.addTransactiontoSeller(
+                      //           value, item['seller_id'].toString());
+                      //     });
+                      //     Get.to(() =>
+                      //         HomeBuyerParent(userMap: widget.userDetails));
+                      //   }
+                      // } else {
+                      //   // AlertDialog()
+                      // }
                     },
                     child: const Text('PLACE ORDER',
                         style: TextStyle(

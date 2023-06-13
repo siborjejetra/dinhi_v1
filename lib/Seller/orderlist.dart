@@ -1,4 +1,4 @@
-import 'package:Dinhi_v1/Seller/order.dart';
+import 'package:Dinhi_v1/Seller/pending.dart';
 import 'package:Dinhi_v1/widgets.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -6,6 +6,8 @@ import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
 import 'package:Dinhi_v1/utils/user_preference.dart';
+
+import 'ongoing.dart';
 
 class OrderListParent extends StatelessWidget {
   final List<String> orderlist;
@@ -99,8 +101,8 @@ class _OrderListChildState extends State<OrderListChild> {
     return filter;
   }
 
-  Widget buildListTile(Map transaction) {
-    print(transaction);
+  Widget buildListTile(Map transaction, String category) {
+    // print(transaction);
     return ListTile(
       onTap: () {},
       title: Text(
@@ -123,7 +125,11 @@ class _OrderListChildState extends State<OrderListChild> {
         icon: Icon(Icons.arrow_forward_ios,
             color: Color.fromARGB(255, 111, 174, 23)),
         onPressed: () {
-          Get.to(OrderParent(transaction: transaction));
+          if (category == 'Pending') {
+            Get.to(OrderParent(transaction: transaction));
+          } else if (category == 'Ongoing') {
+            Get.to(OngoingParent(transaction: transaction));
+          }
         },
       ),
     );
@@ -131,12 +137,12 @@ class _OrderListChildState extends State<OrderListChild> {
 
   Widget buildListView(BuildContext context, String category, List orderlist) {
     List filtered = filterOrders(category, orderlist);
-    print(filtered);
+    // print(filtered);
     if (filtered.isNotEmpty) {
       return Container(
         child: ListView.builder(
             primary: true,
-            itemCount: orderlist.length,
+            itemCount: filtered.length,
             itemBuilder: (context, index) {
               return Padding(
                 padding: const EdgeInsets.all(4.0),
@@ -146,7 +152,7 @@ class _OrderListChildState extends State<OrderListChild> {
                       borderRadius: BorderRadius.circular(20),
                       border: Border.all(color: Colors.grey),
                     ),
-                    child: buildListTile(filtered[index])),
+                    child: buildListTile(filtered[index], category)),
               );
             }),
       );
@@ -164,14 +170,6 @@ class _OrderListChildState extends State<OrderListChild> {
                     color: Colors.black,
                     fontSize: 30),
               ),
-              // Text(
-              //   'Please continue shopping',
-              //   textAlign: TextAlign.center,
-              //   style: TextStyle(
-              //       fontFamily: "Montserrat",
-              //       color: Colors.black54,
-              //       fontSize: 25),
-              // ),
             ],
           ),
         ),

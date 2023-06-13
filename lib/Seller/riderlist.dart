@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -9,7 +11,9 @@ import '../widgets.dart';
 
 class RiderListParent extends StatelessWidget {
   final Map transaction;
-  const RiderListParent({Key? key, required this.transaction})
+  final File? seller_proof;
+  const RiderListParent(
+      {Key? key, required this.transaction, required this.seller_proof})
       : super(key: key);
 
   @override
@@ -17,13 +21,19 @@ class RiderListParent extends StatelessWidget {
     return MaterialApp(
         theme: ThemeData(primarySwatch: Colors.green),
         debugShowCheckedModeBanner: false,
-        home: RiderListChild(transaction: transaction));
+        home: RiderListChild(
+          transaction: transaction,
+          seller_proof: seller_proof,
+        ));
   }
 }
 
 class RiderListChild extends StatefulWidget {
   final Map transaction;
-  const RiderListChild({Key? key, required this.transaction}) : super(key: key);
+  final File? seller_proof;
+  const RiderListChild(
+      {Key? key, required this.transaction, required this.seller_proof})
+      : super(key: key);
 
   @override
   State<RiderListChild> createState() => _RiderListChildState();
@@ -58,23 +68,20 @@ class _RiderListChildState extends State<RiderListChild> {
         body: SafeArea(
             child: Padding(
                 padding: EdgeInsets.only(bottom: 16, left: 16, right: 16),
-                child: Container(
-                    child: riders.isNotEmpty
-                        ? ListView.builder(
-                            shrinkWrap: true,
-                            // primary: true,
-                            itemCount: riders.length,
-                            itemBuilder: (context, index) {
-                              return
-                                  // return Padding(
-                                  //     padding: const EdgeInsets.all(4.0),
-                                  //     child: Container(
-                                  //       decoration: BoxDecoration(
-                                  //         color: Colors.white,
-                                  //         borderRadius: BorderRadius.circular(20),
-                                  //         border: Border.all(color: Colors.grey),
-                                  //       ),
-                                  RadioListTile(
+                child: riders.isNotEmpty
+                    ? ListView.builder(
+                        // shrinkWrap: true,
+                        itemCount: riders.length,
+                        itemBuilder: (context, index) {
+                          return Padding(
+                            padding: const EdgeInsets.all(4.0),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(20),
+                                border: Border.all(color: Colors.grey),
+                              ),
+                              child: RadioListTile(
                                 selectedTileColor:
                                     Color.fromARGB(255, 111, 174, 23),
                                 value: index,
@@ -85,8 +92,10 @@ class _RiderListChildState extends State<RiderListChild> {
                                     print(_selectedOption);
                                   });
                                 },
-                                activeColor: Color.fromARGB(255, 111, 174,
-                                    23), // Move the radio button to the right side
+                                activeColor: Colors.transparent,
+                                controlAffinity:
+                                    ListTileControlAffinity.trailing,
+                                toggleable: true,
                                 title: Row(
                                   children: [
                                     Container(
@@ -129,35 +138,37 @@ class _RiderListChildState extends State<RiderListChild> {
                                     ),
                                   ],
                                 ),
-                              );
-                              // ));
-                            },
-                          )
-                        : Center(
-                            child: Padding(
-                              padding: EdgeInsets.symmetric(vertical: 200),
-                              child: Column(
-                                children: const [
-                                  Text(
-                                    'No Available Rider',
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                        fontFamily: "Montserrat",
-                                        color: Colors.black,
-                                        fontSize: 30),
-                                  ),
-                                  Text(
-                                    'Please wait or reload page',
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                        fontFamily: "Montserrat",
-                                        color: Colors.black54,
-                                        fontSize: 25),
-                                  ),
-                                ],
                               ),
                             ),
-                          )))),
+                          );
+                          // ));
+                        },
+                      )
+                    : Center(
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(vertical: 200),
+                          child: Column(
+                            children: const [
+                              Text(
+                                'No Available Rider',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    fontFamily: "Montserrat",
+                                    color: Colors.black,
+                                    fontSize: 30),
+                              ),
+                              Text(
+                                'Please wait or reload page',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    fontFamily: "Montserrat",
+                                    color: Colors.black54,
+                                    fontSize: 25),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ))),
         bottomNavigationBar:
             Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
           ElevatedButton(
@@ -174,7 +185,10 @@ class _RiderListChildState extends State<RiderListChild> {
               Map<String, dynamic> newTransaction = {};
               print(riders[_selectedOption]['id']);
               newTransaction['courier_id'] = riders[_selectedOption]['id'];
-              db.editTransaction(transaction, newTransaction).then((value) {
+              db
+                  .editTransaction(
+                      transaction, newTransaction, widget.seller_proof)
+                  .then((value) {
                 print(value);
               });
             },

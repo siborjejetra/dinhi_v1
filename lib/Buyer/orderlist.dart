@@ -134,7 +134,7 @@ class _OrderListChildState extends State<OrderListChild> {
       return Container(
         child: ListView.builder(
             primary: true,
-            itemCount: orderlist.length,
+            itemCount: filtered.length,
             itemBuilder: (context, index) {
               return Padding(
                 padding: const EdgeInsets.all(4.0),
