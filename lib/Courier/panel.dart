@@ -164,53 +164,53 @@ SideBarTile buildSideBarTile(User user) {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
                             Image.asset(
-                              'assets/images/UpdatePayment.png',
+                              'assets/images/DeliveryHistory.png',
                               width: 140,
                               height: 140,
                             ),
-                            Text('Update Payment', style: cardTextStyle)
+                            Text('View Delivery History', style: cardTextStyle)
                           ],
                         ),
                       ),
                     ),
-                    InkWell(
-                      child: Card(
-                        color: Color.fromARGB(255, 111, 174, 23),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8)),
-                        elevation: 4,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Image.asset(
-                              'assets/images/ViewFeedback.png',
-                              width: 140,
-                              height: 140,
-                            ),
-                            Text('View Feedback', style: cardTextStyle)
-                          ],
-                        ),
-                      ),
-                    ),
-                    InkWell(
-                      child: Card(
-                        color: Color.fromARGB(255, 111, 174, 23),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8)),
-                        elevation: 4,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Image.asset(
-                              'assets/images/Chat.png',
-                              width: 140,
-                              height: 140,
-                            ),
-                            Text('View Chat', style: cardTextStyle)
-                          ],
-                        ),
-                      ),
-                    ),
+                    // InkWell(
+                    //   child: Card(
+                    //     color: Color.fromARGB(255, 111, 174, 23),
+                    //     shape: RoundedRectangleBorder(
+                    //         borderRadius: BorderRadius.circular(8)),
+                    //     elevation: 4,
+                    //     child: Column(
+                    //       mainAxisAlignment: MainAxisAlignment.center,
+                    //       children: <Widget>[
+                    //         Image.asset(
+                    //           'assets/images/ViewFeedback.png',
+                    //           width: 140,
+                    //           height: 140,
+                    //         ),
+                    //         Text('View Feedback', style: cardTextStyle)
+                    //       ],
+                    //     ),
+                    //   ),
+                    // ),
+                    // InkWell(
+                    //   child: Card(
+                    //     color: Color.fromARGB(255, 111, 174, 23),
+                    //     shape: RoundedRectangleBorder(
+                    //         borderRadius: BorderRadius.circular(8)),
+                    //     elevation: 4,
+                    //     child: Column(
+                    //       mainAxisAlignment: MainAxisAlignment.center,
+                    //       children: <Widget>[
+                    //         Image.asset(
+                    //           'assets/images/Chat.png',
+                    //           width: 140,
+                    //           height: 140,
+                    //         ),
+                    //         Text('View Chat', style: cardTextStyle)
+                    //       ],
+                    //     ),
+                    //   ),
+                    // ),
                   ],
                 ))
               ],
@@ -233,23 +233,6 @@ List<SideTile> returnTiles(BuildContext context, User user) {
       icon: Icons.person,
       body: ProfileParent(user: user),
       name: 'Profile',
-    ),
-    SideBarTile(
-      title: const Text(
-        'Order History',
-        style: TextStyle(
-          color: Colors.white,
-          fontSize: 20,
-        ),
-      ),
-      icon: Icons.chrome_reader_mode_outlined,
-      body: const Center(
-        child: Icon(
-          Icons.chrome_reader_mode_outlined,
-          size: 280,
-        ),
-      ),
-      name: 'Delivery History',
     ),
     SideBarTile(
       title: const Text(
