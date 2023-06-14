@@ -1,67 +1,144 @@
 import 'package:Dinhi_v1/Buyer/home.dart';
+import 'package:Dinhi_v1/Buyer/listitemcheckout.dart';
+import 'package:Dinhi_v1/Buyer/placeorder.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../widgets.dart';
-
 class TrackOrder extends StatefulWidget {
   final Map userMap;
-  const TrackOrder({Key? key, required this.userMap}) : super(key: key);
+  final Map transaction;
+  const TrackOrder({Key? key, required this.userMap, required this.transaction})
+      : super(key: key);
 
   @override
   _TrackOrderState createState() => _TrackOrderState();
 }
 
 class _TrackOrderState extends State<TrackOrder> {
+  Map transactionData = {};
+  String currentStatus = '';
+  List productMap = [];
+  Map user = {};
   Map<int, String> orderStatus = {
     1: 'Order Placed',
-    2: 'Order Confirmed',
-    3: 'Order Processed',
-    4: 'Ready to Ship',
-    5: 'Out for Delivery',
+    2: 'Pending',
+    3: 'Order Confirmed',
+    4: 'Order Processed',
+    5: 'Ready to Ship',
+    6: 'Out for Delivery',
   };
-  String currentStatus = 'Order Confirmed';
+
+  @override
+  void initState() {
+    super.initState();
+    transactionData = widget.transaction;
+    productMap = widget.transaction['products'];
+    currentStatus = widget.transaction['status'];
+  }
 
   @override
   Widget build(BuildContext context) {
+    user = widget.userMap;
+    transactionData = widget.transaction;
+    bool isOutForDelivery = currentStatus == 'Out for Delivery';
+    bool showOrderReceivedButton = isOutForDelivery;
+
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color.fromARGB(255, 111, 174, 23),
+        backgroundColor: const Color.fromARGB(255, 111, 174, 23),
         centerTitle: true,
-        title: Text('Track Order'),
+        title: const Text('Track Order'),
         leading: IconButton(
-            onPressed: () {
-              Get.to(HomeBuyerParent(userMap: widget.userMap));
-            },
-            icon: Icon(
-              Icons.arrow_back,
-              color: Colors.white,
-            )),
+          onPressed: () {
+            Get.to(HomeBuyerParent(userMap: widget.userMap));
+          },
+          icon: const Icon(
+            Icons.arrow_back,
+            color: Colors.white,
+          ),
+        ),
       ),
       body: Container(
-        color: Color.fromARGB(255, 236, 236, 163),
+        color: const Color.fromARGB(255, 236, 236, 163),
         child: Padding(
-          padding: const EdgeInsets.all(30.0),
-          child: Flexible(
-            child: Column(
-              children: [
-                Container(
-                  decoration: BoxDecoration(
-                    color: Color.fromARGB(
-                      255,
-                      178,
-                      218,
-                      121,
-                    ),
-                    borderRadius: BorderRadius.circular(10),
+          padding: const EdgeInsets.all(25.0),
+          child: Column(
+            children: [
+              Container(
+                decoration: BoxDecoration(
+                  color: const Color.fromARGB(255, 178, 218, 121),
+                  borderRadius: BorderRadius.circular(20),
+                  border: Border.all(
+                      color: const Color.fromARGB(255, 236, 236, 163)),
+                ),
+                child: ListTile(
+                  leading: const SizedBox(
+                    width: 60,
+                    height: 60,
+                    child: Icon(
+                      IconData(0xe3ab, fontFamily: 'MaterialIcons'),
+                      color: Colors.black,
+                    ), //BoxDecoration
                   ),
+                  title: Text(
+                    user['firstname'] +
+                        ' ' +
+                        user['lastname'] +
+                        ' | ' +
+                        user['cellnumber'],
+                    style: const TextStyle(
+                        fontFamily: "Montserrat",
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                        fontSize: 14),
+                  ),
+                  subtitle: Text(
+                    user['address'],
+                    style: const TextStyle(
+                        fontFamily: "Montserrat",
+                        color: Colors.black,
+                        fontSize: 12),
+                  ),
+                ),
+              ),
+              SizedBox(height: 10),
+              Expanded(
+                child: ListView.builder(
+                  primary: false,
+                  itemCount: productMap.length,
+                  itemBuilder: (context, index) {
+                    return Padding(
+                      padding: const EdgeInsets.all(4.0),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(20),
+                          border: Border.all(color: Colors.grey),
+                        ),
+                        child: ListItemCheckout(
+                          cart: productMap[index],
+                          totalCart: '0',
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ),
+              SizedBox(height: 20),
+              Container(
+                decoration: BoxDecoration(
+                  color: const Color.fromARGB(255, 178, 218, 121),
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(10.0),
                   child: SafeArea(
                     child: ExpansionTile(
                       leading: const Icon(Icons.list_sharp,
                           color: Color.fromARGB(255, 111, 174, 23), size: 25.0),
-                      title: Text(
+                      title: const Text(
                         "Order Status",
-                        style: const TextStyle(
+                        style: TextStyle(
                             color: Colors.black,
                             fontFamily: 'Visby',
                             fontSize: 18,
@@ -71,7 +148,7 @@ class _TrackOrderState extends State<TrackOrder> {
                       children: <Widget>[
                         ListView.builder(
                           shrinkWrap: true,
-                          physics: NeverScrollableScrollPhysics(),
+                          physics: const NeverScrollableScrollPhysics(),
                           itemCount: orderStatus.length,
                           itemBuilder: (context, index) {
                             int stepNumber = index + 1;
@@ -87,12 +164,12 @@ class _TrackOrderState extends State<TrackOrder> {
                             Color stepNumberColor = isCurrentStatus
                                 ? Colors.white
                                 : (isBeforeCurrentStatus
-                                    ? Color.fromARGB(255, 111, 174, 23)
+                                    ? const Color.fromARGB(255, 111, 174, 23)
                                     : Colors.grey);
                             Color stepStatusColor = isCurrentStatus
                                 ? Colors.white
                                 : (isBeforeCurrentStatus
-                                    ? Color.fromARGB(255, 111, 174, 23)
+                                    ? const Color.fromARGB(255, 111, 174, 23)
                                     : Colors.grey);
 
                             return Column(
@@ -111,7 +188,7 @@ class _TrackOrderState extends State<TrackOrder> {
                                         style: TextStyle(
                                           fontWeight: FontWeight.bold,
                                           color: isCurrentStatus
-                                              ? Color.fromARGB(
+                                              ? const Color.fromARGB(
                                                   255, 111, 174, 23)
                                               : Colors.white,
                                         ),
@@ -134,7 +211,7 @@ class _TrackOrderState extends State<TrackOrder> {
                                       color: isCurrentStatus
                                           ? Colors.white
                                           : (isBeforeCurrentStatus
-                                              ? Color.fromARGB(
+                                              ? const Color.fromARGB(
                                                   255, 111, 174, 23)
                                               : Colors.grey),
                                     ),
@@ -142,7 +219,7 @@ class _TrackOrderState extends State<TrackOrder> {
                                 ),
                                 if (index < orderStatus.length - 1)
                                   Padding(
-                                    padding: EdgeInsets.only(left: 27),
+                                    padding: const EdgeInsets.only(left: 27),
                                     child: Align(
                                       alignment: Alignment.centerLeft,
                                       child: FractionallySizedBox(
@@ -162,8 +239,37 @@ class _TrackOrderState extends State<TrackOrder> {
                     ),
                   ),
                 ),
-              ],
-            ),
+              ),
+              SizedBox(height: 10),
+              if (showOrderReceivedButton)
+                Container(
+                  decoration: BoxDecoration(
+                    color: const Color.fromARGB(255, 178, 218, 121),
+                    borderRadius: BorderRadius.circular(20),
+                    border:
+                        Border.all(color: Color.fromARGB(255, 236, 236, 163)),
+                  ),
+                  child: ListTile(
+                    title: OutlinedButton(
+                      onPressed: () {},
+                      child: const Text('Order Received',
+                          style: TextStyle(
+                              fontFamily: "Montserrat",
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black,
+                              letterSpacing: 2.2,
+                              fontSize: 18)),
+                      style: ButtonStyle(
+                        side: MaterialStateProperty.all<BorderSide>(
+                          const BorderSide(
+                              color: const Color.fromARGB(255, 178, 218, 121),
+                              width: 2.0),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+            ],
           ),
         ),
       ),

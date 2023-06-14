@@ -208,7 +208,10 @@ class _PlaceOrderChildState extends State<PlaceOrderChild> {
                           db.addTransactiontoSeller(value, seller);
                         });
                       }
-                      Get.to(TrackOrder(userMap: user));
+                      Get.to(() => TrackOrder(
+                            userMap: user,
+                            transaction: widget.transaction,
+                          ));
                     },
                     child: const Text('PLACE ORDER',
                         style: TextStyle(

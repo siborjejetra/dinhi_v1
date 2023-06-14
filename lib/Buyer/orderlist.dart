@@ -134,7 +134,10 @@ class _OrderListChildState extends State<OrderListChild> {
         icon: Icon(Icons.arrow_forward_ios,
             color: Color.fromARGB(255, 111, 174, 23)),
         onPressed: () {
-          Get.to(TrackOrder(userMap: widget.userMap));
+          Get.to(TrackOrder(
+            userMap: widget.userMap,
+            transaction: transaction,
+          ));
         },
       ),
     );
