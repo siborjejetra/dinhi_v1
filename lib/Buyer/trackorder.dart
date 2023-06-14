@@ -125,117 +125,160 @@ class _TrackOrderState extends State<TrackOrder> {
                 ),
               ),
               SizedBox(height: 20),
-              Container(
-                decoration: BoxDecoration(
-                  color: const Color.fromARGB(255, 178, 218, 121),
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: SafeArea(
-                    child: ExpansionTile(
-                      leading: const Icon(Icons.list_sharp,
-                          color: Color.fromARGB(255, 111, 174, 23), size: 25.0),
-                      title: const Text(
-                        "Order Status",
-                        style: TextStyle(
-                            color: Colors.black,
-                            fontFamily: 'Visby',
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold),
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      children: <Widget>[
-                        ListView.builder(
-                          shrinkWrap: true,
-                          physics: const NeverScrollableScrollPhysics(),
-                          itemCount: orderStatus.length,
-                          itemBuilder: (context, index) {
-                            int stepNumber = index + 1;
-                            String status = orderStatus[stepNumber]!;
-                            bool isCurrentStatus = status == currentStatus;
-                            bool isBeforeCurrentStatus = stepNumber <
-                                orderStatus.keys.firstWhere(
-                                  (key) => orderStatus[key] == currentStatus,
-                                  orElse: () => 1,
-                                );
-                            String stepStatus =
-                                isBeforeCurrentStatus ? 'Done' : 'Pending';
-                            Color stepNumberColor = isCurrentStatus
-                                ? Colors.white
-                                : (isBeforeCurrentStatus
-                                    ? const Color.fromARGB(255, 111, 174, 23)
-                                    : Colors.grey);
-                            Color stepStatusColor = isCurrentStatus
-                                ? Colors.white
-                                : (isBeforeCurrentStatus
-                                    ? const Color.fromARGB(255, 111, 174, 23)
-                                    : Colors.grey);
-
-                            return Column(
-                              children: [
-                                ListTile(
-                                  leading: Container(
-                                    width: 24,
-                                    height: 24,
-                                    decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      color: stepNumberColor,
-                                    ),
-                                    child: Center(
-                                      child: Text(
-                                        stepNumber.toString(),
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          color: isCurrentStatus
-                                              ? const Color.fromARGB(
-                                                  255, 111, 174, 23)
-                                              : Colors.white,
-                                        ),
-                                      ),
-                                    ),
+              Padding(
+                padding: const EdgeInsets.all(1.0),
+                child: Expanded(
+                  child: GestureDetector(
+                    onTap: () {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return Theme(
+                              data: Theme.of(context).copyWith(
+                                dialogBackgroundColor: const Color.fromARGB(
+                                    255,
+                                    178,
+                                    218,
+                                    121), // Set the desired background color here
+                              ),
+                              child: AlertDialog(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(
+                                      20.0), // Set the desired border radius here
+                                ),
+                                title: const Text(
+                                  'Order Status',
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontFamily: 'Visby',
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
                                   ),
-                                  title: Text(
-                                    status,
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      color: stepStatusColor,
-                                    ),
-                                  ),
-                                  subtitle: Text(
-                                    isCurrentStatus
-                                        ? 'Current Status'
-                                        : stepStatus,
-                                    style: TextStyle(
-                                      fontStyle: FontStyle.italic,
-                                      color: isCurrentStatus
+                                ),
+                                content: Container(
+                                  width: double.maxFinite,
+                                  child: ListView.builder(
+                                    shrinkWrap: true,
+                                    itemCount: orderStatus.length,
+                                    itemBuilder: (context, index) {
+                                      int stepNumber = index + 1;
+                                      String status = orderStatus[stepNumber]!;
+                                      bool isCurrentStatus =
+                                          status == currentStatus;
+                                      bool isBeforeCurrentStatus = stepNumber <
+                                          orderStatus.keys.firstWhere(
+                                            (key) =>
+                                                orderStatus[key] ==
+                                                currentStatus,
+                                            orElse: () => 1,
+                                          );
+                                      String stepStatus = isBeforeCurrentStatus
+                                          ? 'Done'
+                                          : 'Pending';
+                                      Color stepNumberColor = isCurrentStatus
                                           ? Colors.white
                                           : (isBeforeCurrentStatus
                                               ? const Color.fromARGB(
                                                   255, 111, 174, 23)
-                                              : Colors.grey),
-                                    ),
+                                              : Colors.grey);
+                                      Color stepStatusColor = isCurrentStatus
+                                          ? Colors.white
+                                          : (isBeforeCurrentStatus
+                                              ? const Color.fromARGB(
+                                                  255, 111, 174, 23)
+                                              : Colors.grey);
+
+                                      return Column(
+                                        children: [
+                                          ListTile(
+                                            leading: Container(
+                                              width: 24,
+                                              height: 24,
+                                              decoration: BoxDecoration(
+                                                shape: BoxShape.circle,
+                                                color: stepNumberColor,
+                                              ),
+                                              child: Center(
+                                                child: Text(
+                                                  stepNumber.toString(),
+                                                  style: TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                    color: isCurrentStatus
+                                                        ? const Color.fromARGB(
+                                                            255, 111, 174, 23)
+                                                        : Colors.white,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                            title: Text(
+                                              status,
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                color: stepStatusColor,
+                                              ),
+                                            ),
+                                            subtitle: Text(
+                                              isCurrentStatus
+                                                  ? 'Current Status'
+                                                  : stepStatus,
+                                              style: TextStyle(
+                                                fontStyle: FontStyle.italic,
+                                                color: isCurrentStatus
+                                                    ? Colors.white
+                                                    : (isBeforeCurrentStatus
+                                                        ? const Color.fromARGB(
+                                                            255, 111, 174, 23)
+                                                        : Colors.grey),
+                                              ),
+                                            ),
+                                          ),
+                                          if (index < orderStatus.length - 1)
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  left: 27),
+                                              child: Align(
+                                                alignment: Alignment.centerLeft,
+                                                child: FractionallySizedBox(
+                                                  widthFactor: 0.005,
+                                                  child: Container(
+                                                    height: 20,
+                                                    color: Colors.grey,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                        ],
+                                      );
+                                    },
                                   ),
                                 ),
-                                if (index < orderStatus.length - 1)
-                                  Padding(
-                                    padding: const EdgeInsets.only(left: 27),
-                                    child: Align(
-                                      alignment: Alignment.centerLeft,
-                                      child: FractionallySizedBox(
-                                        widthFactor: 0.005,
-                                        child: Container(
-                                          height: 20,
-                                          color: Colors.grey,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                              ],
-                            );
-                          },
+                              ));
+                        },
+                      );
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: const Color.fromARGB(255, 178, 218, 121),
+                        borderRadius: BorderRadius.circular(20),
+                        border: Border.all(
+                          color: Color.fromARGB(255, 236, 236, 163),
                         ),
-                      ],
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: Center(
+                          child: Text(
+                            'Order Status',
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontFamily: 'Visby',
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ),
                     ),
                   ),
                 ),
