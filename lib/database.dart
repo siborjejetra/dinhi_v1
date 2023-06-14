@@ -139,6 +139,22 @@ class Database {
     }
   }
 
+  void addTransactiontoCourier(
+    String transactionId,
+    String courierId,
+  ) async {
+    try {
+      print(courierId);
+      final docCourier =
+          FirebaseFirestore.instance.collection("users").doc(courierId);
+      docCourier.update({
+        "deliverylist": FieldValue.arrayUnion([transactionId]),
+      });
+    } catch (e) {
+      print(e);
+    }
+  }
+
   Future<List> addProductArray(String userId, String productIdno) async {
     List<String> products = [];
     try {
@@ -202,6 +218,45 @@ class Database {
     }
     // print(newUserMapDB);
     return newUserMap;
+  }
+
+  Future<Map> sellerEditTransaction(Map<dynamic, dynamic> transaction,
+      Map<String, dynamic> newTransaction, File? inputImage) async {
+    Map newTransMap = {};
+    String url = '';
+    try {
+      if (inputImage != null) {
+        final ref = FirebaseStorage.instance
+            .ref()
+            .child('transactionImages')
+            .child('${DateTime.now()}');
+
+        // var inputImage;
+        await ref.putFile(File(inputImage.path));
+
+        url = await ref.getDownloadURL();
+        print(url);
+        newTransaction['seller_proof'] = url;
+      }
+
+      var collectionRef = FirebaseFirestore.instance.collection('transactions');
+      var docUser = collectionRef.doc(transaction['id']);
+
+      docUser.update(newTransaction);
+
+      final doc = await collectionRef.doc(transaction['id']).get();
+
+      newTransMap = {...transaction};
+      newTransMap['courier_id'] = newTransaction['courier_id'];
+      newTransMap['seller_proof'] = newTransaction['seller_proof'];
+
+      // print(newTransMap);
+      return newTransMap;
+    } catch (e) {
+      print(e);
+    }
+    // print(newUserMapDB);
+    return newTransMap;
   }
 
   Future<Map> editTransaction(Map<dynamic, dynamic> transaction,

@@ -44,6 +44,7 @@ class _RiderListChildState extends State<RiderListChild> {
   List riders = [];
   Map transaction = {};
   File? inputImage;
+  int? _selectedOption;
 
   @override
   void initState() {
@@ -61,7 +62,6 @@ class _RiderListChildState extends State<RiderListChild> {
     transaction = widget.transaction;
     riders = storeUserDeets(users);
     inputImage = widget.seller_proof;
-    int? _selectedOption;
     // print(riders);
 
     return Scaffold(
@@ -84,17 +84,15 @@ class _RiderListChildState extends State<RiderListChild> {
                                 border: Border.all(color: Colors.grey),
                               ),
                               child: RadioListTile(
-                                selectedTileColor:
-                                    Color.fromARGB(255, 111, 174, 23),
                                 value: index,
                                 groupValue: _selectedOption,
                                 onChanged: (value) {
                                   setState(() {
                                     _selectedOption = value as int?;
-                                    // print(_selectedOption);
+                                    print(_selectedOption);
                                   });
                                 },
-                                activeColor: Colors.transparent,
+                                activeColor: Color.fromARGB(255, 111, 174, 23),
                                 controlAffinity:
                                     ListTileControlAffinity.trailing,
                                 toggleable: true,
@@ -185,12 +183,13 @@ class _RiderListChildState extends State<RiderListChild> {
                 ))),
             onPressed: () {
               Map<String, dynamic> newTransaction = {};
-              print(riders[_selectedOption!]['id']);
               newTransaction['courier_id'] = riders[_selectedOption!]['id'];
               db
-                  .editTransaction(transaction, newTransaction, inputImage)
+                  .sellerEditTransaction(
+                      transaction, newTransaction, inputImage)
                   .then((value) {
                 print(value);
+                db.addTransactiontoCourier(value['id'], value['courier_id']);
               });
             },
             child: const Text(
