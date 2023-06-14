@@ -207,6 +207,7 @@ class Database {
   Future<Map> editTransaction(Map<dynamic, dynamic> transaction,
       Map<String, dynamic> newTransaction, File? inputImage) async {
     Map newTransMap = {};
+    String url = '';
     try {
       if (inputImage != null) {
         final ref = FirebaseStorage.instance
@@ -234,6 +235,16 @@ class Database {
         newTransMap['notes'] = newTransaction['notes'];
       } else if (newTransaction['status'] == 'Ongoing') {
         newTransMap['courier_id'] = newTransaction['courier_id'];
+      }
+
+      if (url.isNotEmpty) {
+        if (transaction['buyer_proof'] == null) {
+          newTransMap['buyer_proof'] == url;
+        } else if (transaction['seller_proof'] == null) {
+          newTransMap['seller_proof'] == url;
+        } else if (transaction['courier_proof'] == null) {
+          newTransMap['courier_proof'] == url;
+        }
       }
 
       // print(newTransMap);

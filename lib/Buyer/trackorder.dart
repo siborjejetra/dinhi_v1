@@ -1,9 +1,12 @@
+import 'package:Dinhi_v1/Buyer/home.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import '../widgets.dart';
 
 class TrackOrder extends StatefulWidget {
-  const TrackOrder({Key? key}) : super(key: key);
+  final Map userMap;
+  const TrackOrder({Key? key, required this.userMap}) : super(key: key);
 
   @override
   _TrackOrderState createState() => _TrackOrderState();
@@ -26,6 +29,14 @@ class _TrackOrderState extends State<TrackOrder> {
         backgroundColor: Color.fromARGB(255, 111, 174, 23),
         centerTitle: true,
         title: Text('Track Order'),
+        leading: IconButton(
+            onPressed: () {
+              Get.to(HomeBuyerParent(userMap: widget.userMap));
+            },
+            icon: Icon(
+              Icons.arrow_back,
+              color: Colors.white,
+            )),
       ),
       body: Container(
         color: Color.fromARGB(255, 236, 236, 163),

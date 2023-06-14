@@ -238,14 +238,49 @@ class _OrderChildState extends State<OrderChild> {
               borderRadius: BorderRadius.circular(20),
             ))),
         onPressed: () {
-          // Add the calculation of quantity deducted by count or deletion of product if out of stock
-          Map<String, dynamic> newTransaction = {};
-          newTransaction = {...transDeets};
-          newTransaction['status'] = 'Ongoing';
-          Get.to(RiderListParent(
-            transaction: newTransaction,
-            seller_proof: inputImage,
-          ));
+          if (inputImage != null) {
+            // Add the calculation of quantity deducted by count or deletion of product if out of stock
+            Map<String, dynamic> newTransaction = {};
+            newTransaction = {...transDeets};
+            newTransaction['status'] = 'Ongoing';
+            Get.to(RiderListParent(
+              transaction: newTransaction,
+              seller_proof: inputImage,
+            ));
+          } else {
+            // Show dialogue saying "Please provide seller proof"
+            showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                    title: const Text('No uploaded image',
+                        style: TextStyle(
+                            fontFamily: "Montserrat",
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                            fontSize: 20)),
+                    content: const Text(
+                        'Please provide seller proof before you proceed.',
+                        style: TextStyle(
+                            fontFamily: "Montserrat",
+                            color: Colors.black,
+                            fontSize: 14)),
+                    actions: [
+                      TextButton(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                          child: const Text(
+                            'OK',
+                            style: TextStyle(
+                              fontFamily: "Montserrat",
+                              color: Color.fromARGB(255, 111, 174, 23),
+                            ),
+                          )),
+                    ],
+                  );
+                });
+          }
         },
         child: const Text(
           'CONFIRM',

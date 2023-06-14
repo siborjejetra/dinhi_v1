@@ -43,6 +43,7 @@ class _RiderListChildState extends State<RiderListChild> {
   List users = [];
   List riders = [];
   Map transaction = {};
+  File? inputImage;
 
   @override
   void initState() {
@@ -59,7 +60,8 @@ class _RiderListChildState extends State<RiderListChild> {
   Widget build(BuildContext context) {
     transaction = widget.transaction;
     riders = storeUserDeets(users);
-    int _selectedOption = -1;
+    inputImage = widget.seller_proof;
+    int? _selectedOption;
     // print(riders);
 
     return Scaffold(
@@ -88,8 +90,8 @@ class _RiderListChildState extends State<RiderListChild> {
                                 groupValue: _selectedOption,
                                 onChanged: (value) {
                                   setState(() {
-                                    _selectedOption = value as int;
-                                    print(_selectedOption);
+                                    _selectedOption = value as int?;
+                                    // print(_selectedOption);
                                   });
                                 },
                                 activeColor: Colors.transparent,
@@ -183,11 +185,10 @@ class _RiderListChildState extends State<RiderListChild> {
                 ))),
             onPressed: () {
               Map<String, dynamic> newTransaction = {};
-              print(riders[_selectedOption]['id']);
-              newTransaction['courier_id'] = riders[_selectedOption]['id'];
+              print(riders[_selectedOption!]['id']);
+              newTransaction['courier_id'] = riders[_selectedOption!]['id'];
               db
-                  .editTransaction(
-                      transaction, newTransaction, widget.seller_proof)
+                  .editTransaction(transaction, newTransaction, inputImage)
                   .then((value) {
                 print(value);
               });

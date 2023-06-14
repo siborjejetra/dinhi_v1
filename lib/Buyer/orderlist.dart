@@ -1,3 +1,4 @@
+import 'package:Dinhi_v1/Buyer/trackorder.dart';
 import 'package:Dinhi_v1/widgets.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -8,17 +9,28 @@ import 'package:Dinhi_v1/utils/user_preference.dart';
 
 class OrderListParent extends StatelessWidget {
   final List<String> orderlist;
-  const OrderListParent({Key? key, required this.orderlist}) : super(key: key);
+  final Map userMap;
+  const OrderListParent(
+      {Key? key, required this.orderlist, required this.userMap})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(home: OrderListChild(orderlist: orderlist));
+    return MaterialApp(
+        debugShowCheckedModeBanner: false,
+        home: OrderListChild(
+          orderlist: orderlist,
+          userMap: userMap,
+        ));
   }
 }
 
 class OrderListChild extends StatefulWidget {
   final List<String> orderlist;
-  const OrderListChild({Key? key, required this.orderlist}) : super(key: key);
+  final Map userMap;
+  const OrderListChild(
+      {Key? key, required this.orderlist, required this.userMap})
+      : super(key: key);
 
   @override
   State<OrderListChild> createState() => _OrderListChildState();
@@ -60,6 +72,8 @@ class _OrderListChildState extends State<OrderListChild> {
               Expanded(child: buildListView(context, 'Ongoing', storage)),
             if (flag == 3)
               Expanded(child: buildListView(context, 'Completed', storage)),
+            if (flag == 4)
+              Expanded(child: buildListView(context, 'Cancelled', storage)),
           ],
         )),
       ),
@@ -108,7 +122,6 @@ class _OrderListChildState extends State<OrderListChild> {
             color: Colors.black54,
             fontSize: 14),
       ),
-      // title: Text('Order ID: ' + 'UPlMVaYxwHNmuV0JyTAb'),
       subtitle: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         Text('Items: ' + transaction['itemList'].length.toString(),
             style: TextStyle(
@@ -116,13 +129,13 @@ class _OrderListChildState extends State<OrderListChild> {
         Text('Date: ' + transaction['date'].toDate().toLocal().toString(),
             style: TextStyle(
                 fontFamily: "Montserrat", color: Colors.black54, fontSize: 12)),
-        // Text('Items: ' + '2'),
-        // Text('Date: ' + 'Jun 6, 2023 10:22:01 PM'),
       ]),
       trailing: IconButton(
         icon: Icon(Icons.arrow_forward_ios,
             color: Color.fromARGB(255, 111, 174, 23)),
-        onPressed: () {},
+        onPressed: () {
+          Get.to(TrackOrder(userMap: widget.userMap));
+        },
       ),
     );
   }
@@ -162,14 +175,6 @@ class _OrderListChildState extends State<OrderListChild> {
                     color: Colors.black,
                     fontSize: 30),
               ),
-              // Text(
-              //   'Please continue shopping',
-              //   textAlign: TextAlign.center,
-              //   style: TextStyle(
-              //       fontFamily: "Montserrat",
-              //       color: Colors.black54,
-              //       fontSize: 25),
-              // ),
             ],
           ),
         ),
@@ -192,9 +197,13 @@ class _OrderListChildState extends State<OrderListChild> {
           setState(() {
             flag = 2;
           });
-        } else {
+        } else if (category == 'Completed') {
           setState(() {
             flag = 3;
+          });
+        } else {
+          setState(() {
+            flag = 4;
           });
         }
       },
@@ -237,6 +246,8 @@ class _OrderListChildState extends State<OrderListChild> {
           buildNumbersButton(context, "Ongoing", orderlist),
           buildDivider(),
           buildNumbersButton(context, "Completed", orderlist),
+          buildDivider(),
+          buildNumbersButton(context, "Cancelled", orderlist),
         ],
       ),
     );

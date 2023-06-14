@@ -144,68 +144,86 @@ class _OrderChildState extends State<OrderChild> {
                 borderRadius: BorderRadius.circular(20),
                 border: Border.all(color: Color.fromARGB(255, 236, 236, 163)),
               ),
-              child: ListTile(
-                leading: Container(
-                  width: 60,
-                  height: 60,
-                  child: Icon(
-                    IconData(0xf0555, fontFamily: 'MaterialIcons'),
-                    color: Colors.white,
-                  ), //BoxDecoration
-                ),
-                title: Text(transDeets['notes'],
-                    style: TextStyle(
-                        fontFamily: "Montserrat",
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                        fontSize: 14)),
-                trailing: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    IconButton(
-                      icon: Icon(Icons.check),
-                      color: Color.fromARGB(255, 171, 195, 47),
-                      onPressed: () {
-                        setState(() {
-                          text =
-                              'This is available. Please send the proof of payment. Thank you.';
-                        });
+              child: (transDeets['notes'] == 'Is this available?')
+                  ? ListTile(
+                      leading: Container(
+                        width: 60,
+                        height: 60,
+                        child: Icon(
+                          IconData(0xf0555, fontFamily: 'MaterialIcons'),
+                          color: Colors.white,
+                        ), //BoxDecoration
+                      ),
+                      title: Text(transDeets['notes'],
+                          style: TextStyle(
+                              fontFamily: "Montserrat",
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                              fontSize: 14)),
+                      trailing: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          IconButton(
+                            icon: Icon(Icons.check),
+                            color: Color.fromARGB(255, 171, 195, 47),
+                            onPressed: () {
+                              setState(() {
+                                text =
+                                    'This is available. Please send the proof of payment. Thank you.';
+                              });
 
-                        Map<String, dynamic> newTransaction = {};
-                        newTransaction['notes'] = text;
-                        newTransaction['status'] = 'Pending';
+                              Map<String, dynamic> newTransaction = {};
+                              newTransaction['notes'] = text;
+                              newTransaction['status'] = 'Pending';
 
-                        db
-                            .editTransaction(transDeets, newTransaction, null)
-                            .then((value) {
-                          Get.back();
-                        });
-                      },
-                    ),
-                    IconButton(
-                      icon: Icon(Icons.close),
-                      color: Colors.red,
-                      onPressed: () {
-                        setState(() {
-                          text =
-                              'Sorry. There seems to have some issue in this order. I\'ll cancel this order for now. Thank you.';
-                        });
+                              db
+                                  .editTransaction(
+                                      transDeets, newTransaction, null)
+                                  .then((value) {
+                                Get.back();
+                              });
+                            },
+                          ),
+                          IconButton(
+                            icon: Icon(Icons.close),
+                            color: Colors.red,
+                            onPressed: () {
+                              setState(() {
+                                text =
+                                    'Sorry. There seems to have some issue in this order. I\'ll cancel this order for now. Thank you.';
+                              });
 
-                        Map<String, dynamic> newTransaction = {};
-                        newTransaction['notes'] = text;
-                        newTransaction['status'] = 'Cancelled';
+                              Map<String, dynamic> newTransaction = {};
+                              newTransaction['notes'] = text;
+                              newTransaction['status'] = 'Cancelled';
 
-                        db
-                            .editTransaction(transDeets, newTransaction, null)
-                            .then((value) {
-                          Get.back();
-                        });
-                      },
-                    ),
-                  ],
-                ),
-              )),
+                              db
+                                  .editTransaction(
+                                      transDeets, newTransaction, null)
+                                  .then((value) {
+                                Get.back();
+                              });
+                            },
+                          ),
+                        ],
+                      ))
+                  : ListTile(
+                      leading: Container(
+                        width: 60,
+                        height: 60,
+                        child: Icon(
+                          IconData(0xe3e0, fontFamily: 'MaterialIcons'),
+                          color: Colors.white,
+                        ), //BoxDecoration
+                      ),
+                      title: Text('Waiting for response from buyer..',
+                          style: TextStyle(
+                              fontFamily: "Montserrat",
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                              fontSize: 14)),
+                    )),
         ),
       ])),
     );
