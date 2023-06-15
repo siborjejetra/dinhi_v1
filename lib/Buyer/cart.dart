@@ -31,14 +31,36 @@ class CartChild extends StatefulWidget {
 class _CartChildState extends State<CartChild> {
   List<String>? productID = [];
   List products = [];
-
   List<dynamic> cart = [];
-  // int count = 1;
   double total = 0.0; // Initialize total to 0.0
+
   void updateTotal(double updatedTotalCart) {
     setState(() {
       total +=
           updatedTotalCart; // Update the total value by adding the updatedTotalCart
+    });
+  }
+
+  void updateQuantity(int index, int quantity) {
+    // print(index);
+    // print(quantity);
+    setState(() {
+      cart[index]['buyQuantity'] = quantity.toString();
+    });
+  }
+
+  void updateCart(Map updatedCart) {
+    setState(() {
+      // Find the index of the item in the cart
+      int index = cart.indexWhere((item) => item['id'] == updatedCart['id']);
+
+      if (index != -1) {
+        // Update the cart item at the specific index
+        cart[index] = updatedCart;
+
+        // Recalculate the total
+        total = calculateTotalCart();
+      }
     });
   }
 
@@ -93,9 +115,12 @@ class _CartChildState extends State<CartChild> {
                                   border: Border.all(color: Colors.grey),
                                 ),
                                 child: CustomListItem(
-                                    cart: cart[index],
-                                    totalCart: total,
-                                    updateTotal: updateTotal),
+                                  index: index,
+                                  cart: cart[index],
+                                  totalCart: total,
+                                  updateTotal: updateTotal,
+                                  updateQuantity: updateQuantity,
+                                ),
                               ),
                             );
                           },
@@ -151,7 +176,20 @@ class _CartChildState extends State<CartChild> {
                         RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(20),
                     ))),
-                onPressed: () {},
+                onPressed: () {
+                  List<Map> products = [];
+                  print(cart);
+                  // final Map transactionData = {
+                  //   'buyer_id': userDetails['id'],
+                  //   'buyer_proof': "",
+                  //   'courier_id': "",
+                  //   'seller_id': prodDetails['seller_id'],
+                  //   'courier_proof': "",
+                  //   'status': "Pending",
+                  //   'products': products,
+                  //   'total': total.toString(),
+                  // };
+                },
                 child: const Text('CHECKOUT',
                     style: TextStyle(
                         fontFamily: "Montserrat",

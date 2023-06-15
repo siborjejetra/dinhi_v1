@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
 
 class CustomListItem extends StatefulWidget {
+  final int index;
   final Map cart;
   final double totalCart;
   final Function(double) updateTotal;
+  final Function(int, int) updateQuantity;
   const CustomListItem({
     Key? key,
+    required this.index,
     required this.cart,
     required this.totalCart,
     required this.updateTotal,
+    required this.updateQuantity,
   }) : super(key: key);
 
   @override
@@ -22,8 +26,7 @@ class _CustomListItemState extends State<CustomListItem> {
   @override
   void initState() {
     super.initState();
-    count = 0;
-    // totalCart = widget.totalCart;
+    count = int.parse(widget.cart['buyQuantity']);
   }
 
   @override
@@ -59,7 +62,10 @@ class _CustomListItemState extends State<CustomListItem> {
                     // Update count and totalCart
                     if (count > 0) {
                       count--;
+                      print(widget.index);
+                      print(count);
                       // Call the updateTotal callback function from the parent widget
+                      widget.updateQuantity(widget.index, count);
                       widget.updateTotal(-double.parse(cart['price']));
                     }
                   });
@@ -82,7 +88,10 @@ class _CustomListItemState extends State<CustomListItem> {
                   setState(() {
                     // Update count and totalCart
                     count++;
+                    print(widget.index);
+                    print(count);
                     // Call the updateTotal callback function from the parent widget
+                    widget.updateQuantity(widget.index, count);
                     widget.updateTotal(double.parse(cart['price']));
                   });
                 },
