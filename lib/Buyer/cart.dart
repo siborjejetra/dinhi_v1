@@ -1,5 +1,6 @@
 import 'package:Dinhi_v1/Buyer/checkout.dart';
 import 'package:Dinhi_v1/Buyer/listitem.dart';
+import 'package:Dinhi_v1/Buyer/placeorder.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../utils/user_preference.dart';
@@ -178,17 +179,21 @@ class _CartChildState extends State<CartChild> {
                     ))),
                 onPressed: () {
                   List<Map> products = [];
-                  print(cart);
-                  // final Map transactionData = {
-                  //   'buyer_id': userDetails['id'],
-                  //   'buyer_proof': "",
-                  //   'courier_id': "",
-                  //   'seller_id': prodDetails['seller_id'],
-                  //   'courier_proof': "",
-                  //   'status': "Pending",
-                  //   'products': products,
-                  //   'total': total.toString(),
-                  // };
+
+                  for (var item in cart) {
+                    if (num.parse(item['buyQuantity']) > 0) {
+                      products.add(item);
+                    }
+                  }
+                  final Map transactionData = {
+                    'buyer_id': userDetails['id'],
+                    'products': products,
+                    'total': total.toString(),
+                  };
+                  Get.to(PlaceOrderParent(
+                    userMap: userDetails,
+                    transaction: transactionData,
+                  ));
                 },
                 child: const Text('CHECKOUT',
                     style: TextStyle(
