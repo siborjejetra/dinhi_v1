@@ -236,8 +236,9 @@ class Database {
 
         url = await ref.getDownloadURL();
         print(url);
-        newTransaction['seller_proof'] = url;
       }
+      newTransaction['seller_proof'] = url;
+      newTransaction['notes'] = 'Order is ready for pickup.';
 
       var collectionRef = FirebaseFirestore.instance.collection('transactions');
       var docUser = collectionRef.doc(transaction['id']);
@@ -249,6 +250,7 @@ class Database {
       newTransMap = {...transaction};
       newTransMap['courier_id'] = newTransaction['courier_id'];
       newTransMap['seller_proof'] = newTransaction['seller_proof'];
+      newTransMap['notes'] = newTransaction['notes'];
 
       // print(newTransMap);
       return newTransMap;
@@ -351,7 +353,7 @@ class Database {
             a['deliverylist'] = null;
             a['products'] = null;
             a['cart'] = null;
-            a['orerlist'] = null;
+            a['orderlist'] = null;
           }
 
           docs.add(a);
@@ -457,7 +459,15 @@ class Database {
             } else if (doc['usertype'] == 'Buyer') {
               userDeets['cart'] = List<String>.from(doc['cart']);
               userDeets['orderlist'] = List<String>.from(doc['orderlist']);
+            } else if (doc['usertype'] == 'Courier') {
+              userDeets['status'] = doc['status'];
+              userDeets['deliverylist'] =
+                  List<String>.from(doc['deliverylist']);
+              userDeets['plate_no'] = doc['plate_no'];
             } else {
+              userDeets['plate_no'] = null;
+              userDeets['status'] = null;
+              userDeets['deliverylist'] = null;
               userDeets['products'] = null;
               userDeets['cart'] = null;
               userDeets['orderlist'] = null;

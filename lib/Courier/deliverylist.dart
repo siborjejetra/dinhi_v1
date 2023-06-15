@@ -1,3 +1,4 @@
+import 'package:Dinhi_v1/Courier/delivery.dart';
 import 'package:Dinhi_v1/Seller/pending.dart';
 import 'package:Dinhi_v1/widgets.dart';
 import 'package:flutter/cupertino.dart';
@@ -8,7 +9,7 @@ import 'package:get/get.dart';
 import 'package:Dinhi_v1/utils/user_preference.dart';
 
 class DeliveryListParent extends StatelessWidget {
-  final List<String> deliverylist;
+  final List<String>? deliverylist;
   const DeliveryListParent({Key? key, required this.deliverylist})
       : super(key: key);
 
@@ -21,7 +22,7 @@ class DeliveryListParent extends StatelessWidget {
 }
 
 class DeliveryListChild extends StatefulWidget {
-  final List<String> deliverylist;
+  final List<String>? deliverylist;
   const DeliveryListChild({Key? key, required this.deliverylist})
       : super(key: key);
 
@@ -53,20 +54,9 @@ class _DeliveryListChildState extends State<DeliveryListChild> {
     // print(storage);
     return Scaffold(
       backgroundColor: Color.fromARGB(255, 236, 236, 163),
-      appBar: buildAppbar(context, 'Order History', false),
+      appBar: buildAppbar(context, 'Delivery List', false),
       body: SafeArea(
-        child: Container(
-            child: Column(
-          children: [
-            buildNumbersWidget(storage),
-            if (flag == 1)
-              Expanded(child: buildListView(context, 'Pending', storage)),
-            if (flag == 2)
-              Expanded(child: buildListView(context, 'Ongoing', storage)),
-            if (flag == 3)
-              Expanded(child: buildListView(context, 'Completed', storage)),
-          ],
-        )),
+        child: Container(child: (buildListView(context, storage))),
       ),
     );
   }
@@ -101,7 +91,7 @@ class _DeliveryListChildState extends State<DeliveryListChild> {
     return filter;
   }
 
-  Widget buildListTile(Map transaction, String category) {
+  Widget buildListTile(Map transaction) {
     // print(transaction);
     return ListTile(
       onTap: () {},
@@ -125,25 +115,18 @@ class _DeliveryListChildState extends State<DeliveryListChild> {
         icon: Icon(Icons.arrow_forward_ios,
             color: Color.fromARGB(255, 111, 174, 23)),
         onPressed: () {
-          if (category == 'Pending') {
-            Get.to(OrderParent(transaction: transaction));
-          } else if (category == 'Ongoing') {
-            // Get.to(OngoingParent(transaction: transaction));
-          }
+          Get.to(DeliveryParent(transaction: transaction));
         },
       ),
     );
   }
 
-  Widget buildListView(
-      BuildContext context, String category, List deliverylist) {
-    List filtered = filterOrders(category, deliverylist);
-    // print(filtered);
-    if (filtered.isNotEmpty) {
+  Widget buildListView(BuildContext context, List deliverylist) {
+    if (deliverylist.isNotEmpty) {
       return Container(
         child: ListView.builder(
             primary: true,
-            itemCount: filtered.length,
+            itemCount: deliverylist.length,
             itemBuilder: (context, index) {
               return Padding(
                 padding: const EdgeInsets.all(4.0),
@@ -153,7 +136,7 @@ class _DeliveryListChildState extends State<DeliveryListChild> {
                       borderRadius: BorderRadius.circular(20),
                       border: Border.all(color: Colors.grey),
                     ),
-                    child: buildListTile(filtered[index], category)),
+                    child: buildListTile(deliverylist[index])),
               );
             }),
       );
@@ -164,7 +147,7 @@ class _DeliveryListChildState extends State<DeliveryListChild> {
           child: Column(
             children: [
               Text(
-                'No ' + category + ' Orders',
+                'No Orders to Deliver',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                     fontFamily: "Montserrat",

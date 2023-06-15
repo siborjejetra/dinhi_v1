@@ -87,6 +87,7 @@ flutter:
   - assets/images/ViewCart.png
   - assets/images/Chat.png
   - assets/images/OrdersAvail.png
+  - assets/images/DeliveryHistory.png
   - assets/images/UpdatePayment.png
   - assets/images/ViewFeedback.png
   - assets/images/AddImage.png

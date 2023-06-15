@@ -48,8 +48,8 @@ class _HomeCourierChildState extends State<HomeCourierChild> {
       deliverylist: widget.userDetails['deliverylist']);
   late final EasyAppController controller = EasyAppController(
     intialBody: EasyBody(
-        child: buildSideBarTile(user).body,
-        title: buildSideBarTile(user).title),
+        child: buildSideBarTile(user, widget.userDetails).body,
+        title: buildSideBarTile(user, widget.userDetails).title),
   );
 
   @override
@@ -96,7 +96,7 @@ class _HomeCourierChildState extends State<HomeCourierChild> {
           selectedIconColor: Color.fromARGB(255, 236, 236, 163),
           textColor: Colors.black.withGreen(20),
           selectedTileColor: Color.fromARGB(255, 111, 174, 23).withOpacity(.8),
-          tiles: returnTiles(context, user),
+          tiles: returnTiles(context, user, widget.userDetails),
           topWidget: SideBox(
             scrollable: true,
             height: 150,
