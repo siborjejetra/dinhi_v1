@@ -37,7 +37,8 @@ class _CartChildState extends State<CartChild> {
   double total = 0.0; // Initialize total to 0.0
   void updateTotal(double updatedTotalCart) {
     setState(() {
-      total = updatedTotalCart; // Update the total value
+      total +=
+          updatedTotalCart; // Update the total value by adding the updatedTotalCart
     });
   }
 
@@ -93,7 +94,7 @@ class _CartChildState extends State<CartChild> {
                                 ),
                                 child: CustomListItem(
                                     cart: cart[index],
-                                    totalCart: 0,
+                                    totalCart: total,
                                     updateTotal: updateTotal),
                               ),
                             );
@@ -150,45 +151,7 @@ class _CartChildState extends State<CartChild> {
                         RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(20),
                     ))),
-                onPressed: () {
-                  // Perform checkout logic here
-                  // Get.to(() => CheckoutParent(userMap: userDetails, transaction: ,)); // showDialog(
-                  //   context: context,
-                  //   builder: (BuildContext context) {
-                  //     return AlertDialog(
-                  //       backgroundColor: Colors.white,
-                  //       title: const Text(
-                  //         'Checkout',
-                  //         style: TextStyle(
-                  //             fontFamily: "Montserrat",
-                  //             fontWeight: FontWeight.bold,
-                  //             color: Colors.black,
-                  //             fontSize: 20),
-                  //       ),
-                  //       content: const Text('Order placed successfully.',
-                  //           style: TextStyle(
-                  //               fontFamily: "Montserrat",
-                  //               color: Colors.black,
-                  //               fontSize: 14)),
-                  //       actions: [
-                  //         TextButton(
-                  //           onPressed: () {
-                  //             Navigator.of(context).pop();
-                  //           },
-                  //           child: Text(
-                  //             'OK',
-                  //             style: TextStyle(
-                  //               fontFamily: "Montserrat",
-                  //               color: Color.fromARGB(255, 111, 174, 23),
-                  //             ),
-                  //           ),
-                  //         ),
-                  //       ],
-                  //     );
-                  //   },
-                  // );
-                  // Get.to(CheckoutParent(userMap: userDetails));
-                },
+                onPressed: () {},
                 child: const Text('CHECKOUT',
                     style: TextStyle(
                         fontFamily: "Montserrat",
