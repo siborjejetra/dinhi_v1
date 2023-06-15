@@ -220,6 +220,69 @@ class Database {
     return newUserMap;
   }
 
+  Future<Map> addCourierProofTransaction(Map<dynamic, dynamic> transaction,
+      Map<String, dynamic> newTransaction, File? inputImage) async {
+    Map newTransMap = {};
+    String url = '';
+    try {
+      if (inputImage != null) {
+        final ref = FirebaseStorage.instance
+            .ref()
+            .child('transactionImages')
+            .child('${DateTime.now()}');
+
+        // var inputImage;
+        await ref.putFile(File(inputImage.path));
+
+        url = await ref.getDownloadURL();
+        print(url);
+      }
+      newTransaction['courier_proof'] = url;
+      newTransaction['notes'] = 'Order has been delivered';
+
+      var collectionRef = FirebaseFirestore.instance.collection('transactions');
+      var docUser = collectionRef.doc(transaction['id']);
+
+      docUser.update(newTransaction);
+
+      final doc = await collectionRef.doc(transaction['id']).get();
+
+      newTransMap = {...transaction};
+      newTransMap['courier_proof'] = newTransaction['courier_proof'];
+      newTransMap['notes'] = newTransaction['notes'];
+
+      // print(newTransMap);
+      return newTransMap;
+    } catch (e) {
+      print(e);
+    }
+    // print(newUserMapDB);
+    return newTransMap;
+  }
+
+  Future<Map> courierEditTransaction(Map<dynamic, dynamic> transaction,
+      Map<String, dynamic> newTransaction, Map courierDeets) async {
+    Map newTransMap = {};
+    String url = '';
+    try {
+      var collectionRef = FirebaseFirestore.instance.collection('transactions');
+      var docTransaction = collectionRef.doc(transaction['id']);
+
+      if (newTransaction['notes'] !=
+          'The rider confirmed to deliver this order.') {}
+
+      docTransaction.update(newTransaction);
+
+      newTransMap = {...transaction};
+      newTransMap['notes'] = newTransaction['notes'];
+
+      return (newTransMap);
+    } catch (e) {
+      print(e);
+    }
+    return (newTransMap);
+  }
+
   Future<Map> sellerEditTransaction(Map<dynamic, dynamic> transaction,
       Map<String, dynamic> newTransaction, File? inputImage) async {
     Map newTransMap = {};

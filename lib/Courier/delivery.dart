@@ -1,11 +1,13 @@
 import 'dart:io';
 
+import 'package:Dinhi_v1/Courier/deliverylist.dart';
 import 'package:Dinhi_v1/Seller/orderlist.dart';
 import 'package:Dinhi_v1/Seller/riderlist.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../utils/user_preference.dart';
 import '../widgets.dart';
@@ -38,6 +40,8 @@ class _DeliveryChildState extends State<DeliveryChild> {
   Map userDeets = {};
   String text = '';
 
+  File? inputImage;
+
   @override
   void initState() {
     // TODO: implement initState
@@ -53,12 +57,13 @@ class _DeliveryChildState extends State<DeliveryChild> {
   Widget build(BuildContext context) {
     transDeets = widget.transaction;
     userDeets = storeUserDeets(users, transDeets['buyer_id']);
-    Map newTransaction = {};
+    Map courierDeets = storeUserDeets(users, transDeets['courier_id']);
+    Map<String, dynamic> newTransaction = {};
     // print(transDeets);
 
     return Scaffold(
         backgroundColor: Color.fromARGB(255, 236, 236, 163),
-        appBar: buildAppbar(context, 'Delivery Details', false),
+        appBar: buildAppbar(context, 'Delivery Information', false),
         body: SafeArea(
             child: Column(children: <Widget>[
           SizedBox(height: 10),
@@ -222,58 +227,186 @@ class _DeliveryChildState extends State<DeliveryChild> {
             ],
           ),
         ])),
-        bottomNavigationBar: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: <Widget>[
-            ElevatedButton(
-              style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all(
-                      Color.fromARGB(255, 111, 174, 23)),
-                  padding: MaterialStateProperty.all(
-                      EdgeInsets.symmetric(horizontal: 50)),
-                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                      RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20),
-                  ))),
-              onPressed: () {
-                newTransaction['notes'] =
-                    'The rider confirmed to deliver this order.';
-              },
-              child: const Text(
-                'ACCEPT',
-                style: TextStyle(
-                    fontSize: 14,
-                    fontFamily: 'Montserrat',
-                    letterSpacing: 2.2,
-                    color: Colors.white),
-              ),
-            ),
-            OutlinedButton(
-                style: ButtonStyle(
-                    backgroundColor:
-                        MaterialStateProperty.all(Colors.redAccent),
-                    padding: MaterialStateProperty.all(
-                        EdgeInsets.symmetric(horizontal: 50)),
-                    elevation: MaterialStateProperty.all(2),
-                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                        RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20),
-                    ))),
-                onPressed: () {
-                  newTransaction['notes'] =
-                      'The rider refused to deliver this order due to some reasons.';
-                  Get.back();
-                },
-                child: const Text(
-                  'REJECT',
-                  style: TextStyle(
-                      fontSize: 14,
-                      fontFamily: 'Montserrat',
-                      letterSpacing: 2.2,
-                      color: Color.fromARGB(255, 255, 255, 255)),
-                ))
-          ],
-        ));
+        bottomNavigationBar: text.isEmpty
+            ? Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  ElevatedButton(
+                    style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all(
+                            Color.fromARGB(255, 111, 174, 23)),
+                        padding: MaterialStateProperty.all(
+                            EdgeInsets.symmetric(horizontal: 50)),
+                        shape:
+                            MaterialStateProperty.all<RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20),
+                        ))),
+                    onPressed: () {
+                      newTransaction['notes'] =
+                          'The rider confirmed to deliver this order.';
+                      db
+                          .courierEditTransaction(
+                              transDeets, newTransaction, courierDeets)
+                          .then((value) {
+                        Get.to(DeliveryListParent(
+                            deliverylist: value['deliverylist']));
+                      });
+                    },
+                    child: const Text(
+                      'ACCEPT',
+                      style: TextStyle(
+                          fontSize: 14,
+                          fontFamily: 'Montserrat',
+                          letterSpacing: 2.2,
+                          color: Colors.white),
+                    ),
+                  ),
+                  OutlinedButton(
+                      style: ButtonStyle(
+                          backgroundColor:
+                              MaterialStateProperty.all(Colors.redAccent),
+                          padding: MaterialStateProperty.all(
+                              EdgeInsets.symmetric(horizontal: 50)),
+                          elevation: MaterialStateProperty.all(2),
+                          shape:
+                              MaterialStateProperty.all<RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
+                          ))),
+                      onPressed: () {
+                        newTransaction['notes'] =
+                            'The rider refused to deliver this order due to some reasons.';
+                        db
+                            .courierEditTransaction(
+                                transDeets, newTransaction, courierDeets)
+                            .then((value) {
+                          Get.to(DeliveryListParent(
+                              deliverylist: value['deliverylist']));
+                        });
+                      },
+                      child: const Text(
+                        'REJECT',
+                        style: TextStyle(
+                            fontSize: 14,
+                            fontFamily: 'Montserrat',
+                            letterSpacing: 2.2,
+                            color: Color.fromARGB(255, 255, 255, 255)),
+                      ))
+                ],
+              )
+            : Container(
+                decoration: BoxDecoration(
+                  color: Color.fromARGB(255, 111, 174, 23),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    Text(
+                      'PROOF OF DELIVERY',
+                      style: TextStyle(
+                          fontFamily: "Montserrat",
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                          fontSize: 14),
+                    ),
+                    InkWell(
+                      child: inputImage != null
+                          ? Image.file(
+                              inputImage!,
+                              width: 60,
+                              height: 60,
+                            )
+                          : Icon(
+                              IconData(0xe048, fontFamily: 'MaterialIcons'),
+                              color: Colors.white,
+                            ),
+                      onTap: () {
+                        pickImage(ImageSource.gallery);
+                      },
+                    ),
+                    ElevatedButton(
+                      style: ButtonStyle(
+                          backgroundColor:
+                              MaterialStateProperty.all(Colors.white),
+                          padding: MaterialStateProperty.all(
+                              EdgeInsets.symmetric(horizontal: 50)),
+                          shape:
+                              MaterialStateProperty.all<RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
+                          ))),
+                      onPressed: () {
+                        if (inputImage != null) {
+                          Map<String, dynamic> newTransaction = {};
+                          newTransaction = {...transDeets};
+                          newTransaction['status'] = 'Completed';
+                          db
+                              .addCourierProofTransaction(
+                                  transDeets, newTransaction, inputImage)
+                              .then((value) => DeliveryListParent(
+                                  deliverylist: userDeets['deliverylist']));
+                        } else {
+                          // Show dialogue saying "Please provide seller proof"
+                          showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  title: const Text('No uploaded image',
+                                      style: TextStyle(
+                                          fontFamily: "Montserrat",
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.black,
+                                          fontSize: 20)),
+                                  content: const Text(
+                                      'Please provide seller proof before you proceed.',
+                                      style: TextStyle(
+                                          fontFamily: "Montserrat",
+                                          color: Colors.black,
+                                          fontSize: 14)),
+                                  actions: [
+                                    TextButton(
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                        child: const Text(
+                                          'OK',
+                                          style: TextStyle(
+                                            fontFamily: "Montserrat",
+                                            color: Color.fromARGB(
+                                                255, 111, 174, 23),
+                                          ),
+                                        )),
+                                  ],
+                                );
+                              });
+                        }
+                      },
+                      child: const Text('PRODUCT DELIVERED',
+                          style: TextStyle(
+                              fontFamily: "Montserrat",
+                              fontWeight: FontWeight.bold,
+                              color: Color.fromARGB(255, 9, 117, 8),
+                              letterSpacing: 2.2,
+                              fontSize: 12)),
+                    ),
+                  ],
+                ),
+              ));
+  }
+
+  Future pickImage(ImageSource source) async {
+    try {
+      XFile? pickedImage = await ImagePicker().pickImage(source: source);
+      if (pickedImage != null) {
+        setState(() {
+          inputImage = File(pickedImage.path);
+        });
+      } else
+        return;
+    } catch (e) {
+      // showFailedToChooseDialog(context);
+    }
   }
 }
 

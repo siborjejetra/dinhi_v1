@@ -56,7 +56,16 @@ class _DeliveryListChildState extends State<DeliveryListChild> {
       backgroundColor: Color.fromARGB(255, 236, 236, 163),
       appBar: buildAppbar(context, 'Delivery List', false),
       body: SafeArea(
-        child: Container(child: (buildListView(context, storage))),
+        child: Container(
+            child: Column(
+          children: [
+            buildNumbersWidget(storage),
+            if (flag == 1)
+              Expanded(child: buildListView(context, 'Ongoing', storage)),
+            if (flag == 2)
+              Expanded(child: buildListView(context, 'Completed', storage)),
+          ],
+        )),
       ),
     );
   }
@@ -121,12 +130,15 @@ class _DeliveryListChildState extends State<DeliveryListChild> {
     );
   }
 
-  Widget buildListView(BuildContext context, List deliverylist) {
-    if (deliverylist.isNotEmpty) {
+  Widget buildListView(
+      BuildContext context, String category, List deliverylist) {
+    List filtered = filterOrders(category, deliverylist);
+
+    if (filtered.isNotEmpty) {
       return Container(
         child: ListView.builder(
             primary: true,
-            itemCount: deliverylist.length,
+            itemCount: filtered.length,
             itemBuilder: (context, index) {
               return Padding(
                 padding: const EdgeInsets.all(4.0),
@@ -136,7 +148,7 @@ class _DeliveryListChildState extends State<DeliveryListChild> {
                       borderRadius: BorderRadius.circular(20),
                       border: Border.all(color: Colors.grey),
                     ),
-                    child: buildListTile(deliverylist[index])),
+                    child: buildListTile(filtered[index])),
               );
             }),
       );
@@ -168,17 +180,13 @@ class _DeliveryListChildState extends State<DeliveryListChild> {
       padding: EdgeInsets.symmetric(vertical: 4),
       highlightColor: Color.fromARGB(255, 111, 174, 23),
       onPressed: () {
-        if (category == 'Pending') {
+        if (category == 'Ongoing') {
           setState(() {
             flag = 1;
           });
-        } else if (category == 'Ongoing') {
-          setState(() {
-            flag = 2;
-          });
         } else {
           setState(() {
-            flag = 3;
+            flag = 2;
           });
         }
       },
@@ -216,8 +224,6 @@ class _DeliveryListChildState extends State<DeliveryListChild> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          buildNumbersButton(context, "Pending", deliverylist),
-          buildDivider(),
           buildNumbersButton(context, "Ongoing", deliverylist),
           buildDivider(),
           buildNumbersButton(context, "Completed", deliverylist),
