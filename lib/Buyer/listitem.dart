@@ -62,8 +62,6 @@ class _CustomListItemState extends State<CustomListItem> {
                     // Update count and totalCart
                     if (count > 0) {
                       count--;
-                      print(widget.index);
-                      print(count);
                       // Call the updateTotal callback function from the parent widget
                       widget.updateQuantity(widget.index, count);
                       widget.updateTotal(-double.parse(cart['price']));
@@ -88,8 +86,7 @@ class _CustomListItemState extends State<CustomListItem> {
                   setState(() {
                     // Update count and totalCart
                     count++;
-                    print(widget.index);
-                    print(count);
+
                     // Call the updateTotal callback function from the parent widget
                     widget.updateQuantity(widget.index, count);
                     widget.updateTotal(double.parse(cart['price']));
