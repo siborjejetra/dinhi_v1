@@ -114,7 +114,7 @@ class _OrderChildState extends State<OrderChild> {
             ),
             child: ListView.builder(
               primary: false,
-              itemCount: transDeets['itemList'].length,
+              itemCount: transDeets['products'].length,
               itemBuilder: (context, index) {
                 print(transDeets['total']);
                 return Padding(
@@ -126,8 +126,8 @@ class _OrderChildState extends State<OrderChild> {
                       border: Border.all(color: Colors.grey),
                     ),
                     child: ListItem(
-                      cart: transDeets['itemList'][index],
-                      totalCart: transDeets['total'],
+                      cart: transDeets['products'][index],
+                      totalCart: transDeets['total'].toString(),
                     ),
                   ),
                 );

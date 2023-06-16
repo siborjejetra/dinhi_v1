@@ -114,7 +114,7 @@ class _OrderListChildState extends State<OrderListChild> {
             fontSize: 14),
       ),
       subtitle: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        Text('Items: ' + transaction['itemList'].length.toString(),
+        Text('Items: ' + transaction['products'].length.toString(),
             style: TextStyle(
                 fontFamily: "Montserrat", color: Colors.black54, fontSize: 12)),
         Text('Date: ' + transaction['date'].toDate().toLocal().toString(),
