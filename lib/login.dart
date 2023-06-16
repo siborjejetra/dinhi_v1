@@ -85,7 +85,10 @@ class _LoginChildState extends State<LoginChild> {
   Future<String?> _signupUser(SignupData data) {
     debugPrint('Signup Name: ${data.name}, Password: ${data.password}');
     return Future.delayed(loginTime).then((_) {
-      Get.to(const RegParent());
+      Get.to(RegParent(
+        email: data.name,
+        password: data.password,
+      ));
       return null;
     });
   }

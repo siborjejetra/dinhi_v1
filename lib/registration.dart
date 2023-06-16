@@ -9,7 +9,10 @@ import 'package:intl/intl.dart';
 import 'database.dart';
 
 class RegParent extends StatelessWidget {
-  const RegParent({Key? key, required}) : super(key: key);
+  final String? email;
+  final String? password;
+  RegParent({Key? key, required this.email, required this.password})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -22,13 +25,20 @@ class RegParent extends StatelessWidget {
         GlobalWidgetsLocalizations.delegate,
       ],
       supportedLocales: FormBuilderLocalizations.delegate.supportedLocales,
-      home: const RegChild(),
+      theme: ThemeData(
+          primaryColor:
+              Color.fromARGB(255, 171, 195, 47) // Set the accent color here
+          ),
+      home: RegChild(email: email, password: password),
     );
   }
 }
 
 class RegChild extends StatefulWidget {
-  const RegChild({Key? key}) : super(key: key);
+  final String? email;
+  final String? password;
+  const RegChild({Key? key, required this.email, required this.password})
+      : super(key: key);
 
   @override
   State<RegChild> createState() {
@@ -158,17 +168,11 @@ class _RegChildState extends State<RegChild> {
                   // debugPrint(_formKey.currentState!.value.toString());
                 },
                 autovalidateMode: AutovalidateMode.disabled,
-                // initialValue: const {
-                //   'firstname': 'First Name',
-                //   'lastname': 'Last Name',
-                //   'cellnumber': '09XXXXXXXXX',
-                //   'email': 'Email',
-                //   'password': 'Password',
-                //   'cpassword': 'Confirm Password',
-                //   'address': 'Address',
-                //   'honorific': 'Mx.',
-                //   'usertype': 'Buyer',
-                // },
+                initialValue: {
+                  'email': widget.email,
+                  'password': widget.password,
+                  'cpassword': widget.password,
+                },
                 skipDisabled: true,
                 child: Column(
                   children: <Widget>[
@@ -182,6 +186,18 @@ class _RegChildState extends State<RegChild> {
                         fillColor: Colors.white,
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide(
+                            color: Color.fromARGB(255, 6, 88,
+                                6), // Set the focused border color here
+                            width: 2.0, // Set the focused border width here
+                          ),
+                        ),
+                        labelStyle: TextStyle(
+                          color: Color.fromARGB(
+                              255, 6, 88, 6), // Set the desired color here
                         ),
                         floatingLabelBehavior: FloatingLabelBehavior.always,
                         labelText: 'First Name',
@@ -223,6 +239,18 @@ class _RegChildState extends State<RegChild> {
                         fillColor: Colors.white,
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide(
+                            color: Color.fromARGB(255, 6, 88,
+                                6), // Set the focused border color here
+                            width: 2.0, // Set the focused border width here
+                          ),
+                        ),
+                        labelStyle: TextStyle(
+                          color: Color.fromARGB(
+                              255, 6, 88, 6), // Set the desired color here
                         ),
                         floatingLabelBehavior: FloatingLabelBehavior.always,
                         labelText: 'Last Name',
@@ -267,6 +295,18 @@ class _RegChildState extends State<RegChild> {
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
                         ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide(
+                            color: Color.fromARGB(255, 6, 88,
+                                6), // Set the focused border color here
+                            width: 2.0, // Set the focused border width here
+                          ),
+                        ),
+                        labelStyle: TextStyle(
+                          color: Color.fromARGB(
+                              255, 6, 88, 6), // Set the desired color here
+                        ),
                         floatingLabelBehavior: FloatingLabelBehavior.always,
                         labelText: 'Contact Number',
                         hintText: 'Enter Contact Number',
@@ -308,9 +348,21 @@ class _RegChildState extends State<RegChild> {
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
                         ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide(
+                            color: Color.fromARGB(255, 6, 88,
+                                6), // Set the focused border color here
+                            width: 2.0, // Set the focused border width here
+                          ),
+                        ),
+                        labelStyle: TextStyle(
+                          color: Color.fromARGB(
+                              255, 6, 88, 6), // Set the desired color here
+                        ),
                         floatingLabelBehavior: FloatingLabelBehavior.always,
                         labelText: 'Email',
-                        hintText: 'Enter Email',
+                        hintText: widget.email,
                         hintStyle: const TextStyle(
                           fontSize: 12,
                           fontFamily: 'Montserrat',
@@ -351,9 +403,21 @@ class _RegChildState extends State<RegChild> {
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
                         ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide(
+                            color: Color.fromARGB(255, 6, 88,
+                                6), // Set the focused border color here
+                            width: 2.0, // Set the focused border width here
+                          ),
+                        ),
+                        labelStyle: TextStyle(
+                          color: Color.fromARGB(
+                              255, 6, 88, 6), // Set the desired color here
+                        ),
                         floatingLabelBehavior: FloatingLabelBehavior.always,
                         labelText: 'Password',
-                        hintText: 'Enter Password',
+                        hintText: widget.password,
                         hintStyle: const TextStyle(
                           fontSize: 12,
                           fontFamily: 'Montserrat',
@@ -393,6 +457,18 @@ class _RegChildState extends State<RegChild> {
                         fillColor: Colors.white,
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide(
+                            color: Color.fromARGB(255, 6, 88,
+                                6), // Set the focused border color here
+                            width: 2.0, // Set the focused border width here
+                          ),
+                        ),
+                        labelStyle: TextStyle(
+                          color: Color.fromARGB(
+                              255, 6, 88, 6), // Set the desired color here
                         ),
                         floatingLabelBehavior: FloatingLabelBehavior.always,
                         labelText: 'Confirm Password',
@@ -439,6 +515,18 @@ class _RegChildState extends State<RegChild> {
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
                         ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide(
+                            color: Color.fromARGB(255, 6, 88,
+                                6), // Set the focused border color here
+                            width: 2.0, // Set the focused border width here
+                          ),
+                        ),
+                        labelStyle: TextStyle(
+                          color: Color.fromARGB(
+                              255, 6, 88, 6), // Set the desired color here
+                        ),
                         floatingLabelBehavior: FloatingLabelBehavior.always,
                         labelText: 'Date of Birth',
                         suffixIcon: IconButton(
@@ -461,6 +549,18 @@ class _RegChildState extends State<RegChild> {
                         fillColor: Colors.white,
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide(
+                            color: Color.fromARGB(255, 6, 88,
+                                6), // Set the focused border color here
+                            width: 2.0, // Set the focused border width here
+                          ),
+                        ),
+                        labelStyle: TextStyle(
+                          color: Color.fromARGB(
+                              255, 6, 88, 6), // Set the desired color here
                         ),
                         floatingLabelBehavior: FloatingLabelBehavior.always,
                         labelText: 'Complete Address',
@@ -502,6 +602,18 @@ class _RegChildState extends State<RegChild> {
                         fillColor: Colors.white,
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide(
+                            color: Color.fromARGB(255, 6, 88,
+                                6), // Set the focused border color here
+                            width: 2.0, // Set the focused border width here
+                          ),
+                        ),
+                        labelStyle: TextStyle(
+                          color: Color.fromARGB(
+                              255, 6, 88, 6), // Set the desired color here
                         ),
                         floatingLabelBehavior: FloatingLabelBehavior.always,
                         labelText: 'Title/Honorific',
@@ -548,6 +660,18 @@ class _RegChildState extends State<RegChild> {
                         fillColor: Colors.white,
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide(
+                            color: Color.fromARGB(255, 6, 88,
+                                6), // Set the focused border color here
+                            width: 2.0, // Set the focused border width here
+                          ),
+                        ),
+                        labelStyle: TextStyle(
+                          color: Color.fromARGB(
+                              255, 6, 88, 6), // Set the desired color here
                         ),
                         floatingLabelBehavior: FloatingLabelBehavior.always,
                         labelText: 'User Type',
