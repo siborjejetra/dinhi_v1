@@ -243,8 +243,7 @@ class _DeliveryChildState extends State<DeliveryChild> {
                           borderRadius: BorderRadius.circular(20),
                         ))),
                     onPressed: () {
-                      newTransaction['notes'] =
-                          'The rider confirmed to deliver this order.';
+                      newTransaction['notes'] = 'Ready to Ship';
                       db
                           .courierEditTransaction(
                               transDeets, newTransaction, courierDeets)

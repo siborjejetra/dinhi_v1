@@ -144,7 +144,7 @@ class _OrderChildState extends State<OrderChild> {
                 borderRadius: BorderRadius.circular(20),
                 border: Border.all(color: Color.fromARGB(255, 236, 236, 163)),
               ),
-              child: (transDeets['notes'] == 'Is this available?')
+              child: (transDeets['notes'] == 'Order Placed')
                   ? ListTile(
                       leading: Container(
                         width: 60,
@@ -154,7 +154,7 @@ class _OrderChildState extends State<OrderChild> {
                           color: Colors.white,
                         ), //BoxDecoration
                       ),
-                      title: Text(transDeets['notes'],
+                      title: Text('Is this available?',
                           style: TextStyle(
                               fontFamily: "Montserrat",
                               fontWeight: FontWeight.bold,
@@ -169,8 +169,7 @@ class _OrderChildState extends State<OrderChild> {
                             color: Color.fromARGB(255, 171, 195, 47),
                             onPressed: () {
                               setState(() {
-                                text =
-                                    'This is available. Please send the proof of payment. Thank you.';
+                                text = 'Order Confirmed';
                               });
 
                               Map<String, dynamic> newTransaction = {};

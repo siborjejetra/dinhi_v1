@@ -271,8 +271,9 @@ class Database {
       var collectionRef = FirebaseFirestore.instance.collection('transactions');
       var docTransaction = collectionRef.doc(transaction['id']);
 
-      if (newTransaction['notes'] !=
-          'The rider confirmed to deliver this order.') {}
+      if (newTransaction['notes'] != 'Ready to Ship') {
+        // insert logic if courier rejects
+      }
 
       docTransaction.update(newTransaction);
 
@@ -304,7 +305,7 @@ class Database {
         print(url);
       }
       newTransaction['seller_proof'] = url;
-      newTransaction['notes'] = 'Order is ready for pickup.';
+      newTransaction['notes'] = 'Order Processed';
 
       var collectionRef = FirebaseFirestore.instance.collection('transactions');
       var docUser = collectionRef.doc(transaction['id']);
