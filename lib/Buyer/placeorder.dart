@@ -204,6 +204,7 @@ class _PlaceOrderChildState extends State<PlaceOrderChild> {
                           'status': "Pending",
                           'products': seller_products,
                           'total': seller_total,
+                          "notes": "Order Placed",
                         };
                         db.createTransaction(trans).then((value) {
                           db

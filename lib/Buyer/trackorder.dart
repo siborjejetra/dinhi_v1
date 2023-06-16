@@ -21,7 +21,6 @@ class _TrackOrderState extends State<TrackOrder> {
   Map user = {};
   Map<int, String> orderStatus = {
     1: 'Order Placed',
-    2: 'Pending',
     3: 'Order Confirmed',
     4: 'Order Processed',
     5: 'Ready to Ship',
@@ -33,7 +32,7 @@ class _TrackOrderState extends State<TrackOrder> {
     super.initState();
     transactionData = widget.transaction;
     productMap = widget.transaction['products'];
-    currentStatus = widget.transaction['status'];
+    currentStatus = widget.transaction['notes'];
   }
 
   @override

@@ -84,7 +84,7 @@ class Database {
 
       Map<String, dynamic> newTransaction = {
         'buyer_id': transaction['buyer_id'],
-        'notes': "Is this available?",
+        'notes': transaction['notes'],
         'products': transaction['products'],
         'status': transaction['status'],
         'total': transaction['total'],
