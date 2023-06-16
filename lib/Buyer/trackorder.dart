@@ -32,7 +32,7 @@ class _TrackOrderState extends State<TrackOrder> {
   void initState() {
     super.initState();
     transactionData = widget.transaction;
-    productMap = widget.transaction['itemList'];
+    productMap = widget.transaction['products'];
     currentStatus = widget.transaction['status'];
   }
 

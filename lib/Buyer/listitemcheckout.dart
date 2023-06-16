@@ -27,7 +27,6 @@ class _ListItemCheckoutState extends State<ListItemCheckout> {
   @override
   Widget build(BuildContext context) {
     Map cart = widget.cart;
-    print('hello');
     return ListTile(
       onTap: () {},
       leading: Container(

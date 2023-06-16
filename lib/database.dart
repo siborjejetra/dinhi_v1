@@ -108,19 +108,22 @@ class Database {
     return transactionId;
   }
 
-  void addTransactiontoBuyer(
-    String transactionId,
-    String buyerId,
-  ) async {
+  Future<List<String>?> addTransactiontoBuyer(
+      String transactionId, String buyerId) async {
+    List<String>? orderlist;
     try {
-      final docBuyer =
-          FirebaseFirestore.instance.collection("users").doc(buyerId);
+      var collectionRef = FirebaseFirestore.instance.collection('users');
+      final docBuyer = collectionRef.doc(buyerId);
       docBuyer.update({
         "orderlist": FieldValue.arrayUnion([transactionId]),
       });
+      final doc = await collectionRef.doc(buyerId).get();
+      orderlist = (doc.data()!['orderlist']).cast<String>() as List<String>?;
+      return orderlist;
     } catch (e) {
       print(e);
     }
+    return orderlist;
   }
 
   void addTransactiontoSeller(
@@ -475,7 +478,7 @@ class Database {
             "courier_id": doc['courier_id'],
             "courier_proof": doc['courier_proof'],
             "date": doc['date'],
-            "itemList": doc['products'],
+            "products": doc['products'],
             "seller_proof": doc['seller_proof'],
             "status": doc['status'],
             "total": doc['total'],

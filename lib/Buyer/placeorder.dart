@@ -1,3 +1,4 @@
+import 'package:Dinhi_v1/Buyer/home.dart';
 import 'package:Dinhi_v1/Buyer/trackorder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
@@ -43,6 +44,8 @@ class _PlaceOrderChildState extends State<PlaceOrderChild> {
   Map transactionData = {};
   List productMap = [];
   List sellerList = [];
+  Map updatedUserMap = {};
+  Map trans = {};
 
   TextEditingController textController = new TextEditingController();
 
@@ -185,12 +188,14 @@ class _PlaceOrderChildState extends State<PlaceOrderChild> {
                     onPressed: () {
                       for (var seller in sellerList) {
                         List seller_products = [];
+                        double seller_total = 0;
                         for (var product in productMap) {
                           if (seller == product['seller_id']) {
                             seller_products.add(product);
                           }
                         }
-                        final Map trans = {
+                        seller_total = calculateUserTotal(seller_products);
+                        trans = {
                           'buyer_id': user['id'],
                           'buyer_proof': "",
                           'courier_id': "",
@@ -198,20 +203,67 @@ class _PlaceOrderChildState extends State<PlaceOrderChild> {
                           'courier_proof': "",
                           'status': "Pending",
                           'products': seller_products,
-                          'total': transactionData['total'],
+                          'total': seller_total,
                         };
                         db.createTransaction(trans).then((value) {
-                          db.addTransactiontoBuyer(
+                          db
+                              .addTransactiontoBuyer(
                             value,
                             user['id'],
-                          );
+                          )
+                              .then((value) {
+                            print(value);
+
+                            setState(() {
+                              updatedUserMap = {...user};
+                              updatedUserMap['orderlist'] = value;
+                            });
+                          });
                           db.addTransactiontoSeller(value, seller);
                         });
                       }
-                      Get.to(() => TrackOrder(
-                            userMap: user,
-                            transaction: widget.transaction,
-                          ));
+                      if (sellerList.length == 1) {
+                        print(updatedUserMap);
+                        // print(trans);
+                        Get.to(() => TrackOrder(
+                              userMap: updatedUserMap,
+                              transaction: trans,
+                            ));
+                      } else {
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: const Text('View Track Order',
+                                    style: TextStyle(
+                                        fontFamily: "Montserrat",
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.black,
+                                        fontSize: 20)),
+                                content: const Text(
+                                    'Go to Order Log to track your order.',
+                                    style: TextStyle(
+                                        fontFamily: "Montserrat",
+                                        color: Colors.black,
+                                        fontSize: 14)),
+                                actions: [
+                                  TextButton(
+                                      onPressed: () {
+                                        Get.to(HomeBuyerParent(
+                                            userMap: updatedUserMap));
+                                      },
+                                      child: const Text(
+                                        'OK',
+                                        style: TextStyle(
+                                          fontFamily: "Montserrat",
+                                          color:
+                                              Color.fromARGB(255, 111, 174, 23),
+                                        ),
+                                      )),
+                                ],
+                              );
+                            });
+                      }
                     },
                     child: const Text('PLACE ORDER',
                         style: TextStyle(
@@ -246,4 +298,15 @@ List<dynamic> storeSellerId(List products) {
     }
   }
   return storage;
+}
+
+double calculateUserTotal(List products) {
+  double total = 0;
+
+  for (var product in products) {
+    total = total +
+        (num.parse(product['price']) * num.parse(product['buyQuantity']));
+  }
+
+  return total;
 }
