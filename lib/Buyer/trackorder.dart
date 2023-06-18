@@ -41,8 +41,7 @@ class _TrackOrderState extends State<TrackOrder> {
     user = widget.userMap;
     transactionData = widget.transaction;
     bool isOrderConfirmed = currentStatus == 'Order Confirmed';
-    bool isReadytoShip =
-        currentStatus == 'Ready to Ship' || currentStatus == 'Out for Delivery';
+    bool isReadytoShip = currentStatus == 'Ready to Ship';
     bool isOutForDelivery = currentStatus == 'Out for Delivery';
     bool showOrderReceivedButton = isOutForDelivery;
     print(user);
@@ -169,7 +168,7 @@ class _TrackOrderState extends State<TrackOrder> {
                                     shrinkWrap: true,
                                     itemCount: orderStatus.length,
                                     itemBuilder: (context, index) {
-                                      print(orderStatus.length);
+                                      print(index);
                                       int stepNumber = index + 1;
                                       String status = orderStatus[stepNumber]!;
                                       print("status: " + status);
@@ -254,23 +253,49 @@ class _TrackOrderState extends State<TrackOrder> {
                                                               .add_a_photo))
                                                       : null
                                                   : isReadytoShip
-                                                      ? isCurrentStatus
+                                                      ? index == 2
                                                           ? Image.network(
                                                               transactionData[
                                                                   'seller_proof'],
                                                               width: 60,
                                                               height: 60,
                                                             )
-                                                          : null // order processed
-                                                      : isOutForDelivery
-                                                          ? isCurrentStatus
+                                                          : index == 1
                                                               ? Image.network(
                                                                   transactionData[
-                                                                      'courier_proof'],
+                                                                      'buyer_proof'],
                                                                   width: 60,
                                                                   height: 60,
                                                                 )
-                                                              : null // out for delivery
+                                                              : null // order processed
+                                                      : isOutForDelivery
+                                                          ? index == 2
+                                                              ? Image.network(
+                                                                  transactionData[
+                                                                      'seller_proof'],
+                                                                  width: 60,
+                                                                  height: 60,
+                                                                )
+                                                              : index == 4
+                                                                  ? Image
+                                                                      .network(
+                                                                      transactionData[
+                                                                          'courier_proof'],
+                                                                      width: 60,
+                                                                      height:
+                                                                          60,
+                                                                    )
+                                                                  : index == 1
+                                                                      ? Image
+                                                                          .network(
+                                                                          transactionData[
+                                                                              'buyer_proof'],
+                                                                          width:
+                                                                              60,
+                                                                          height:
+                                                                              60,
+                                                                        )
+                                                                      : null
                                                           : null),
                                           if (index < orderStatus.length - 1)
                                             Padding(
