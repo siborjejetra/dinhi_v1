@@ -223,78 +223,77 @@ class _PlaceOrderChildState extends State<PlaceOrderChild> {
                           });
                           db.addTransactiontoSeller(value, sellerList[0]);
                         });
-                        // } else {
-                        //   for (var seller in sellerList) {
-                        //     List seller_products = [];
-                        //     double seller_total = 0;
-                        //     for (var product in productMap) {
-                        //       if (seller == product['seller_id']) {
-                        //         seller_products.add(product);
-                        //       }
-                        //     }
-                        //     seller_total = calculateUserTotal(seller_products);
-                        //     trans = {
-                        //       'buyer_id': user['id'],
-                        //       'buyer_proof': "",
-                        //       'courier_id': "",
-                        //       'seller_id': seller,
-                        //       'courier_proof': "",
-                        //       'status': "Pending",
-                        //       'products': seller_products,
-                        //       'total': seller_total,
-                        //       "notes": "Order Placed",
-                        //     };
-                        //     db.createTransaction(trans).then((value) {
-                        //       db
-                        //           .addTransactiontoBuyer(
-                        //         value,
-                        //         user['id'],
-                        //       )
-                        //           .then((orderlist) {
-                        //         print(orderlist);
+                      } else {
+                        for (var seller in sellerList) {
+                          List seller_products = [];
+                          double seller_total = 0;
+                          for (var product in productMap) {
+                            if (seller == product['seller_id']) {
+                              seller_products.add(product);
+                            }
+                          }
+                          seller_total = calculateUserTotal(seller_products);
+                          trans = {
+                            'buyer_id': user['id'],
+                            'buyer_proof': "",
+                            'courier_id': "",
+                            'seller_id': seller,
+                            'courier_proof': "",
+                            'status': "Pending",
+                            'products': seller_products,
+                            'total': seller_total,
+                            "notes": "Order Placed",
+                          };
+                          db.createTransaction(trans).then((value) {
+                            db
+                                .addTransactiontoBuyer(
+                              value,
+                              user['id'],
+                            )
+                                .then((orderlist) {
+                              print(orderlist);
 
-                        //         setState(() {
-                        //           updatedUserMap = {...user};
-                        //           updatedUserMap['orderlist'] = orderlist;
-                        //         });
-                        //         print(updatedUserMap);
-                        //       });
-                        //       db.addTransactiontoSeller(value, seller);
-                        //     });
-                        //   }
-                        //   showDialog(
-                        //       context: context,
-                        //       builder: (BuildContext context) {
-                        //         return AlertDialog(
-                        //           title: const Text('View Track Order',
-                        //               style: TextStyle(
-                        //                   fontFamily: "Montserrat",
-                        //                   fontWeight: FontWeight.bold,
-                        //                   color: Colors.black,
-                        //                   fontSize: 20)),
-                        //           content: const Text(
-                        //               'Go to Order Log to track your order.',
-                        //               style: TextStyle(
-                        //                   fontFamily: "Montserrat",
-                        //                   color: Colors.black,
-                        //                   fontSize: 14)),
-                        //           actions: [
-                        //             TextButton(
-                        //                 onPressed: () {
-                        //                   Get.to(HomeBuyerParent(
-                        //                       userMap: updatedUserMap));
-                        //                 },
-                        //                 child: const Text(
-                        //                   'OK',
-                        //                   style: TextStyle(
-                        //                     fontFamily: "Montserrat",
-                        //                     color:
-                        //                         Color.fromARGB(255, 111, 174, 23),
-                        //                   ),
-                        //                 )),
-                        //           ],
-                        //         );
-                        //       });
+                              setState(() {
+                                updatedUserMap = {...user};
+                                updatedUserMap['orderlist'] = orderlist;
+                              });
+                              showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      title: const Text('View Track Order',
+                                          style: TextStyle(
+                                              fontFamily: "Montserrat",
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.black,
+                                              fontSize: 20)),
+                                      content: const Text(
+                                          'Go to Order Log to track your order.',
+                                          style: TextStyle(
+                                              fontFamily: "Montserrat",
+                                              color: Colors.black,
+                                              fontSize: 14)),
+                                      actions: [
+                                        TextButton(
+                                            onPressed: () {
+                                              Get.to(HomeBuyerParent(
+                                                  userMap: updatedUserMap));
+                                            },
+                                            child: const Text(
+                                              'OK',
+                                              style: TextStyle(
+                                                fontFamily: "Montserrat",
+                                                color: Color.fromARGB(
+                                                    255, 111, 174, 23),
+                                              ),
+                                            )),
+                                      ],
+                                    );
+                                  });
+                            });
+                            db.addTransactiontoSeller(value, seller);
+                          });
+                        }
                       }
                     },
                     child: const Text('PLACE ORDER',
