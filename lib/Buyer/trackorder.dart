@@ -17,6 +17,7 @@ class TrackOrder extends StatefulWidget {
 class _TrackOrderState extends State<TrackOrder> {
   Map transactionData = {};
   String currentStatus = '';
+  bool isCancelled = false;
   List productMap = [];
   Map user = {};
   Map<int, String> orderStatus = {
@@ -33,6 +34,7 @@ class _TrackOrderState extends State<TrackOrder> {
     transactionData = widget.transaction;
     productMap = widget.transaction['products'];
     currentStatus = widget.transaction['notes'];
+    isCancelled = widget.transaction['status'] == 'Cancelled';
   }
 
   @override
@@ -43,7 +45,7 @@ class _TrackOrderState extends State<TrackOrder> {
     bool isReadytoShip = currentStatus == 'Ready to Ship';
     bool isOutForDelivery = currentStatus == 'Out for Delivery';
     bool showOrderReceivedButton = isOutForDelivery;
-
+    bool isCurrentStatus = false;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color.fromARGB(255, 111, 174, 23),
@@ -165,8 +167,7 @@ class _TrackOrderState extends State<TrackOrder> {
                                       int stepNumber = index + 1;
                                       String status = orderStatus[stepNumber]!;
 
-                                      bool isCurrentStatus =
-                                          status == currentStatus;
+                                      isCurrentStatus = status == currentStatus;
                                       bool isBeforeCurrentStatus = stepNumber <
                                           orderStatus.keys.firstWhere(
                                             (key) =>
@@ -174,21 +175,30 @@ class _TrackOrderState extends State<TrackOrder> {
                                                 currentStatus,
                                             orElse: () => 1,
                                           );
-                                      String stepStatus = isBeforeCurrentStatus
-                                          ? 'Done'
-                                          : 'Pending';
-                                      Color stepNumberColor = isCurrentStatus
-                                          ? Colors.white
-                                          : (isBeforeCurrentStatus
-                                              ? const Color.fromARGB(
-                                                  255, 111, 174, 23)
-                                              : Colors.grey);
-                                      Color stepStatusColor = isCurrentStatus
-                                          ? Colors.white
-                                          : (isBeforeCurrentStatus
-                                              ? const Color.fromARGB(
-                                                  255, 111, 174, 23)
-                                              : Colors.grey);
+                                      String stepStatus =
+                                          isCancelled && index != 0
+                                              ? 'Cancelled'
+                                              : isBeforeCurrentStatus
+                                                  ? 'Done'
+                                                  : 'Pending';
+                                      Color stepNumberColor =
+                                          isCancelled && index != 0
+                                              ? Colors.red
+                                              : isCurrentStatus
+                                                  ? Colors.white
+                                                  : (isBeforeCurrentStatus
+                                                      ? const Color.fromARGB(
+                                                          255, 111, 174, 23)
+                                                      : Colors.grey);
+                                      Color stepStatusColor =
+                                          isCancelled && index != 0
+                                              ? Colors.red
+                                              : isCurrentStatus
+                                                  ? Colors.white
+                                                  : (isBeforeCurrentStatus
+                                                      ? const Color.fromARGB(
+                                                          255, 111, 174, 23)
+                                                      : Colors.grey);
 
                                       return Column(
                                         children: [
@@ -237,31 +247,17 @@ class _TrackOrderState extends State<TrackOrder> {
                                                           : Colors.grey),
                                                 ),
                                               ),
-                                              trailing: isOrderConfirmed
-                                                  ? isCurrentStatus
-                                                      ? IconButton(
-                                                          // order confirmed lang
-                                                          onPressed: () {},
-                                                          icon: const Icon(Icons
-                                                              .add_a_photo))
-                                                      : null
-                                                  : isReadytoShip
-                                                      ? index == 2
-                                                          ? Image.network(
-                                                              transactionData[
-                                                                  'seller_proof'],
-                                                              width: 60,
-                                                              height: 60,
-                                                            )
-                                                          : index == 1
-                                                              ? Image.network(
-                                                                  transactionData[
-                                                                      'buyer_proof'],
-                                                                  width: 60,
-                                                                  height: 60,
-                                                                )
-                                                              : null // order processed
-                                                      : isOutForDelivery
+                                              trailing: isCancelled
+                                                  ? null
+                                                  : isOrderConfirmed
+                                                      ? isCurrentStatus
+                                                          ? IconButton(
+                                                              // order confirmed lang
+                                                              onPressed: () {},
+                                                              icon: const Icon(Icons
+                                                                  .add_a_photo))
+                                                          : null
+                                                      : isReadytoShip
                                                           ? index == 2
                                                               ? Image.network(
                                                                   transactionData[
@@ -269,27 +265,46 @@ class _TrackOrderState extends State<TrackOrder> {
                                                                   width: 60,
                                                                   height: 60,
                                                                 )
-                                                              : index == 4
+                                                              : index == 1
                                                                   ? Image
                                                                       .network(
                                                                       transactionData[
-                                                                          'courier_proof'],
+                                                                          'buyer_proof'],
                                                                       width: 60,
                                                                       height:
                                                                           60,
                                                                     )
-                                                                  : index == 1
+                                                                  : null // order processed
+                                                          : isOutForDelivery
+                                                              ? index == 2
+                                                                  ? Image
+                                                                      .network(
+                                                                      transactionData[
+                                                                          'seller_proof'],
+                                                                      width: 60,
+                                                                      height:
+                                                                          60,
+                                                                    )
+                                                                  : index == 4
                                                                       ? Image
                                                                           .network(
                                                                           transactionData[
-                                                                              'buyer_proof'],
+                                                                              'courier_proof'],
                                                                           width:
                                                                               60,
                                                                           height:
                                                                               60,
                                                                         )
-                                                                      : null
-                                                          : null),
+                                                                      : index ==
+                                                                              1
+                                                                          ? Image
+                                                                              .network(
+                                                                              transactionData['buyer_proof'],
+                                                                              width: 60,
+                                                                              height: 60,
+                                                                            )
+                                                                          : null
+                                                              : null),
                                           if (index < orderStatus.length - 1)
                                             Padding(
                                               padding: const EdgeInsets.only(
@@ -341,7 +356,7 @@ class _TrackOrderState extends State<TrackOrder> {
                 ),
               ),
               SizedBox(height: 10),
-              if (showOrderReceivedButton)
+              if (showOrderReceivedButton && isCurrentStatus)
                 Container(
                   decoration: BoxDecoration(
                     color: const Color.fromARGB(255, 178, 218, 121),
