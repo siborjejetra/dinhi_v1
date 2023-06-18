@@ -33,17 +33,18 @@ class _TrackOrderState extends State<TrackOrder> {
     transactionData = widget.transaction;
     productMap = widget.transaction['products'];
     // currentStatus = widget.transaction['notes'];
-    currentStatus = "Order Processed";
+    currentStatus = "Out for Delivery";
   }
 
   @override
   Widget build(BuildContext context) {
     user = widget.userMap;
     transactionData = widget.transaction;
+    bool isOrderConfirmed = currentStatus == 'Order Confirmed';
+    bool isReadytoShip =
+        currentStatus == 'Ready to Ship' || currentStatus == 'Out for Delivery';
     bool isOutForDelivery = currentStatus == 'Out for Delivery';
     bool showOrderReceivedButton = isOutForDelivery;
-    bool isOrderConfirmed = currentStatus == 'Order Confirmed';
-    bool isOrderProcessed = currentStatus == 'Order Processed';
     print(user);
     print(transactionData);
     print(isOutForDelivery);
@@ -247,14 +248,30 @@ class _TrackOrderState extends State<TrackOrder> {
                                               trailing: isOrderConfirmed
                                                   ? isCurrentStatus
                                                       ? IconButton(
+                                                          // order confirmed lang
                                                           onPressed: () {},
                                                           icon: const Icon(Icons
                                                               .add_a_photo))
                                                       : null
-                                                  : isOrderProcessed &&
-                                                          isOutForDelivery
-                                                      ? Text("asdas")
-                                                      : Text("qweqwe")),
+                                                  : isReadytoShip
+                                                      ? isCurrentStatus
+                                                          ? Image.network(
+                                                              transactionData[
+                                                                  'seller_proof'],
+                                                              width: 60,
+                                                              height: 60,
+                                                            )
+                                                          : null // order processed
+                                                      : isOutForDelivery
+                                                          ? isCurrentStatus
+                                                              ? Image.network(
+                                                                  transactionData[
+                                                                      'courier_proof'],
+                                                                  width: 60,
+                                                                  height: 60,
+                                                                )
+                                                              : null // out for delivery
+                                                          : null),
                                           if (index < orderStatus.length - 1)
                                             Padding(
                                               padding: const EdgeInsets.only(
