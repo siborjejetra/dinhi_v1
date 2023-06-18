@@ -354,21 +354,12 @@ class Database {
       final doc = await collectionRef.doc(transaction['id']).get();
 
       newTransMap = {...transaction};
-      if (newTransaction['status'] == 'Pending') {
-        newTransMap['status'] = newTransaction['status'];
-        newTransMap['notes'] = newTransaction['notes'];
-      } else if (newTransaction['status'] == 'Ongoing') {
-        newTransMap['courier_id'] = newTransaction['courier_id'];
-      }
+
+      newTransMap['status'] = newTransaction['status'];
+      newTransMap['notes'] = newTransaction['notes'];
 
       if (url.isNotEmpty) {
-        if (transaction['buyer_proof'] == null) {
-          newTransMap['buyer_proof'] == url;
-        } else if (transaction['seller_proof'] == null) {
-          newTransMap['seller_proof'] == url;
-        } else if (transaction['courier_proof'] == null) {
-          newTransMap['courier_proof'] == url;
-        }
+        newTransMap['buyer_proof'] == url;
       }
 
       // print(newTransMap);

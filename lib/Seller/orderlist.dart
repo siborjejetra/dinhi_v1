@@ -53,7 +53,22 @@ class _OrderListChildState extends State<OrderListChild> {
     // print(storage);
     return Scaffold(
       backgroundColor: Color.fromARGB(255, 236, 236, 163),
-      appBar: buildAppbar(context, 'Order History', false),
+      appBar: AppBar(
+        backgroundColor: const Color.fromARGB(255, 111, 174, 23),
+        centerTitle: true,
+        title: const Text('Order History'),
+        leading: IconButton(
+          onPressed: () {
+            Get.to(OrderListParent(
+              orderlist: widget.orderlist,
+            ));
+          },
+          icon: const Icon(
+            Icons.arrow_back,
+            color: Colors.white,
+          ),
+        ),
+      ),
       body: SafeArea(
         child: Container(
             child: Column(
@@ -128,7 +143,10 @@ class _OrderListChildState extends State<OrderListChild> {
           if (category == 'Pending') {
             Get.to(OrderParent(transaction: transaction));
           } else if (category == 'Ongoing') {
-            Get.to(OngoingParent(transaction: transaction));
+            Get.to(OngoingParent(
+              transaction: transaction,
+              orderlist: orderList,
+            ));
           }
         },
       ),

@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:Dinhi_v1/Seller/orderlist.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -12,8 +13,12 @@ import '../widgets.dart';
 class RiderListParent extends StatelessWidget {
   final Map transaction;
   final File? seller_proof;
+  final Map sellerDeets;
   const RiderListParent(
-      {Key? key, required this.transaction, required this.seller_proof})
+      {Key? key,
+      required this.transaction,
+      required this.seller_proof,
+      required this.sellerDeets})
       : super(key: key);
 
   @override
@@ -24,6 +29,7 @@ class RiderListParent extends StatelessWidget {
         home: RiderListChild(
           transaction: transaction,
           seller_proof: seller_proof,
+          sellerDeets: sellerDeets,
         ));
   }
 }
@@ -31,8 +37,12 @@ class RiderListParent extends StatelessWidget {
 class RiderListChild extends StatefulWidget {
   final Map transaction;
   final File? seller_proof;
+  final Map sellerDeets;
   const RiderListChild(
-      {Key? key, required this.transaction, required this.seller_proof})
+      {Key? key,
+      required this.transaction,
+      required this.seller_proof,
+      required this.sellerDeets})
       : super(key: key);
 
   @override
@@ -42,9 +52,12 @@ class RiderListChild extends StatefulWidget {
 class _RiderListChildState extends State<RiderListChild> {
   List users = [];
   List riders = [];
+  List<String> orderlist = [];
   Map transaction = {};
+  Map sellerDeets = {};
   File? inputImage;
   int? _selectedOption;
+  var element;
 
   @override
   void initState() {
@@ -60,8 +73,12 @@ class _RiderListChildState extends State<RiderListChild> {
   @override
   Widget build(BuildContext context) {
     transaction = widget.transaction;
+    sellerDeets = widget.sellerDeets;
+    List dynamiclist = sellerDeets['orderlist'];
+    orderlist = dynamiclist.cast<String>();
     riders = storeUserDeets(users);
     inputImage = widget.seller_proof;
+
     // print(riders);
 
     return Scaffold(
@@ -183,6 +200,7 @@ class _RiderListChildState extends State<RiderListChild> {
                 ))),
             onPressed: () {
               Map<String, dynamic> newTransaction = {};
+              newTransaction = {...transaction};
               newTransaction['courier_id'] = riders[_selectedOption!]['id'];
               db
                   .sellerEditTransaction(
@@ -190,6 +208,7 @@ class _RiderListChildState extends State<RiderListChild> {
                   .then((value) {
                 print(value);
                 db.addTransactiontoCourier(value['id'], value['courier_id']);
+                Get.to(OrderListParent(orderlist: orderlist));
               });
             },
             child: const Text(
