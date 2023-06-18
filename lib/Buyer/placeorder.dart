@@ -189,7 +189,7 @@ class _PlaceOrderChildState extends State<PlaceOrderChild> {
                       if (sellerList.length == 1) {
                         List seller_products = [];
                         double seller_total = 0;
-                        seller_products.add(productMap[0]);
+                        seller_products.addAll(productMap);
                         trans = {
                           'buyer_id': user['id'],
                           'buyer_proof': "",
