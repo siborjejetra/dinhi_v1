@@ -21,10 +21,10 @@ class _TrackOrderState extends State<TrackOrder> {
   Map user = {};
   Map<int, String> orderStatus = {
     1: 'Order Placed',
-    3: 'Order Confirmed',
-    4: 'Order Processed',
-    5: 'Ready to Ship',
-    6: 'Out for Delivery',
+    2: 'Order Confirmed',
+    3: 'Order Processed',
+    4: 'Ready to Ship',
+    5: 'Out for Delivery',
   };
 
   @override
@@ -32,7 +32,8 @@ class _TrackOrderState extends State<TrackOrder> {
     super.initState();
     transactionData = widget.transaction;
     productMap = widget.transaction['products'];
-    currentStatus = widget.transaction['notes'];
+    // currentStatus = widget.transaction['notes'];
+    currentStatus = "Order Processed";
   }
 
   @override
@@ -41,6 +42,13 @@ class _TrackOrderState extends State<TrackOrder> {
     transactionData = widget.transaction;
     bool isOutForDelivery = currentStatus == 'Out for Delivery';
     bool showOrderReceivedButton = isOutForDelivery;
+    bool isOrderConfirmed = currentStatus == 'Order Confirmed';
+    bool isOrderProcessed = currentStatus == 'Order Processed';
+    print(user);
+    print(transactionData);
+    print(isOutForDelivery);
+    print(currentStatus);
+    print(showOrderReceivedButton);
 
     return Scaffold(
       appBar: AppBar(
@@ -160,8 +168,10 @@ class _TrackOrderState extends State<TrackOrder> {
                                     shrinkWrap: true,
                                     itemCount: orderStatus.length,
                                     itemBuilder: (context, index) {
+                                      print(orderStatus.length);
                                       int stepNumber = index + 1;
                                       String status = orderStatus[stepNumber]!;
+                                      print("status: " + status);
                                       bool isCurrentStatus =
                                           status == currentStatus;
                                       bool isBeforeCurrentStatus = stepNumber <
@@ -190,48 +200,61 @@ class _TrackOrderState extends State<TrackOrder> {
                                       return Column(
                                         children: [
                                           ListTile(
-                                            leading: Container(
-                                              width: 24,
-                                              height: 24,
-                                              decoration: BoxDecoration(
-                                                shape: BoxShape.circle,
-                                                color: stepNumberColor,
-                                              ),
-                                              child: Center(
-                                                child: Text(
-                                                  stepNumber.toString(),
-                                                  style: TextStyle(
-                                                    fontWeight: FontWeight.bold,
-                                                    color: isCurrentStatus
-                                                        ? const Color.fromARGB(
-                                                            255, 111, 174, 23)
-                                                        : Colors.white,
+                                              leading: Container(
+                                                width: 24,
+                                                height: 24,
+                                                decoration: BoxDecoration(
+                                                  shape: BoxShape.circle,
+                                                  color: stepNumberColor,
+                                                ),
+                                                child: Center(
+                                                  child: Text(
+                                                    stepNumber.toString(),
+                                                    style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      color: isCurrentStatus
+                                                          ? const Color
+                                                                  .fromARGB(
+                                                              255, 111, 174, 23)
+                                                          : Colors.white,
+                                                    ),
                                                   ),
                                                 ),
                                               ),
-                                            ),
-                                            title: Text(
-                                              status,
-                                              style: TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                color: stepStatusColor,
+                                              title: Text(
+                                                status,
+                                                style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  color: stepStatusColor,
+                                                ),
                                               ),
-                                            ),
-                                            subtitle: Text(
-                                              isCurrentStatus
-                                                  ? 'Current Status'
-                                                  : stepStatus,
-                                              style: TextStyle(
-                                                fontStyle: FontStyle.italic,
-                                                color: isCurrentStatus
-                                                    ? Colors.white
-                                                    : (isBeforeCurrentStatus
-                                                        ? const Color.fromARGB(
-                                                            255, 111, 174, 23)
-                                                        : Colors.grey),
+                                              subtitle: Text(
+                                                isCurrentStatus
+                                                    ? 'Current Status'
+                                                    : stepStatus,
+                                                style: TextStyle(
+                                                  fontStyle: FontStyle.italic,
+                                                  color: isCurrentStatus
+                                                      ? Colors.white
+                                                      : (isBeforeCurrentStatus
+                                                          ? const Color
+                                                                  .fromARGB(
+                                                              255, 111, 174, 23)
+                                                          : Colors.grey),
+                                                ),
                                               ),
-                                            ),
-                                          ),
+                                              trailing: isOrderConfirmed
+                                                  ? isCurrentStatus
+                                                      ? IconButton(
+                                                          onPressed: () {},
+                                                          icon: const Icon(Icons
+                                                              .add_a_photo))
+                                                      : null
+                                                  : isOrderProcessed &&
+                                                          isOutForDelivery
+                                                      ? Text("asdas")
+                                                      : Text("qweqwe")),
                                           if (index < orderStatus.length - 1)
                                             Padding(
                                               padding: const EdgeInsets.only(

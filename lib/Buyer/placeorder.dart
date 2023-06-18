@@ -212,14 +212,17 @@ class _PlaceOrderChildState extends State<PlaceOrderChild> {
                               updatedUserMap = {...user};
                               updatedUserMap['orderlist'] = orderlist;
                             });
+                            print("trans");
+                            print(trans);
+                            print("userMap");
                             print(updatedUserMap);
+                            Get.to(() => TrackOrder(
+                                  userMap: updatedUserMap,
+                                  transaction: trans,
+                                ));
                           });
                           db.addTransactiontoSeller(value, sellerList[0]);
                         });
-                        // Get.to(() => TrackOrder(
-                        //       userMap: updatedUserMap,
-                        //       transaction: trans,
-                        //     ));
                         // } else {
                         //   for (var seller in sellerList) {
                         //     List seller_products = [];
