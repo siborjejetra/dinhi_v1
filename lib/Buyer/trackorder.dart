@@ -32,8 +32,7 @@ class _TrackOrderState extends State<TrackOrder> {
     super.initState();
     transactionData = widget.transaction;
     productMap = widget.transaction['products'];
-    // currentStatus = widget.transaction['notes'];
-    currentStatus = "Out for Delivery";
+    currentStatus = widget.transaction['notes'];
   }
 
   @override
@@ -44,11 +43,6 @@ class _TrackOrderState extends State<TrackOrder> {
     bool isReadytoShip = currentStatus == 'Ready to Ship';
     bool isOutForDelivery = currentStatus == 'Out for Delivery';
     bool showOrderReceivedButton = isOutForDelivery;
-    print(user);
-    print(transactionData);
-    print(isOutForDelivery);
-    print(currentStatus);
-    print(showOrderReceivedButton);
 
     return Scaffold(
       appBar: AppBar(
@@ -168,10 +162,9 @@ class _TrackOrderState extends State<TrackOrder> {
                                     shrinkWrap: true,
                                     itemCount: orderStatus.length,
                                     itemBuilder: (context, index) {
-                                      print(index);
                                       int stepNumber = index + 1;
                                       String status = orderStatus[stepNumber]!;
-                                      print("status: " + status);
+
                                       bool isCurrentStatus =
                                           status == currentStatus;
                                       bool isBeforeCurrentStatus = stepNumber <
