@@ -263,6 +263,35 @@ class Database {
     return newTransMap;
   }
 
+  Future<void> buyerEditTransaction(
+      Map<dynamic, dynamic> transaction, File? inputImage) async {
+    Map<String, dynamic> newTransMap = {};
+    String url = '';
+    try {
+      if (inputImage != null) {
+        final ref = FirebaseStorage.instance
+            .ref()
+            .child('transactionImages')
+            .child('${DateTime.now()}');
+
+        // var inputImage;
+        await ref.putFile(File(inputImage.path));
+
+        url = await ref.getDownloadURL();
+        print(url);
+      }
+      newTransMap['buyer_proof'] = url;
+      newTransMap['status'] = 'Ongoing';
+
+      var collectionRef = FirebaseFirestore.instance.collection('transactions');
+      var docUser = collectionRef.doc(transaction['id']);
+
+      docUser.update(newTransMap);
+    } catch (e) {
+      print(e);
+    }
+  }
+
   Future<Map> courierEditTransaction(Map<dynamic, dynamic> transaction,
       Map<String, dynamic> newTransaction, Map courierDeets) async {
     Map newTransMap = {};
@@ -271,20 +300,17 @@ class Database {
       var collectionRef = FirebaseFirestore.instance.collection('transactions');
       var docTransaction = collectionRef.doc(transaction['id']);
 
-      if (newTransaction['notes'] != 'Ready to Ship') {
+      if (newTransaction['notes'] != 'Out for Delivery') {
         // insert logic if courier rejects
       }
 
       docTransaction.update(newTransaction);
 
-      newTransMap = {...transaction};
-      newTransMap['notes'] = newTransaction['notes'];
-
-      return (newTransMap);
+      return (courierDeets);
     } catch (e) {
       print(e);
     }
-    return (newTransMap);
+    return (courierDeets);
   }
 
   Future<Map> sellerEditTransaction(Map<dynamic, dynamic> transaction,
@@ -355,7 +381,6 @@ class Database {
 
       newTransMap = {...transaction};
 
-      newTransMap['status'] = newTransaction['status'];
       newTransMap['notes'] = newTransaction['notes'];
 
       if (url.isNotEmpty) {

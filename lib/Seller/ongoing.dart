@@ -237,13 +237,16 @@ class _OrderChildState extends State<OrderChild> {
                             color: Colors.white,
                             fontSize: 14)),
                     trailing: InkWell(
-                      child: inputImage != null
+                      child: inputImage != null &&
+                              transDeets['seller_proof'] == null
                           ? Image.file(
                               inputImage!,
                               width: 60,
                               height: 60,
                             )
-                          : transDeets['notes'] != 'Order Processed'
+                          : transDeets['notes'] != 'Order Processed' &&
+                                  transDeets['notes'] != 'Ready to Ship' &&
+                                  transDeets['notes'] != 'Out for Delivery'
                               ? Icon(
                                   IconData(0xe048, fontFamily: 'MaterialIcons'),
                                   color: Colors.white,
@@ -263,7 +266,9 @@ class _OrderChildState extends State<OrderChild> {
             )
           ]),
         ),
-        bottomNavigationBar: transDeets['notes'] != 'Order Processed'
+        bottomNavigationBar: transDeets['notes'] != 'Order Processed' &&
+                transDeets['notes'] != 'Ready to Ship' &&
+                transDeets['notes'] != 'Out for Delivery'
             ? ElevatedButton(
                 style: ButtonStyle(
                     backgroundColor: MaterialStateProperty.all(
@@ -328,74 +333,123 @@ class _OrderChildState extends State<OrderChild> {
                       color: Colors.white),
                 ),
               )
-            : Container(
-                decoration: BoxDecoration(
-                  color: Color.fromARGB(255, 6, 88, 6),
-                  borderRadius: BorderRadius.circular(20),
-                  border: Border.all(color: Color.fromARGB(255, 236, 236, 163)),
-                ),
-                child: ListTile(
-                    leading: Container(
-                      width: 60,
-                      height: 60,
-                      child: Icon(
-                        IconData(0xf0555, fontFamily: 'MaterialIcons'),
-                        color: Colors.white,
-                      ), //BoxDecoration
+            : transDeets['notes'] != 'Ready to Ship' &&
+                    transDeets['notes'] != 'Out for Delivery'
+                ? Container(
+                    decoration: BoxDecoration(
+                      color: Color.fromARGB(255, 6, 88, 6),
+                      borderRadius: BorderRadius.circular(20),
+                      border:
+                          Border.all(color: Color.fromARGB(255, 236, 236, 163)),
                     ),
-                    title: Text('Ready to ship?',
-                        style: TextStyle(
-                            fontFamily: "Montserrat",
-                            fontWeight: FontWeight.bold,
+                    child: ListTile(
+                        leading: Container(
+                          width: 60,
+                          height: 60,
+                          child: Icon(
+                            IconData(0xf0555, fontFamily: 'MaterialIcons'),
                             color: Colors.white,
-                            fontSize: 14)),
-                    trailing: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        IconButton(
-                          icon: Icon(Icons.check),
-                          color: Color.fromARGB(255, 171, 195, 47),
-                          onPressed: () {
-                            setState(() {
-                              text = 'Ready to Ship';
-                            });
-
-                            Map<String, dynamic> newTransaction = {};
-                            newTransaction['notes'] = text;
-                            newTransaction['status'] = 'Pending';
-
-                            db
-                                .editTransaction(
-                                    transDeets, newTransaction, null)
-                                .then((value) {
-                              Get.back();
-                            });
-                          },
+                          ), //BoxDecoration
                         ),
-                        IconButton(
-                          icon: Icon(Icons.close),
-                          color: Colors.red,
-                          onPressed: () {
-                            setState(() {
-                              text = 'Incomplete';
-                            });
+                        title: Text('Ready to ship?',
+                            style: TextStyle(
+                                fontFamily: "Montserrat",
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                                fontSize: 14)),
+                        trailing: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            IconButton(
+                              icon: Icon(Icons.check),
+                              color: Color.fromARGB(255, 171, 195, 47),
+                              onPressed: () {
+                                setState(() {
+                                  text = 'Ready to Ship';
+                                });
 
-                            Map<String, dynamic> newTransaction = {};
-                            newTransaction['notes'] = text;
-                            newTransaction['status'] = 'Incomplete';
+                                Map<String, dynamic> newTransaction = {};
+                                newTransaction['notes'] = text;
 
-                            db
-                                .editTransaction(
-                                    transDeets, newTransaction, null)
-                                .then((value) {
-                              Get.back();
-                            });
-                          },
+                                db
+                                    .editTransaction(
+                                        transDeets, newTransaction, null)
+                                    .then((value) {
+                                  Get.back();
+                                });
+                              },
+                            ),
+                            IconButton(
+                              icon: Icon(Icons.close),
+                              color: Colors.red,
+                              onPressed: () {
+                                setState(() {
+                                  text = 'Incomplete';
+                                });
+
+                                Map<String, dynamic> newTransaction = {};
+                                newTransaction['notes'] = text;
+                                newTransaction['status'] = 'Incomplete';
+
+                                db
+                                    .editTransaction(
+                                        transDeets, newTransaction, null)
+                                    .then((value) {
+                                  Get.back();
+                                });
+                              },
+                            ),
+                          ],
+                        )),
+                  )
+                : transDeets['notes'] != 'Out for Delivery'
+                    ? Container(
+                        decoration: BoxDecoration(
+                          color: Color.fromARGB(255, 6, 88, 6),
+                          borderRadius: BorderRadius.circular(20),
+                          border: Border.all(
+                              color: Color.fromARGB(255, 236, 236, 163)),
                         ),
-                      ],
-                    )),
-              ));
+                        child: ListTile(
+                          leading: Container(
+                            width: 60,
+                            height: 60,
+                            child: Icon(
+                              IconData(0xe3e0, fontFamily: 'MaterialIcons'),
+                              color: Colors.white,
+                            ), //BoxDecoration
+                          ),
+                          title: Text('Waiting for courier..',
+                              style: TextStyle(
+                                  fontFamily: "Montserrat",
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                  fontSize: 14)),
+                        ))
+                    : Container(
+                        decoration: BoxDecoration(
+                          color: Color.fromARGB(255, 6, 88, 6),
+                          borderRadius: BorderRadius.circular(20),
+                          border: Border.all(
+                              color: Color.fromARGB(255, 236, 236, 163)),
+                        ),
+                        child: ListTile(
+                          leading: Container(
+                            width: 60,
+                            height: 60,
+                            child: Icon(
+                              IconData(0xe3e0, fontFamily: 'MaterialIcons'),
+                              color: Colors.white,
+                            ), //BoxDecoration
+                          ),
+                          title: Text('Waiting for buyer to receive order..',
+                              style: TextStyle(
+                                  fontFamily: "Montserrat",
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                  fontSize: 14)),
+                        )));
   }
 
   Future pickImage(ImageSource source) async {

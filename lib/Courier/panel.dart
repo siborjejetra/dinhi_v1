@@ -16,7 +16,7 @@ import '../widgets.dart';
 LocalStorage localStorage = new LocalStorage('user');
 
 var cardTextStyle = const TextStyle(
-    fontFamily: 'Montserrat', fontSize: 14, color: Colors.white);
+    fontFamily: 'Montserrat', fontSize: 12, color: Colors.white);
 
 var buttonStyle = ButtonStyle(
     backgroundColor: MaterialStateProperty.all(Color.fromARGB(255, 9, 117, 8)));

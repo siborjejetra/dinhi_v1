@@ -127,80 +127,77 @@ class _ProductChildState extends State<ProductChild> {
                   ),
                 ),
                 const SizedBox(height: 20),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    ElevatedButton(
-                      style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all(
-                              Color.fromARGB(255, 111, 174, 23)),
-                          padding: MaterialStateProperty.all(
-                              EdgeInsets.symmetric(horizontal: 50)),
-                          shape:
-                              MaterialStateProperty.all<RoundedRectangleBorder>(
-                                  RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20),
-                          ))),
-                      onPressed: () {
-                        db
-                            .createProduct(
-                                localStorage.getItem('userID'),
-                                inputImage,
-                                nameController.text,
-                                priceController.text,
-                                quantityController.text,
-                                unitController.text,
-                                "0",
-                                descriptionController.text,
-                                Timestamp.fromDate(DateTime.now()),
-                                userDetails)
-                            .then((cloneMap) {
-                          print('Here');
-                          print(cloneMap);
-                          Get.to(HomeSellerParent(userMap: cloneMap));
-                        });
-                        // Timestamp.fromDate(DateTime.parse(expDateController.text))
-                      },
-                      child: const Text(
-                        'SAVE',
-                        style: TextStyle(
-                            fontSize: 14,
-                            fontFamily: 'Montserrat',
-                            letterSpacing: 2.2,
-                            color: Colors.white),
-                      ),
-                    ),
-                    OutlinedButton(
-                        style: ButtonStyle(
-                            backgroundColor:
-                                MaterialStateProperty.all(Colors.white),
-                            padding: MaterialStateProperty.all(
-                                EdgeInsets.symmetric(horizontal: 50)),
-                            elevation: MaterialStateProperty.all(2),
-                            shape: MaterialStateProperty.all<
-                                RoundedRectangleBorder>(RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20),
-                            ))),
-                        onPressed: () {
-                          Get.back();
-                        },
-                        child: const Text(
-                          'CANCEL',
-                          style: TextStyle(
-                              fontSize: 14,
-                              fontFamily: 'Montserrat',
-                              letterSpacing: 2.2,
-                              color: Color.fromARGB(255, 111, 174, 23)),
-                        ))
-                  ],
-                )
               ],
             ),
           ),
         ),
       ),
+      bottomNavigationBar: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: <Widget>[
+          ElevatedButton(
+            style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all(
+                    Color.fromARGB(255, 111, 174, 23)),
+                padding: MaterialStateProperty.all(
+                    EdgeInsets.symmetric(horizontal: 50)),
+                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                    RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20),
+                ))),
+            onPressed: () {
+              db
+                  .createProduct(
+                      localStorage.getItem('userID'),
+                      inputImage,
+                      nameController.text,
+                      priceController.text,
+                      quantityController.text,
+                      unitController.text,
+                      "0",
+                      descriptionController.text,
+                      Timestamp.fromDate(DateTime.now()),
+                      userDetails)
+                  .then((cloneMap) {
+                print('Here');
+                print(cloneMap);
+                Get.to(HomeSellerParent(userMap: cloneMap));
+              });
+              // Timestamp.fromDate(DateTime.parse(expDateController.text))
+            },
+            child: const Text(
+              'SAVE',
+              style: TextStyle(
+                  fontSize: 14,
+                  fontFamily: 'Montserrat',
+                  letterSpacing: 2.2,
+                  color: Colors.white),
+            ),
+          ),
+          OutlinedButton(
+              style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all(Colors.white),
+                  padding: MaterialStateProperty.all(
+                      EdgeInsets.symmetric(horizontal: 50)),
+                  elevation: MaterialStateProperty.all(2),
+                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                      RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20),
+                  ))),
+              onPressed: () {
+                Get.back();
+              },
+              child: const Text(
+                'CANCEL',
+                style: TextStyle(
+                    fontSize: 14,
+                    fontFamily: 'Montserrat',
+                    letterSpacing: 2.2,
+                    color: Color.fromARGB(255, 111, 174, 23)),
+              ))
+        ],
+      ),
     );
-    ;
   }
 
   Widget buildTextField(String label, TextEditingController controller) {

@@ -1,8 +1,13 @@
+import 'dart:io';
+
 import 'package:Dinhi_v1/Buyer/home.dart';
 import 'package:Dinhi_v1/Buyer/listitemcheckout.dart';
 import 'package:Dinhi_v1/Buyer/placeorder.dart';
+import 'package:Dinhi_v1/utils/user_preference.dart';
+import 'package:Dinhi_v1/zoomphoto.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 
 class TrackOrder extends StatefulWidget {
   final Map userMap;
@@ -20,6 +25,8 @@ class _TrackOrderState extends State<TrackOrder> {
   bool isCancelled = false;
   List productMap = [];
   Map user = {};
+
+  File? inputImage;
   Map<int, String> orderStatus = {
     1: 'Order Placed',
     2: 'Order Confirmed',
@@ -251,57 +258,154 @@ class _TrackOrderState extends State<TrackOrder> {
                                                   ? null
                                                   : isOrderConfirmed
                                                       ? isCurrentStatus
-                                                          ? IconButton(
-                                                              // order confirmed lang
-                                                              onPressed: () {},
-                                                              icon: const Icon(Icons
-                                                                  .add_a_photo))
-                                                          : null
-                                                      : isReadytoShip
-                                                          ? index == 2
-                                                              ? Image.network(
-                                                                  transactionData[
-                                                                      'seller_proof'],
-                                                                  width: 60,
-                                                                  height: 60,
-                                                                )
-                                                              : index == 1
-                                                                  ? Image
-                                                                      .network(
-                                                                      transactionData[
-                                                                          'buyer_proof'],
+                                                          ? InkWell(
+                                                              child: inputImage !=
+                                                                      null
+                                                                  ? Image.file(
+                                                                      inputImage!,
                                                                       width: 60,
                                                                       height:
                                                                           60,
                                                                     )
-                                                                  : null // order processed
-                                                          : isOutForDelivery
-                                                              ? index == 2
-                                                                  ? Image
-                                                                      .network(
-                                                                      transactionData[
-                                                                          'seller_proof'],
-                                                                      width: 60,
-                                                                      height:
-                                                                          60,
-                                                                    )
-                                                                  : index == 4
-                                                                      ? Image
+                                                                  : transactionData[
+                                                                              'buyer_proof'] ==
+                                                                          null
+                                                                      ? Icon(
+                                                                          IconData(
+                                                                              0xe048,
+                                                                              fontFamily: 'MaterialIcons'),
+                                                                          color:
+                                                                              Colors.white,
+                                                                        )
+                                                                      : Image
                                                                           .network(
                                                                           transactionData[
-                                                                              'courier_proof'],
+                                                                              'buyer_proof'],
                                                                           width:
                                                                               60,
                                                                           height:
                                                                               60,
+                                                                        ),
+                                                              onTap: () {
+                                                                pickImage(
+                                                                    ImageSource
+                                                                        .gallery);
+                                                                // print(inputImage ?);
+                                                                Map newTrans =
+                                                                    {};
+
+                                                                db.buyerEditTransaction(
+                                                                    transactionData,
+                                                                    inputImage);
+                                                              },
+                                                            )
+                                                          : null
+                                                      : isReadytoShip
+                                                          ? index == 2
+                                                              ? InkWell(
+                                                                  onTap: () {
+                                                                    Navigator
+                                                                        .push(
+                                                                      context,
+                                                                      MaterialPageRoute(
+                                                                        builder:
+                                                                            (context) =>
+                                                                                ZoomablePhotoView(imageUrl: transactionData['seller_proof']),
+                                                                      ),
+                                                                    );
+                                                                  },
+                                                                  child: Image
+                                                                      .network(
+                                                                    transactionData[
+                                                                        'seller_proof'],
+                                                                    width: 60,
+                                                                    height: 60,
+                                                                  ),
+                                                                )
+                                                              : index == 1
+                                                                  ? InkWell(
+                                                                      onTap:
+                                                                          () {
+                                                                        Navigator
+                                                                            .push(
+                                                                          context,
+                                                                          MaterialPageRoute(
+                                                                            builder: (context) =>
+                                                                                ZoomablePhotoView(imageUrl: transactionData['buyer_proof']),
+                                                                          ),
+                                                                        );
+                                                                      },
+                                                                      child: Image
+                                                                          .network(
+                                                                        transactionData[
+                                                                            'buyer_proof'],
+                                                                        width:
+                                                                            60,
+                                                                        height:
+                                                                            60,
+                                                                      ),
+                                                                    )
+                                                                  : null // order processed
+                                                          : isOutForDelivery
+                                                              ? index == 2
+                                                                  ? InkWell(
+                                                                      onTap:
+                                                                          () {
+                                                                        Navigator
+                                                                            .push(
+                                                                          context,
+                                                                          MaterialPageRoute(
+                                                                            builder: (context) =>
+                                                                                ZoomablePhotoView(imageUrl: transactionData['seller_proof']),
+                                                                          ),
+                                                                        );
+                                                                      },
+                                                                      child: Image
+                                                                          .network(
+                                                                        transactionData[
+                                                                            'seller_proof'],
+                                                                        width:
+                                                                            60,
+                                                                        height:
+                                                                            60,
+                                                                      ),
+                                                                    )
+                                                                  : index == 4
+                                                                      ? InkWell(
+                                                                          onTap:
+                                                                              () {
+                                                                            Navigator.push(
+                                                                              context,
+                                                                              MaterialPageRoute(
+                                                                                builder: (context) => ZoomablePhotoView(imageUrl: transactionData['courier_proof']),
+                                                                              ),
+                                                                            );
+                                                                          },
+                                                                          child:
+                                                                              Image.network(
+                                                                            transactionData['courier_proof'],
+                                                                            width:
+                                                                                60,
+                                                                            height:
+                                                                                60,
+                                                                          ),
                                                                         )
                                                                       : index ==
                                                                               1
-                                                                          ? Image
-                                                                              .network(
-                                                                              transactionData['buyer_proof'],
-                                                                              width: 60,
-                                                                              height: 60,
+                                                                          ? InkWell(
+                                                                              onTap: () {
+                                                                                Navigator.push(
+                                                                                  context,
+                                                                                  MaterialPageRoute(
+                                                                                    builder: (context) => ZoomablePhotoView(imageUrl: transactionData['buyer_proof']),
+                                                                                  ),
+                                                                                );
+                                                                              },
+                                                                              child: Image.network(
+                                                                                transactionData['buyer_proof'],
+                                                                                width: 60,
+                                                                                height: 60,
+                                                                              ),
                                                                             )
                                                                           : null
                                                               : null),
@@ -389,5 +493,19 @@ class _TrackOrderState extends State<TrackOrder> {
         ),
       ),
     );
+  }
+
+  Future pickImage(ImageSource source) async {
+    try {
+      XFile? pickedImage = await ImagePicker().pickImage(source: source);
+      if (pickedImage != null) {
+        setState(() {
+          inputImage = File(pickedImage.path);
+        });
+      } else
+        return;
+    } catch (e) {
+      // showFailedToChooseDialog(context);
+    }
   }
 }

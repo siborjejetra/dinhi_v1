@@ -1,3 +1,4 @@
+import 'package:Dinhi_v1/Seller/completed.dart';
 import 'package:Dinhi_v1/Seller/pending.dart';
 import 'package:Dinhi_v1/widgets.dart';
 import 'package:flutter/cupertino.dart';
@@ -53,22 +54,7 @@ class _OrderListChildState extends State<OrderListChild> {
     // print(storage);
     return Scaffold(
       backgroundColor: Color.fromARGB(255, 236, 236, 163),
-      appBar: AppBar(
-        backgroundColor: const Color.fromARGB(255, 111, 174, 23),
-        centerTitle: true,
-        title: const Text('Order History'),
-        leading: IconButton(
-          onPressed: () {
-            Get.to(OrderListParent(
-              orderlist: widget.orderlist,
-            ));
-          },
-          icon: const Icon(
-            Icons.arrow_back,
-            color: Colors.white,
-          ),
-        ),
-      ),
+      appBar: buildAppbar(context, 'Order History', false),
       body: SafeArea(
         child: Container(
             child: Column(
@@ -147,6 +133,9 @@ class _OrderListChildState extends State<OrderListChild> {
               transaction: transaction,
               orderlist: orderList,
             ));
+          } else {
+            Get.to(CompletedParent(
+                transaction: transaction, orderlist: orderList));
           }
         },
       ),

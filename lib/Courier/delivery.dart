@@ -121,7 +121,7 @@ class _DeliveryChildState extends State<DeliveryChild> {
               ),
               child: ListView.builder(
                 primary: false,
-                itemCount: transDeets['itemList'].length,
+                itemCount: transDeets['products'].length,
                 itemBuilder: (context, index) {
                   print(transDeets['total']);
                   return Padding(
@@ -133,7 +133,7 @@ class _DeliveryChildState extends State<DeliveryChild> {
                         border: Border.all(color: Colors.grey),
                       ),
                       child: ListItem(
-                        cart: transDeets['itemList'][index],
+                        cart: transDeets['products'][index],
                         totalCart: transDeets['total'],
                       ),
                     ),
@@ -227,7 +227,7 @@ class _DeliveryChildState extends State<DeliveryChild> {
             ],
           ),
         ])),
-        bottomNavigationBar: text.isEmpty
+        bottomNavigationBar: transDeets['notes'] != "Out for Delivery"
             ? Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
@@ -243,13 +243,14 @@ class _DeliveryChildState extends State<DeliveryChild> {
                           borderRadius: BorderRadius.circular(20),
                         ))),
                     onPressed: () {
-                      newTransaction['notes'] = 'Ready to Ship';
+                      newTransaction['notes'] = 'Out for Delivery';
                       db
                           .courierEditTransaction(
                               transDeets, newTransaction, courierDeets)
                           .then((value) {
+                        List<dynamic> deliveryList = value['deliverylist'];
                         Get.to(DeliveryListParent(
-                            deliverylist: value['deliverylist']));
+                            deliverylist: deliveryList.cast<String>()));
                       });
                     },
                     child: const Text(
@@ -298,99 +299,216 @@ class _DeliveryChildState extends State<DeliveryChild> {
                 decoration: BoxDecoration(
                   color: Color.fromARGB(255, 111, 174, 23),
                 ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    Text(
-                      'PROOF OF DELIVERY',
-                      style: TextStyle(
-                          fontFamily: "Montserrat",
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                          fontSize: 14),
-                    ),
-                    InkWell(
-                      child: inputImage != null
-                          ? Image.file(
-                              inputImage!,
-                              width: 60,
-                              height: 60,
-                            )
-                          : Icon(
-                              IconData(0xe048, fontFamily: 'MaterialIcons'),
-                              color: Colors.white,
-                            ),
-                      onTap: () {
-                        pickImage(ImageSource.gallery);
-                      },
-                    ),
-                    ElevatedButton(
-                      style: ButtonStyle(
-                          backgroundColor:
-                              MaterialStateProperty.all(Colors.white),
-                          padding: MaterialStateProperty.all(
-                              EdgeInsets.symmetric(horizontal: 50)),
-                          shape:
-                              MaterialStateProperty.all<RoundedRectangleBorder>(
-                                  RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20),
-                          ))),
-                      onPressed: () {
-                        if (inputImage != null) {
-                          Map<String, dynamic> newTransaction = {};
-                          newTransaction = {...transDeets};
-                          newTransaction['status'] = 'Completed';
-                          db
-                              .addCourierProofTransaction(
-                                  transDeets, newTransaction, inputImage)
-                              .then((value) => DeliveryListParent(
-                                  deliverylist: userDeets['deliverylist']));
-                        } else {
-                          // Show dialogue saying "Please provide seller proof"
-                          showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return AlertDialog(
-                                  title: const Text('No uploaded image',
-                                      style: TextStyle(
-                                          fontFamily: "Montserrat",
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.black,
-                                          fontSize: 20)),
-                                  content: const Text(
-                                      'Please provide seller proof before you proceed.',
-                                      style: TextStyle(
-                                          fontFamily: "Montserrat",
-                                          color: Colors.black,
-                                          fontSize: 14)),
-                                  actions: [
-                                    TextButton(
-                                        onPressed: () {
-                                          Navigator.of(context).pop();
-                                        },
-                                        child: const Text(
-                                          'OK',
-                                          style: TextStyle(
-                                            fontFamily: "Montserrat",
-                                            color: Color.fromARGB(
-                                                255, 111, 174, 23),
-                                          ),
-                                        )),
-                                  ],
-                                );
-                              });
-                        }
-                      },
-                      child: const Text('PRODUCT DELIVERED',
+                child: ListTile(
+                  title: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text('Proof of Delivery',
                           style: TextStyle(
                               fontFamily: "Montserrat",
                               fontWeight: FontWeight.bold,
-                              color: Color.fromARGB(255, 9, 117, 8),
-                              letterSpacing: 2.2,
-                              fontSize: 12)),
+                              color: Colors.white,
+                              fontSize: 16)),
+                      InkWell(
+                        child: inputImage != null
+                            ? Image.file(
+                                inputImage!,
+                                width: 60,
+                                height: 60,
+                              )
+                            : Icon(
+                                IconData(0xe048, fontFamily: 'MaterialIcons'),
+                                color: Colors.white,
+                              ),
+                        onTap: () {
+                          pickImage(ImageSource.gallery);
+                        },
+                      ),
+                    ],
+                  ),
+                  trailing: OutlinedButton(
+                    onPressed: () {
+                      if (inputImage != null) {
+                        Map<String, dynamic> newTransaction = {};
+                        newTransaction = {...transDeets};
+                        newTransaction['status'] = 'Completed';
+                        db.addCourierProofTransaction(
+                            transDeets, newTransaction, inputImage);
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: const Text('Transaction Complete!',
+                                    style: TextStyle(
+                                        fontFamily: "Montserrat",
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.black,
+                                        fontSize: 20)),
+                                content: const Text(
+                                    'Please wait for more deliveries.',
+                                    style: TextStyle(
+                                        fontFamily: "Montserrat",
+                                        color: Colors.black,
+                                        fontSize: 14)),
+                                actions: [
+                                  TextButton(
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                      child: const Text(
+                                        'OK',
+                                        style: TextStyle(
+                                          fontFamily: "Montserrat",
+                                          color:
+                                              Color.fromARGB(255, 111, 174, 23),
+                                        ),
+                                      )),
+                                ],
+                              );
+                            });
+                      } else {
+                        // Show dialogue saying "Please provide seller proof"
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: const Text('No uploaded image',
+                                    style: TextStyle(
+                                        fontFamily: "Montserrat",
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.black,
+                                        fontSize: 20)),
+                                content: const Text(
+                                    'Please provide proof of delivery.',
+                                    style: TextStyle(
+                                        fontFamily: "Montserrat",
+                                        color: Colors.black,
+                                        fontSize: 14)),
+                                actions: [
+                                  TextButton(
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                      child: const Text(
+                                        'OK',
+                                        style: TextStyle(
+                                          fontFamily: "Montserrat",
+                                          color:
+                                              Color.fromARGB(255, 111, 174, 23),
+                                        ),
+                                      )),
+                                ],
+                              );
+                            });
+                      }
+                    },
+                    child: const Text('DELIVERED',
+                        style: TextStyle(
+                            fontFamily: "Montserrat",
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                            letterSpacing: 2.2,
+                            fontSize: 12)),
+                    style: ButtonStyle(
+                      side: MaterialStateProperty.all<BorderSide>(
+                        const BorderSide(color: Colors.white, width: 2.0),
+                      ),
                     ),
-                  ],
+                  ),
                 ),
+                // child: Row(
+                //   mainAxisAlignment: MainAxisAlignment.spaceAround,
+                //   children: [
+                //     Text(
+                //       'Proof of Delivery',
+                //       style: TextStyle(
+                //           fontFamily: "Montserrat",
+                //           fontWeight: FontWeight.bold,
+                //           color: Colors.white,
+                //           fontSize: 14),
+                //     ),
+                //     InkWell(
+                //       child: inputImage != null
+                //           ? Image.file(
+                //               inputImage!,
+                //               width: 60,
+                //               height: 60,
+                //             )
+                //           : Icon(
+                //               IconData(0xe048, fontFamily: 'MaterialIcons'),
+                //               color: Colors.white,
+                //             ),
+                //       onTap: () {
+                //         pickImage(ImageSource.gallery);
+                //       },
+                //     ),
+                //     ElevatedButton(
+                //       style: ButtonStyle(
+                //           backgroundColor:
+                //               MaterialStateProperty.all(Colors.white),
+                //           padding: MaterialStateProperty.all(
+                //               EdgeInsets.symmetric(horizontal: 50)),
+                //           shape:
+                //               MaterialStateProperty.all<RoundedRectangleBorder>(
+                //                   RoundedRectangleBorder(
+                //             borderRadius: BorderRadius.circular(20),
+                //           ))),
+                //       onPressed: () {
+                //         if (inputImage != null) {
+                //           Map<String, dynamic> newTransaction = {};
+                //           newTransaction = {...transDeets};
+                //           newTransaction['status'] = 'Completed';
+                //           db
+                //               .addCourierProofTransaction(
+                //                   transDeets, newTransaction, inputImage)
+                //               .then((value) => DeliveryListParent(
+                //                   deliverylist: userDeets['deliverylist']));
+                //         } else {
+                //           // Show dialogue saying "Please provide seller proof"
+                //           showDialog(
+                //               context: context,
+                //               builder: (BuildContext context) {
+                //                 return AlertDialog(
+                //                   title: const Text('No uploaded image',
+                //                       style: TextStyle(
+                //                           fontFamily: "Montserrat",
+                //                           fontWeight: FontWeight.bold,
+                //                           color: Colors.black,
+                //                           fontSize: 20)),
+                //                   content: const Text(
+                //                       'Please provide proof of delivery.',
+                //                       style: TextStyle(
+                //                           fontFamily: "Montserrat",
+                //                           color: Colors.black,
+                //                           fontSize: 14)),
+                //                   actions: [
+                //                     TextButton(
+                //                         onPressed: () {
+                //                           Navigator.of(context).pop();
+                //                         },
+                //                         child: const Text(
+                //                           'OK',
+                //                           style: TextStyle(
+                //                             fontFamily: "Montserrat",
+                //                             color: Color.fromARGB(
+                //                                 255, 111, 174, 23),
+                //                           ),
+                //                         )),
+                //                   ],
+                //                 );
+                //               });
+                //         }
+                //       },
+                //       child: const Text('PRODUCT DELIVERED',
+                //           style: TextStyle(
+                //               fontFamily: "Montserrat",
+                //               fontWeight: FontWeight.bold,
+                //               color: Color.fromARGB(255, 9, 117, 8),
+                //               letterSpacing: 2.2,
+                //               fontSize: 12)),
+                //     ),
+                //   ],
+                // ),
               ));
   }
 

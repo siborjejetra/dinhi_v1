@@ -1,4 +1,5 @@
 import 'package:Dinhi_v1/Buyer/trackorder.dart';
+import 'package:Dinhi_v1/Buyer/completed.dart';
 import 'package:Dinhi_v1/widgets.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -134,10 +135,15 @@ class _OrderListChildState extends State<OrderListChild> {
         icon: Icon(Icons.arrow_forward_ios,
             color: Color.fromARGB(255, 111, 174, 23)),
         onPressed: () {
-          Get.to(TrackOrder(
-            userMap: widget.userMap,
-            transaction: transaction,
-          ));
+          if (transaction['status'] == 'Completed') {
+            Get.to(CompletedParent(
+                transaction: transaction, userMap: widget.userMap));
+          } else {
+            Get.to(TrackOrder(
+              userMap: widget.userMap,
+              transaction: transaction,
+            ));
+          }
         },
       ),
     );
